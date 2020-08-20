@@ -156,7 +156,7 @@ public class FractionalHex
 
     public FractionalHex(double q, double r, double s)
     {
-        Q = r;
+        Q = q;
         R = r;
         S = s;
     }
