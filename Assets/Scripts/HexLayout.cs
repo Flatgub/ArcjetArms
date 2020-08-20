@@ -14,6 +14,11 @@ public class HexLayout
         new OrientationTransform(3.0 / 2.0, 0.0, Math.Sqrt(3.0) / 2.0, Math.Sqrt(3.0),
             2.0 / 3.0, 0.0, -1.0 / 3.0, Math.Sqrt(3.0) / 3.0);
 
+    // this layout represents a hex grid rotated such that the top of each hex is pointy
+    public static readonly OrientationTransform PointyTopLayout =
+        new OrientationTransform(Math.Sqrt(3.0), Math.Sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0,
+            Math.Sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0);
+
     public double size;
     public Vector2 origin;
     public OrientationTransform orientation;
