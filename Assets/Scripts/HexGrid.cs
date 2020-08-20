@@ -11,70 +11,123 @@ public class HexGrid : MonoBehaviour
 {
 
     public double size;
+    public int mapRadius = 3;
     private HexLayout layout;
-    private HashSet<Hex> map;
+    private Sprite hexSprite;
+
+    private HashSet<Hex> allHexes;
+
+    private bool showMouse = false;
+
+    Camera mainCamera;
 
     public void Start()
     {
-        layout = new HexLayout(HexLayout.PointyTopLayout, size, transform.position);
-        map = new HashSet<Hex>();
-        int map_radius = 2;
-        for (int q = -map_radius; q <= map_radius; q++) {
-            int r1 = Math.Max(-map_radius, -q - map_radius);
-            int r2 = Math.Min(map_radius, -q + map_radius);
+        mainCamera = Camera.main;
+        hexSprite = Resources.Load<Sprite>("Sprites/hexagon");
+        showMouse = true;
+
+        layout = new HexLayout(OrientationTransform.PointyTopLayout, size, transform.position);
+        allHexes = new HashSet<Hex>();
+        GenerateMap(mapRadius);
+        
+    }
+
+    /// <summary>
+    /// Generate a circular Hex grid of a given radius
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns><c>true</c> if the map was successfully created, or <c>false</c> if a map
+    /// already existed</returns>
+    public bool GenerateMap(int radius)
+    {
+        if (allHexes.Count > 0)
+        {
+            return false; // cannot generate a map when a map already exists
+        }
+
+        for (int q = -mapRadius; q <= mapRadius; q++)
+        {
+            int r1 = Math.Max(-mapRadius, -q - mapRadius);
+            int r2 = Math.Min(mapRadius, -q + mapRadius);
             for (int r = r1; r <= r2; r++)
             {
                 var h = new Hex(q, r);
-                if (!map.Contains(h))
+                if (!allHexes.Contains(h))
                 {
-                    map.Add(h);
-                } 
+                    allHexes.Add(h);
+                    SpawnHexSprite(h);
+                }
             }
         }
+
+        return true;
     }
 
-    public void Update()
+    /// <summary>
+    /// Create a <c>GameObject</c> and <c>SpriteRenderer</c> to visualize a given hex location in
+    /// the scene
+    /// </summary>
+    /// <param name="h">The <c>Hex</c> coordinate to spawn a sprite at</param>
+    private void SpawnHexSprite(Hex h)
     {
-        Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Debug.Log(layout.WorldToHex(mousepos).RoundToHex());   
+        Vector2 hexPos = layout.HexToWorld(h);
+        GameObject hex = new GameObject("HexSprite");
+        hex.transform.parent = transform;
+        hex.transform.position = hexPos;
+        hex.transform.Rotate(Vector3.forward, 30.0f);
+        SpriteRenderer spr = hex.AddComponent<SpriteRenderer>();
+        spr.sprite = hexSprite;
+    }
+
+    /// <summary>
+    /// Check whether a given Hex location is within the grid
+    /// </summary>
+    /// <param name="h">the location to check</param>
+    public bool ContainsHex(Hex h)
+    {
+        return allHexes.Contains(h);
+    }
+
+    /// <summary>
+    /// Get the Hex tile under the mouse if the mouse is currently over the grid.
+    /// </summary>
+    /// <returns>A <c>Hex</c> coordinate if the mouse is currently over the grid,
+    /// otherwise <c>null</c> if the mouse is out of bounds</returns>
+    public Hex GetHexUnderMouse()
+    {
+        Vector2 mousepos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Hex outhex = layout.WorldToHex(mousepos).RoundToHex();
+        if (ContainsHex(outhex))
+        {
+            return outhex;
+        }
+        else
+        {
+            return null;
+        } 
     }
 
     public void OnDrawGizmos()
     {
-
-        if (!(layout is HexLayout))
+        if (showMouse)
         {
-            return;
-        }
-
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, 1);
-
-        
-        foreach (Hex h in map)
-        {
-            Vector2 pos = layout.HexToWorld(h);
-            if (h == Hex.NorthEast || h == Hex.SouthWest)
+            Gizmos.color = Color.red;
+            Hex hexAtMouse = GetHexUnderMouse();
+            if (hexAtMouse is Hex)
             {
-                Gizmos.color = Color.green;
+                Vector2 hexpos = layout.HexToWorld(hexAtMouse);
+                Gizmos.DrawWireSphere(hexpos, 0.5f);
             }
-            else if (h == Hex.NorthWest || h == Hex.SouthEast)
-            {
-                Gizmos.color = Color.yellow;
-            }
-            else
-            {
-                Gizmos.color = Color.red;
-            }
-            Gizmos.DrawWireSphere(new Vector3(pos.x, pos.y, 0), 0.5f);
         }
     }
-
-
-
-
-
 }
+
+
+
+
+
+
 
 
 

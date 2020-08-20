@@ -4,21 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// HexLayout is used to represent the set of transforms required to convert a point in worldspace
-/// into hexagonal space and vice versa. 
+/// HexLayout is used to represent and perform the transforms required for converting a point in 
+/// worldspace to hexagonal space and vice versa. 
 /// </summary>
+/// 
+/// Implementation details are based on 
+/// https://www.redblobgames.com/grids/hexagons/implementation.html
 public class HexLayout
 {
-    // this layout represents a hex grid rotated such that the top of each hex is flat
-    public static readonly OrientationTransform FlatTopLayout =
-        new OrientationTransform(3.0 / 2.0, 0.0, Math.Sqrt(3.0) / 2.0, Math.Sqrt(3.0),
-            2.0 / 3.0, 0.0, -1.0 / 3.0, Math.Sqrt(3.0) / 3.0);
-
-    // this layout represents a hex grid rotated such that the top of each hex is pointy
-    public static readonly OrientationTransform PointyTopLayout =
-        new OrientationTransform(Math.Sqrt(3.0), Math.Sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0,
-            Math.Sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0);
-
     public double size;
     public Vector2 origin;
     public OrientationTransform orientation;
@@ -72,6 +65,17 @@ public class HexLayout
 /// </summary>
 public class OrientationTransform
 {
+
+    // this layout represents a hex grid rotated such that the top of each hex is flat
+    public static readonly OrientationTransform FlatTopLayout =
+        new OrientationTransform(3.0 / 2.0, 0.0, Math.Sqrt(3.0) / 2.0, Math.Sqrt(3.0),
+            2.0 / 3.0, 0.0, -1.0 / 3.0, Math.Sqrt(3.0) / 3.0);
+
+    // this layout represents a hex grid rotated such that the top of each hex is pointy
+    public static readonly OrientationTransform PointyTopLayout =
+        new OrientationTransform(Math.Sqrt(3.0), Math.Sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0,
+            Math.Sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0);
+
     public readonly double f0, f1, f2, f3; //forward 2x2 transform matrix
     public readonly double b0, b1, b2, b3; //inverse 2x2 transform matrix
 

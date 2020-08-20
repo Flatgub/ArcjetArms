@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 274503774}
   - component: {fileID: 274503773}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: HexGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,7 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5040da6baea05f94ebbdc4f4a8d98d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 1
+  size: 0.75
+  mapRadius: 3
 --- !u!4 &274503774
 Transform:
   m_ObjectHideFlags: 0
