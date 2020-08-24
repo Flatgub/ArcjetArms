@@ -106,7 +106,7 @@ public class HexGrid : MonoBehaviour
 
     public bool IsHexOccupied(Hex pos)
     {
-        return !(GetEntityAtHex(pos) is null);
+        return !(GetEntityAtHex(pos) is null) || !ContainsHex(pos);
     }
 
     public void AddEntityToGrid(Entity ent)

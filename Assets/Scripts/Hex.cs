@@ -144,7 +144,7 @@ public class Hex
     public static Hex operator +(Hex a, Hex b) => new Hex(a.Q + b.Q, a.R + b.R, a.S + b.S);
     public static Hex operator -(Hex a, Hex b) => new Hex(a.Q - b.Q, a.R - b.R, a.S - b.S);
     public static Hex operator *(Hex h, int k) => new Hex(h.Q * k, h.R * k, h.S * k);
-    public static bool operator ==(Hex a, Hex b) => a is Hex && b is Hex && a.Q == b.Q &&
+    public static bool operator ==(Hex a, Hex b) => !(a is null) && !(b is null) && a.Q == b.Q &&
                                                      a.R == b.R && a.S == b.S;
     public static bool operator !=(Hex a, Hex b) => !(a == b);
 }

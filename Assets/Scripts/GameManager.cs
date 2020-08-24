@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public HexGrid worldGrid;
     private EntityFactory factory;
     private Entity player;
+    public InterfaceManager interfaceManager;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,16 @@ public class GameManager : MonoBehaviour
         }
         worldGrid.GenerateMap(mapRadius);
         factory = EntityFactory.GetFactory;
-        player = factory.CreateEntity(worldGrid, new Hex(0, 1));
+        player = factory.CreateEntity(worldGrid, new Hex(0, 0));
+        interfaceManager.SelectFromCandidates(player.GetPosition().GetAllNeighbours()
+            .FindAll((_) => !worldGrid.IsHexOccupied(_)));
+
+        interfaceManager.OnSelectionMade += (pos) =>
+        {
+            player.MoveTo(pos);
+            interfaceManager.SelectFromCandidates(player.GetPosition().GetAllNeighbours()
+                .FindAll((_) => !worldGrid.IsHexOccupied(_)));
+        };
     }
 
     // Update is called once per frame
