@@ -12,28 +12,22 @@ public class HexGrid : MonoBehaviour
 {
 
     public double size;
-    public int mapRadius = 3;
     private HexLayout layout;
     private Sprite hexSprite;
 
     private HashSet<Hex> allHexes;
 
-    private bool showMouse = false;
-
     public Text text;
     
     Camera mainCamera;
 
-    public void Start()
+    public void Awake()
     {
         mainCamera = Camera.main;
         hexSprite = Resources.Load<Sprite>("Sprites/HexagonPointy");
-        showMouse = true;
 
         layout = new HexLayout(OrientationTransform.PointyTopLayout, size, transform.position);
-        allHexes = new HashSet<Hex>();
-        GenerateMap(mapRadius);
-        
+        allHexes = new HashSet<Hex>();        
     }
 
     /// <summary>
@@ -49,10 +43,10 @@ public class HexGrid : MonoBehaviour
             return false; // cannot generate a map when a map already exists
         }
 
-        for (int q = -mapRadius; q <= mapRadius; q++)
+        for (int q = -radius; q <= radius; q++)
         {
-            int r1 = Math.Max(-mapRadius, -q - mapRadius);
-            int r2 = Math.Min(mapRadius, -q + mapRadius);
+            int r1 = Math.Max(-radius, -q - radius);
+            int r2 = Math.Min(radius, -q + radius);
             for (int r = r1; r <= r2; r++)
             {
                 var h = new Hex(q, r);
@@ -110,28 +104,26 @@ public class HexGrid : MonoBehaviour
         } 
     }
 
+    public void AddEntityToGrid(Entity ent)
+    {
+        Vector2 worldpos = layout.HexToWorld(ent.GetPosition());
+        ent.transform.position = worldpos;
+    }
+
+    public Vector2 GetWorldPosition(Hex pos)
+    {
+        return layout.HexToWorld(pos);
+    }
+
+    /*
     public void Update()
     {
         Hex hexAtMouse = GetHexUnderMouse();
         if (hexAtMouse is Hex)
         {
             text.text = hexAtMouse.ToString();
-        }
-    }
-
-    public void OnDrawGizmos()
-    {
-        if (showMouse)
-        {
-            Gizmos.color = Color.red;
-            Hex hexAtMouse = GetHexUnderMouse();
-            if (hexAtMouse is Hex)
-            {
-                Vector2 hexpos = layout.HexToWorld(hexAtMouse);
-                Gizmos.DrawWireSphere(hexpos, 0.5f);
-            }
-        }
-    }
+        }*/
+   
 }
 
 
