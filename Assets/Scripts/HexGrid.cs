@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// HexGrid is used to handle things
@@ -19,12 +20,14 @@ public class HexGrid : MonoBehaviour
 
     private bool showMouse = false;
 
+    public Text text;
+    
     Camera mainCamera;
 
     public void Start()
     {
         mainCamera = Camera.main;
-        hexSprite = Resources.Load<Sprite>("Sprites/hexagon");
+        hexSprite = Resources.Load<Sprite>("Sprites/HexagonPointy");
         showMouse = true;
 
         layout = new HexLayout(OrientationTransform.PointyTopLayout, size, transform.position);
@@ -75,7 +78,6 @@ public class HexGrid : MonoBehaviour
         GameObject hex = new GameObject("HexSprite");
         hex.transform.parent = transform;
         hex.transform.position = hexPos;
-        hex.transform.Rotate(Vector3.forward, 30.0f);
         SpriteRenderer spr = hex.AddComponent<SpriteRenderer>();
         spr.sprite = hexSprite;
     }
@@ -106,6 +108,15 @@ public class HexGrid : MonoBehaviour
         {
             return null;
         } 
+    }
+
+    public void Update()
+    {
+        Hex hexAtMouse = GetHexUnderMouse();
+        if (hexAtMouse is Hex)
+        {
+            text.text = hexAtMouse.ToString();
+        }
     }
 
     public void OnDrawGizmos()
