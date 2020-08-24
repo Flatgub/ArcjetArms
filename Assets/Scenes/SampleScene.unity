@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 60055483}
   - component: {fileID: 60055482}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -196,8 +196,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 0.75
-  mapRadius: 3
-  text: {fileID: 1943432066}
 --- !u!4 &274503774
 Transform:
   m_ObjectHideFlags: 0

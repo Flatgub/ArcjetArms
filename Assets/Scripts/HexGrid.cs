@@ -16,10 +16,9 @@ public class HexGrid : MonoBehaviour
     private Sprite hexSprite;
 
     private HashSet<Hex> allHexes;
-
-    public Text text;
+    private List<Entity> allEntities;
     
-    Camera mainCamera;
+    Camera mainCamera; //fixme: maybe don't store this here?
 
     public void Awake()
     {
@@ -27,7 +26,8 @@ public class HexGrid : MonoBehaviour
         hexSprite = Resources.Load<Sprite>("Sprites/HexagonPointy");
 
         layout = new HexLayout(OrientationTransform.PointyTopLayout, size, transform.position);
-        allHexes = new HashSet<Hex>();        
+        allHexes = new HashSet<Hex>();
+        allEntities = new List<Entity>();
     }
 
     /// <summary>
@@ -65,10 +65,10 @@ public class HexGrid : MonoBehaviour
     /// Create a <c>GameObject</c> and <c>SpriteRenderer</c> to visualize a given hex location in
     /// the scene
     /// </summary>
-    /// <param name="h">The <c>Hex</c> coordinate to spawn a sprite at</param>
-    private void SpawnHexSprite(Hex h)
+    /// <param name="pos">The <c>Hex</c> coordinate to spawn a sprite at</param>
+    private void SpawnHexSprite(Hex pos)
     {
-        Vector2 hexPos = layout.HexToWorld(h);
+        Vector2 hexPos = layout.HexToWorld(pos);
         GameObject hex = new GameObject("HexSprite");
         hex.transform.parent = transform;
         hex.transform.position = hexPos;
@@ -79,10 +79,10 @@ public class HexGrid : MonoBehaviour
     /// <summary>
     /// Check whether a given Hex location is within the grid
     /// </summary>
-    /// <param name="h">the location to check</param>
-    public bool ContainsHex(Hex h)
+    /// <param name="pos">the location to check</param>
+    public bool ContainsHex(Hex pos)
     {
-        return allHexes.Contains(h);
+        return allHexes.Contains(pos);
     }
 
     /// <summary>
@@ -104,25 +104,67 @@ public class HexGrid : MonoBehaviour
         } 
     }
 
-    public void AddEntityToGrid(Entity ent)
+    public bool IsHexOccupied(Hex pos)
     {
-        Vector2 worldpos = layout.HexToWorld(ent.GetPosition());
-        ent.transform.position = worldpos;
+        return !(GetEntityAtHex(pos) is null);
     }
 
+    public void AddEntityToGrid(Entity ent)
+    {
+        allEntities.Add(ent);
+        ent.MoveTo(ent.GetPosition());
+    }
+
+    //TODO: this method is only performs half the transaction which is dangerous, change it soon
+    /// <summary>
+    /// Remove the given entity from this grid.
+    /// </summary>
+    /// <remarks>Note: This does not change what grid the entity think's its on, only the grid is
+    /// affected by this removal. After calling <c>RemoveEntityFromGrid</c> you must also change
+    /// the entity itself to tell it what grid to be on.
+    /// <param name="ent"></param>
+    public void RemoveEntityFromGrid(Entity ent)
+    {
+        allEntities.Remove(ent);
+    }
+
+    /// <summary>
+    /// Get the entity at the current position, if one exists
+    /// </summary>
+    /// <param name="pos">The position to check</param>
+    /// <returns>Either the <see cref="Entity"/> at <c>pos</c> if one exists, or <c>null</c> if
+    /// there is no entity there. </returns>
+    public Entity GetEntityAtHex(Hex pos)
+    {
+        foreach (Entity e in allEntities)
+        {
+            if (e.GetPosition() == pos)
+            {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Get a list of all the entities currently on the grid.
+    /// </summary>
+    public List<Entity> GetAllEntities()
+    {
+        return new List<Entity>(allEntities); //return a shallow copy
+    }
+
+    /// <summary>
+    /// Get the worldspace position of a <c>Hex</c> position
+    /// </summary>
+    /// <param name="pos">The <c>Hex</c> coordinate to convert</param>
+    /// <returns>A Vector2 for the center of <c>pos</c> in worldspace</returns>
     public Vector2 GetWorldPosition(Hex pos)
     {
         return layout.HexToWorld(pos);
     }
 
-    /*
-    public void Update()
-    {
-        Hex hexAtMouse = GetHexUnderMouse();
-        if (hexAtMouse is Hex)
-        {
-            text.text = hexAtMouse.ToString();
-        }*/
+
    
 }
 

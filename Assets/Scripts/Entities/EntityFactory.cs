@@ -10,7 +10,9 @@ public class EntityFactory : MonoBehaviour
     private static EntityFactory factoryInstance;
     private GameObject entityPrefab;
 
-
+    /// <summary>
+    /// Get the singleton instance of the entityFactory, or make one if it doesn't yet exist
+    /// </summary>
     public static EntityFactory GetFactory
     {
         get
@@ -26,11 +28,13 @@ public class EntityFactory : MonoBehaviour
 
     public void Awake()
     {
+        //FIXME: perhaps don't hardcode the directory for basicEntity?
         entityPrefab = Resources.Load<GameObject>("Prefabs/BasicEntity");
     }
 
     //TODO: make this method more modular to accept unique constructors for unique entities
     //      or different prefabs
+    //
     /// <summary>
     /// Used to create an entity at a given location
     /// </summary>
@@ -42,10 +46,7 @@ public class EntityFactory : MonoBehaviour
         //construct new entity prefab
         GameObject entityObj = Instantiate(entityPrefab);
         Entity entComponent = entityObj.GetComponent<Entity>();
-        //set relevant properties on the prefab
         entComponent.Initialize(grid, position);
-        //add the prefab to the grid
-        grid.AddEntityToGrid(entComponent);
         return entComponent;
     }
 }

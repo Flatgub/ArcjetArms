@@ -22,12 +22,12 @@ public class Hex
     public int S { get; private set; }
 
     // constants for directions
-    public static readonly Hex East = new Hex(1, 0, -1);
     public static readonly Hex NorthEast = new Hex(0, 1, -1);
+    public static readonly Hex East = new Hex(1, 0, -1);
     public static readonly Hex SouthEast = new Hex(1, -1, 0);
-    public static readonly Hex NorthWest = new Hex(-1, 1, 0);
     public static readonly Hex SouthWest = new Hex(0, -1, 1);
     public static readonly Hex West = new Hex(-1, 0, 1);
+    public static readonly Hex NorthWest = new Hex(-1, 1, 0);    
     public static readonly Hex[] Directions = {NorthEast, East, SouthEast,
         SouthWest, West, NorthWest};
 

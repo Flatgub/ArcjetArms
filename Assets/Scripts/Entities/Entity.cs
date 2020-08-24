@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,17 +12,19 @@ public class Entity : MonoBehaviour
 {
     private HexGrid grid;
     private Hex position;
-    private SpriteRenderer appearance;
-
-    public void Initialize(HexGrid grid, Hex pos)
-    {
-        this.grid = grid;
-        this.position = pos;
-    }
+    public SpriteRenderer appearance;
 
     public void Awake()
     {
         appearance = GetComponent<SpriteRenderer>();
+    }
+
+    public void Initialize(HexGrid grid, Hex pos)
+    {
+        this.grid = grid;
+        MoveTo(pos);
+        grid.AddEntityToGrid(this);
+        
     }
 
     public Hex GetPosition()
@@ -29,10 +32,14 @@ public class Entity : MonoBehaviour
         return position;
     }
 
-    public void MoveTo(Hex h)
+    public void MoveTo(Hex pos)
     {
-        position = h;
-        transform.position = grid.GetWorldPosition(h);
+        if (pos == null)
+        {
+            throw new ArgumentNullException("Cannot move to null position");
+        }
+        position = pos;
+        transform.position = grid.GetWorldPosition(pos);
     }
 
 }

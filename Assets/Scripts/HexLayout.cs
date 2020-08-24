@@ -32,12 +32,12 @@ public class HexLayout
     /// <summary>
     /// Convert a hexagonal coordinate to a 2D worldspace coordinate
     /// </summary>
-    /// <param name="h"></param>
+    /// <param name="pos"></param>
     /// <returns>A Vector2 of the 2D coordinates at the center of the provided hex</returns>
-    public Vector2 HexToWorld(Hex h)
+    public Vector2 HexToWorld(Hex pos)
     {
-        float x = (float)((orientation.f0 * h.Q + orientation.f1 * h.R) * size) + origin.x;
-        float y = (float)((orientation.f2 * h.Q + orientation.f3 * h.R) * size) + origin.y;
+        float x = (float)((orientation.f0 * pos.Q + orientation.f1 * pos.R) * size) + origin.x;
+        float y = (float)((orientation.f2 * pos.Q + orientation.f3 * pos.R) * size) + origin.y;
         return new Vector2(x, y);
     }
 

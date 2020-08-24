@@ -6,8 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public int mapRadius;
 
-    [SerializeField]
-    private HexGrid worldGrid;
+    public HexGrid worldGrid;
     private EntityFactory factory;
     private Entity player;
 
@@ -29,10 +28,14 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Hex mouseHex = worldGrid.GetHexUnderMouse();
-            if (mouseHex != null)
+            if (!(mouseHex is null))
             {
-                player.MoveTo(mouseHex);
+                if (!worldGrid.IsHexOccupied(mouseHex))
+                {
+                    player.MoveTo(mouseHex);
+                }
             }
         }
+
     }
 }
