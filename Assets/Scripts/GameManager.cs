@@ -21,15 +21,19 @@ public class GameManager : MonoBehaviour
         worldGrid.GenerateMap(mapRadius);
         factory = EntityFactory.GetFactory;
         player = factory.CreateEntity(worldGrid, new Hex(0, 0));
-        interfaceManager.SelectFromCandidates(player.GetPosition().GetAllNeighbours()
+
+        /*
+        interfaceManager.OfferSingleHexSelection(player.GetPosition().GetAllNeighbours()
             .FindAll((_) => !worldGrid.IsHexOccupied(_)));
 
         interfaceManager.OnSelectionMade += (pos) =>
         {
             player.MoveTo(pos);
-            interfaceManager.SelectFromCandidates(player.GetPosition().GetAllNeighbours()
+            interfaceManager.OfferSingleHexSelection(player.GetPosition().GetAllNeighbours()
                 .FindAll((_) => !worldGrid.IsHexOccupied(_)));
-        };
+        };*/
+
+        StartCoroutine(MovementCoroutine());
     }
 
     // Update is called once per frame
@@ -47,5 +51,26 @@ public class GameManager : MonoBehaviour
             }
         }
 
+    }
+
+    // Very basic example of the step action
+    IEnumerator MovementCoroutine()
+    {
+        // Get the list of possible locations to move to
+        List<Hex> movementCandidates = player.GetPosition().GetAllNeighbours();
+
+        // Show the locations to the player and let them pick one
+        SelectionResult moveLocation = interfaceManager.OfferSingleHexSelection(movementCandidates);
+
+        // Wait until the player has made a selection or cancels the action
+        yield return new WaitUntil(moveLocation.IsReadyOrCancelled);
+
+        // If the player didn't cancel the selection
+        if (!moveLocation.WasCancelled())
+        {
+            // Move to the location they selected
+            player.MoveTo(moveLocation.GetResult());
+        }
+        
     }
 }

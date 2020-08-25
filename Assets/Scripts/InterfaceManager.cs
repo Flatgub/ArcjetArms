@@ -15,6 +15,7 @@ public class InterfaceManager : MonoBehaviour
     private HashSet<SelectionResponder> activeSelectionHexes;
 
     public event Action<Hex> OnSelectionMade;
+    private SelectionResult activeSelection;
 
     public void Awake()
     {
@@ -40,12 +41,15 @@ public class InterfaceManager : MonoBehaviour
         }
     }
 
-    public void SelectFromCandidates(List<Hex> options)
+    public SelectionResult OfferSingleHexSelection(ICollection<Hex> options)
     {
         foreach (Hex hex in options)
         {
             GenerateSelectionHex(hex);
         }
+
+        activeSelection = new SelectionResult();
+        return activeSelection;
     }
 
     /// <summary>
@@ -86,6 +90,10 @@ public class InterfaceManager : MonoBehaviour
     public void HexSelected(Hex hex)
     {
         ClearSelectionHexes();
+
+        activeSelection.SetResult(hex);
+        activeSelection = null;
+
         OnSelectionMade?.Invoke(hex);
     }
 }

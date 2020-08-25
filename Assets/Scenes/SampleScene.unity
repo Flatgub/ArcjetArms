@@ -393,8 +393,8 @@ MonoBehaviour:
   grid: {fileID: 274503773}
   selectionPrefab: {fileID: 7243521656958316603, guid: 3494291e19d2eec4da2ff9858611a15c,
     type: 3}
-  selectionIdleColour: {r: 0.24056602, g: 0.9632188, b: 1, a: 0.39607844}
-  selectionMouseOverColour: {r: 1, g: 1, b: 1, a: 0.39607844}
+  selectionIdleColour: {r: 0, g: 0.7222755, b: 1, a: 0.49019608}
+  selectionMouseOverColour: {r: 0, g: 0.30064723, b: 0.68235296, a: 0.5803922}
 --- !u!4 &1400311331
 Transform:
   m_ObjectHideFlags: 0
