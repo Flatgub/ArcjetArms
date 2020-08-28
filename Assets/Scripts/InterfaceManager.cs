@@ -91,7 +91,7 @@ public class InterfaceManager : MonoBehaviour
     {
         ClearSelectionHexes();
 
-        activeSelection.SetResult(hex);
+        activeSelection.AddSelection(hex);
         activeSelection = null;
 
         OnSelectionMade?.Invoke(hex);

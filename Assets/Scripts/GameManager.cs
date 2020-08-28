@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
     private Entity player;
     public InterfaceManager interfaceManager;
 
+    public Card exampleCard;
+    [SerializeField]
+    public CardData exampleData;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +26,7 @@ public class GameManager : MonoBehaviour
         factory = EntityFactory.GetFactory;
         player = factory.CreateEntity(worldGrid, new Hex(0, 0));
 
+        exampleCard.LoadDataFrom(exampleData);
         /*
         interfaceManager.OfferSingleHexSelection(player.GetPosition().GetAllNeighbours()
             .FindAll((_) => !worldGrid.IsHexOccupied(_)));
