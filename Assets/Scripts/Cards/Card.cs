@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,5 +21,19 @@ public class Card : MonoBehaviour
         CardArt.sprite = cardData.cardArt;
         TitleText.text = cardData.title;       
         BodyText.text = cardData.description;
+    }
+
+    public CardActionResult AttemptToPlay(GameplayContext gc)
+    {
+        if (cardData == null)
+        {
+            throw new InvalidOperationException("Attempted to play a card with no data");
+        }
+
+        CardActionResult returnResult = new CardActionResult();
+
+        StartCoroutine(cardData.CardBehaviour(gc, returnResult));
+
+        return returnResult;
     }
 }

@@ -10,6 +10,7 @@ public abstract class CardData : ScriptableObject
     [TextArea]
     public string description;
     public int energyCost;
+    public CardData upgradesTo = null;
 
-    public abstract IEnumerator CardBehaviour();
+    public abstract IEnumerator CardBehaviour(GameplayContext context, CardActionResult outcome);
 }

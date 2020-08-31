@@ -423,6 +423,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 1296239358832963727, guid: b0856616b7bbb5c4495b0a9c8ce42089,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1868209004566415762, guid: b0856616b7bbb5c4495b0a9c8ce42089,
         type: 3}
       propertyPath: m_SizeDelta.y

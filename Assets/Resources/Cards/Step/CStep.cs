@@ -6,14 +6,14 @@ public class CStep : CardData
 {
     public int moveDistance;
 
-    public override IEnumerator CardBehaviour()
+    public override IEnumerator CardBehaviour(GameplayContext gc, CardActionResult outcome)
     {
-        /*
-         * // Get the list of possible locations to move to
-        List<Hex> movementCandidates = player.GetPosition().GetAllNeighbours();
+        
+        // Get the list of possible locations to move to
+        List<Hex> movementCandidates = gc.player.GetPosition().GetAllNeighbours();
 
         // Show the locations to the player and let them pick one
-        SelectionResult moveLocation = interfaceManager.OfferSingleHexSelection(movementCandidates);
+        SelectionResult moveLocation = gc.ui.OfferSingleHexSelection(movementCandidates);
 
         // Wait until the player has made a selection or cancels the action
         yield return new WaitUntil(moveLocation.IsReadyOrCancelled);
@@ -22,9 +22,12 @@ public class CStep : CardData
         if (!moveLocation.WasCancelled())
         {
             // Move to the location they selected
-            player.MoveTo(moveLocation.GetResult());
+            gc.player.MoveTo(moveLocation.GetResult());
+            outcome.Complete();
         }
-        */
-        throw new System.NotImplementedException();
+        else
+        {
+            outcome.Cancel();
+        } 
     }
 }
