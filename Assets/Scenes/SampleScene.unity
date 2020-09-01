@@ -377,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8740ac956530ad443bfa7076296683ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightedY: 100
+  highlightedY: 80
   hiddenY: -120
   verticalStray: 15
   rotationalStray: 1

@@ -53,7 +53,6 @@ public class CardRendererFactory : MonoBehaviour
         //construct new card prefab based on the input carddata
         CardRenderer instance = Instantiate(cardPrefab);
         instance.ShowCardData(basedOn);
-
         return instance;
     }
 }

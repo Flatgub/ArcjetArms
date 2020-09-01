@@ -68,6 +68,7 @@ public class HandContainer : MonoBehaviour
             cardsInHand.Add(card);
             card.inHand = this;
             card.transform.SetParent(transform);
+            card.transform.localScale = Vector3.one*1.2f;
             UpdatePositions();
         }
     }
@@ -83,6 +84,7 @@ public class HandContainer : MonoBehaviour
             if (highlightedCard == index)
             {
                 highlightedCard = -1;
+                lastHighlightedCard = cardsInHand.Count / 2;
             }
             UpdatePositions();
         }
