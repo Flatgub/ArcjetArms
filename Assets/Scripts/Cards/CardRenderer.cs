@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,
+    IPointerClickHandler
 {
     public Image frameArt;
     public Image cardArt;
@@ -38,11 +39,14 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         return CardDatabase.EnergyCostFrames[ec];
     }
 
-    /*
+    
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log(cardData.title);
-    }*/
+        if (inHand != null && eventData.button == 0)
+        {
+            inHand.OnCardMouseClick(this);
+        }
+    }
 
     public void OnPointerEnter(PointerEventData ped)
     {
@@ -59,17 +63,4 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             inHand.OnCardMouseLeave(this);
         }
     }
-
-    // HANDLE THESE LATER
-    /*
-    public void whatever()
-    {
-        Debug.Log("onPointer: " + gameObject.name);
-    }
-
-    
-    public void whateverOut(PointerEventData ped)
-    {
-        Debug.Log("onPointerExit: " + gameObject.name);
-    }*/
 }

@@ -18,6 +18,25 @@ public class HandContainer : MonoBehaviour
     public float verticalStray;
     public float rotationalStray;
 
+    private bool holdCardsDown;
+    public bool HoldCardsDown {
+        get
+        {
+            return holdCardsDown;
+        }
+        set
+        {
+            bool old = holdCardsDown;
+            holdCardsDown = value;
+            if (holdCardsDown != old)
+            {
+                UpdatePositions();
+            }
+        } 
+    }
+    
+    public InterfaceManager manager;
+
     private float cardMoveTime = 0.2f;
 
     private void Start()
@@ -27,7 +46,7 @@ public class HandContainer : MonoBehaviour
         cardsInHand = new List<CardRenderer>();
         highlightedCard = -1;
         lastHighlightedCard = 0;
-    
+        holdCardsDown = false;
     }
 
 
@@ -42,11 +61,17 @@ public class HandContainer : MonoBehaviour
         {
             CardRenderer card = cardsInHand[i];
             LeanTween.cancel(card.gameObject);
+
             float desiredY = 0;
-            if (highlightedCard != -1)
+            if (holdCardsDown)
+            {
+                desiredY = hiddenY;
+            }
+            else if (highlightedCard != -1)
             {
                 desiredY = (highlightedCard == i) ? highlightedY : hiddenY;
             }
+
             int dist = Math.Abs(lastHighlightedCard - i);
 
             LeanTween.moveLocal(card.gameObject,
@@ -68,7 +93,7 @@ public class HandContainer : MonoBehaviour
             cardsInHand.Add(card);
             card.inHand = this;
             card.transform.SetParent(transform);
-            card.transform.localScale = Vector3.one*1.2f;
+            card.transform.localScale = Vector3.one*1.2f; //TODO: found out why this is happening
             UpdatePositions();
         }
     }
@@ -123,6 +148,11 @@ public class HandContainer : MonoBehaviour
             highlightedCard = -1;
             UpdatePositions();
         }
+    }
+
+    public void OnCardMouseClick(CardRenderer cr)
+    {
+        manager.OnPlayerSelectCard(cr);
     }
 
 }

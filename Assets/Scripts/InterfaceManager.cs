@@ -18,6 +18,9 @@ public class InterfaceManager : MonoBehaviour
     private SelectionResult activeSelection;
 
     public HandContainer hand;
+    public Transform activeCardLocation;
+
+    public CardRenderer activeCardRenderer;
 
     public void Awake()
     {
@@ -40,6 +43,32 @@ public class InterfaceManager : MonoBehaviour
                     hex.appearance.color = selectionIdleColour;
                 }
             }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (activeCardRenderer != null)
+            {
+                hand.AddCardToHand(activeCardRenderer);
+                hand.HoldCardsDown = false;
+                activeCardRenderer = null;
+            }
+        }
+    }
+
+    public void OnPlayerSelectCard(CardRenderer cr)
+    {
+        //TODO: put energy cost restriction checking in here
+        if (activeCardRenderer == null)
+        {
+            Card selectedCard = cr.tiedTo;
+            hand.RemoveCardFromHand(cr);
+            cr.transform.SetParent(activeCardLocation);
+            LeanTween.cancel(cr.gameObject);
+            LeanTween.rotateZ(cr.gameObject, 0f, 0.2f);
+            LeanTween.move(cr.gameObject, activeCardLocation.position, 0.2f);
+            hand.HoldCardsDown = true;
+            activeCardRenderer = cr;
         }
     }
 
