@@ -87,8 +87,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7679011214217140125}
-  - component: {fileID: 4220092980621697906}
   - component: {fileID: 8936573973190689972}
+  - component: {fileID: 4034606937977343470}
   m_Layer: 5
   m_Name: CardPrefab
   m_TagString: Untagged
@@ -119,24 +119,6 @@ RectTransform:
   m_AnchoredPosition: {x: -11.07, y: -34.72}
   m_SizeDelta: {x: 0, y: 272.6388}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4220092980621697906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1296239358832963727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ffc0babc3d426347a1482fc1da149fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FrameArt: {fileID: 9200735126246062179}
-  CardArt: {fileID: 714925206426773145}
-  EnergyCostArt: {fileID: 1859786504942673307}
-  TitleText: {fileID: 5399026580119348633}
-  BodyText: {fileID: 7275839418669291326}
-  cardData: {fileID: 0}
 --- !u!114 &8936573973190689972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +133,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 2
   m_AspectRatio: 0.7274439
+--- !u!114 &4034606937977343470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296239358832963727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb3b15c77b8ef2468468f2c74f5e7e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  templatePrefab: {fileID: 0}
+  frameArt: {fileID: 9200735126246062179}
+  cardArt: {fileID: 714925206426773145}
+  energyCostArt: {fileID: 1859786504942673307}
+  titleText: {fileID: 5399026580119348633}
+  bodyText: {fileID: 7275839418669291326}
+  cardData: {fileID: 0}
 --- !u!1 &4947474493223891307
 GameObject:
   m_ObjectHideFlags: 0

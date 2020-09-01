@@ -12,9 +12,7 @@ public class GameManager : MonoBehaviour
     public InterfaceManager interfaceManager;
     public GameplayContext currentContext;
 
-    public Card exampleCard;
-    [SerializeField]
-    public CardData exampleData;
+    public CardRenderer exampleRender;
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +25,14 @@ public class GameManager : MonoBehaviour
         factory = EntityFactory.GetFactory;
         player = factory.CreateEntity(worldGrid, new Hex(0, 0));
 
-        currentContext = new GameplayContext(player, worldGrid, interfaceManager);
+        currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
 
         CardDatabase.LoadAllCards();
 
-        exampleCard.LoadDataFrom(CardDatabase.GetCardByID(9));
-        exampleCard.AttemptToPlay(currentContext);
+        Card card = CardDatabase.CreateCardFromID(0);
+
+        exampleRender.TieTo(card);
+        card.AttemptToPlay(currentContext);
 
         
     }

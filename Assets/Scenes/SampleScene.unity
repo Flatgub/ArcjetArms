@@ -153,7 +153,7 @@ MonoBehaviour:
   mapRadius: 3
   worldGrid: {fileID: 274503773}
   interfaceManager: {fileID: 1400311330}
-  exampleCard: {fileID: 1598910461}
+  exampleRender: {fileID: 955617202}
   exampleData: {fileID: 11400000, guid: 2d60371b3eef77f44bf442644c84114b, type: 2}
 --- !u!4 &60055483
 Transform:
@@ -398,6 +398,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &955617202 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4034606937977343470, guid: b0856616b7bbb5c4495b0a9c8ce42089,
+    type: 3}
+  m_PrefabInstance: {fileID: 1598910460}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb3b15c77b8ef2468468f2c74f5e7e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1400311329
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,18 +623,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0856616b7bbb5c4495b0a9c8ce42089, type: 3}
---- !u!114 &1598910461 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4220092980621697906, guid: b0856616b7bbb5c4495b0a9c8ce42089,
-    type: 3}
-  m_PrefabInstance: {fileID: 1598910460}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ffc0babc3d426347a1482fc1da149fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1598910462 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7679011214217140125, guid: b0856616b7bbb5c4495b0a9c8ce42089,

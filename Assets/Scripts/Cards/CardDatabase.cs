@@ -12,11 +12,13 @@ public static class CardDatabase
 {
     private static readonly SortedList<int, CardData> allCards;
     private static readonly string cardsDirectory;
+    public static readonly Sprite[] EnergyCostFrames;
 
     static CardDatabase()
     {
         allCards = new SortedList<int, CardData>();
         cardsDirectory = Application.dataPath + "/Resources/Cards";
+        EnergyCostFrames = Resources.LoadAll<Sprite>("Cards/CardPriceSprites");
     }
 
     /// <summary>
@@ -33,7 +35,7 @@ public static class CardDatabase
     /// <param name="id">the ID of the card to get</param>
     /// <exception cref="IndexOutOfRangeException">Thrown if no card exists for that ID</exception>
     /// <returns></returns>
-    public static CardData GetCardByID(int id)
+    public static CardData GetCardDataByID(int id)
     {
         if (allCards.TryGetValue(id, out CardData cd))
         {
@@ -43,6 +45,12 @@ public static class CardDatabase
         {
             throw new IndexOutOfRangeException("No such card exists for ID " + id);
         }
+    }
+
+    public static Card CreateCardFromID(int id)
+    {
+        CardData data = GetCardDataByID(id);
+        return new Card(data);
     }
 
     /// <summary>
