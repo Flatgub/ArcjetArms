@@ -7,12 +7,11 @@ public class GameManager : MonoBehaviour
     public int mapRadius;
 
     public HexGrid worldGrid;
-    private EntityFactory factory;
+    private EntityFactory entFactory;
+    private CardRendererFactory cardFactory;
     private Entity player;
     public InterfaceManager interfaceManager;
     public GameplayContext currentContext;
-
-    public CardRenderer exampleRender;
 
     // Start is called before the first frame update
     void Start()
@@ -22,25 +21,29 @@ public class GameManager : MonoBehaviour
             worldGrid = GameObject.FindObjectOfType<HexGrid>();
         }
         worldGrid.GenerateMap(mapRadius);
-        factory = EntityFactory.GetFactory;
-        player = factory.CreateEntity(worldGrid, new Hex(0, 0));
+        entFactory = EntityFactory.GetFactory;
+        cardFactory = CardRendererFactory.GetFactory;
+        player = entFactory.CreateEntity(worldGrid, new Hex(0, 0));
 
         currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
 
         CardDatabase.LoadAllCards();
 
-        Card card = CardDatabase.CreateCardFromID(0);
-
-        exampleRender.TieTo(card);
-        card.AttemptToPlay(currentContext);
-
-        
+        bop = true;
     }
+
+    private bool bop;
 
     // Update is called once per frame
     void Update()
     {
-       
+        if (Input.GetButtonDown("Jump"))
+        {
+            Card card = CardDatabase.CreateCardFromID(bop ? 0 : 9);
+            CardRenderer cr = cardFactory.CreateCardRenderer(card);
+            interfaceManager.hand.AddCardToHand(cr);
+            bop = !bop;
+        }
 
     }
 

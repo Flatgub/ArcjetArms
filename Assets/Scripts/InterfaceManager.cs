@@ -17,6 +17,8 @@ public class InterfaceManager : MonoBehaviour
     public event Action<Hex> OnSelectionMade;
     private SelectionResult activeSelection;
 
+    public HandContainer hand;
+
     public void Awake()
     {
         activeSelectionHexes = new HashSet<SelectionResponder>();

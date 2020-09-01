@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardRenderer : MonoBehaviour
+public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Image frameArt;
     public Image cardArt;
@@ -13,6 +14,7 @@ public class CardRenderer : MonoBehaviour
     public Text bodyText;
     public CardData cardData;
     public Card tiedTo;
+    public HandContainer inHand;
 
     public void TieTo(Card card)
     {
@@ -36,6 +38,28 @@ public class CardRenderer : MonoBehaviour
         return CardDatabase.EnergyCostFrames[ec];
     }
 
+    /*
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log(cardData.title);
+    }*/
+
+    public void OnPointerEnter(PointerEventData ped)
+    {
+        if (inHand != null)
+        {
+            inHand.OnCardMouseOver(this);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData ped)
+    {
+        if (inHand != null)
+        {
+            inHand.OnCardMouseLeave(this);
+        }
+    }
+
     // HANDLE THESE LATER
     /*
     public void whatever()
@@ -43,10 +67,7 @@ public class CardRenderer : MonoBehaviour
         Debug.Log("onPointer: " + gameObject.name);
     }
 
-    public void OnPointerEnter(PointerEventData ped)
-    {
-        Debug.Log("onPointerEnter: " + gameObject.name);
-    }
+    
     public void whateverOut(PointerEventData ped)
     {
         Debug.Log("onPointerExit: " + gameObject.name);

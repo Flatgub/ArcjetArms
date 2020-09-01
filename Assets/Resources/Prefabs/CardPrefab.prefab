@@ -116,7 +116,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.07, y: -34.72}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 272.6388}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8936573973190689972
@@ -145,7 +145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fb3b15c77b8ef2468468f2c74f5e7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  templatePrefab: {fileID: 0}
   frameArt: {fileID: 9200735126246062179}
   cardArt: {fileID: 714925206426773145}
   energyCostArt: {fileID: 1859786504942673307}
@@ -455,7 +454,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
