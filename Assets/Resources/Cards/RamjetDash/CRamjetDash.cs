@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class CStep : CardData
+public class CRamjetDash : CardData
 {
+
     public int moveDistance;
 
     public override string GenerateStaticDescription()
@@ -16,14 +19,21 @@ public class CStep : CardData
         return GenerateStaticDescription();
     }
 
-    public override IEnumerator CardBehaviour(GameplayContext gc, CardActionResult outcome)
+    public override IEnumerator CardBehaviour(GameplayContext context, CardActionResult outcome)
     {
-        
-        // Get the list of possible locations to move to
-        List<Hex> movementCandidates = gc.player.GetPosition().GetAllNeighbours();
+        List<Hex> movementCandidates = new List<Hex>();
+
+        //cast out a line in each direction from the player to determine movement spots
+        foreach (Hex dir in Hex.Directions)
+        {
+            List<Hex> line = GridHelper.CastLineInDirection(context.grid,
+                context.player.GetPosition(), dir, moveDistance, includeStart: false);
+
+            movementCandidates.AddRange(line);
+        }
 
         // Show the locations to the player and let them pick one
-        SelectionResult moveLocation = gc.ui.OfferSingleHexSelection(movementCandidates);
+        SelectionResult moveLocation = context.ui.OfferSingleHexSelection(movementCandidates);
 
         // Wait until the player has made a selection or cancels the action
         yield return new WaitUntil(moveLocation.IsReadyOrCancelled);
@@ -32,14 +42,13 @@ public class CStep : CardData
         if (!moveLocation.WasCancelled())
         {
             // Move to the location they selected
-            gc.player.MoveTo(moveLocation.GetResult());
+            context.player.MoveTo(moveLocation.GetResult());
             outcome.Complete();
         }
         else
         {
             outcome.Cancel();
-        } 
+        }
     }
 
-  
 }

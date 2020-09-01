@@ -15,6 +15,7 @@ MonoBehaviour:
   title: Step
   cardArt: {fileID: 21300000, guid: b11671ae89ff9fd4e9f25d675b177985, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
-  description: Move 1 Space
+  descriptionTemplate: Move {0} spaces
   energyCost: 0
+  upgradesTo: {fileID: 0}
   moveDistance: 1
