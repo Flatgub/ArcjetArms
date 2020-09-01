@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class GameplayContext 
 {
-    public Entity player { get; private set; }
-    public HexGrid grid { get; private set; }
-    public InterfaceManager ui { get; private set; }
+    public Entity Player { get; private set; }
+    public HexGrid Grid { get; private set; }
+    public InterfaceManager Ui { get; private set; }
 
     public GameplayContext(Entity player, HexGrid grid, InterfaceManager ui)
     {
-        this.player = player;
-        this.grid = grid;
-        this.ui = ui;
+        this.Player = player;
+        this.Grid = grid;
+        this.Ui = ui;
     }
 }

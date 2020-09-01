@@ -29,8 +29,11 @@ public class GameManager : MonoBehaviour
 
         currentContext = new GameplayContext(player, worldGrid, interfaceManager);
 
-        exampleCard.LoadDataFrom(exampleData);
+        CardDatabase.LoadAllCards();
+
+        exampleCard.LoadDataFrom(CardDatabase.GetCardByID(9));
         exampleCard.AttemptToPlay(currentContext);
+
         
     }
 

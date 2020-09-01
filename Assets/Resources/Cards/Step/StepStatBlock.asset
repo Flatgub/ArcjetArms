@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4117d953a0b194490312b17ec89d3f, type: 3}
   m_Name: StepStatBlock
   m_EditorClassIdentifier: 
+  cardID: 0
   title: Step
   cardArt: {fileID: 21300000, guid: b11671ae89ff9fd4e9f25d675b177985, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}

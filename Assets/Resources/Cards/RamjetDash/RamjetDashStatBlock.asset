@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ecbefae42e6334b88b6c0fcfd9e208, type: 3}
   m_Name: RamjetDashStatBlock
   m_EditorClassIdentifier: 
+  cardID: 9
   title: Ramjet Dash
   cardArt: {fileID: 21300000, guid: 46f5911f452406f4ab12b26d6d77e186, type: 3}
   cardFrame: {fileID: 21300000, guid: c990f1e18a10643468e77f225273c3e1, type: 3}

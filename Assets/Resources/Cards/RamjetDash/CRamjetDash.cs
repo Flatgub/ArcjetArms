@@ -26,14 +26,14 @@ public class CRamjetDash : CardData
         //cast out a line in each direction from the player to determine movement spots
         foreach (Hex dir in Hex.Directions)
         {
-            List<Hex> line = GridHelper.CastLineInDirection(context.grid,
-                context.player.GetPosition(), dir, moveDistance, includeStart: false);
+            List<Hex> line = GridHelper.CastLineInDirection(context.Grid,
+                context.Player.GetPosition(), dir, moveDistance, includeStart: false);
 
             movementCandidates.AddRange(line);
         }
 
         // Show the locations to the player and let them pick one
-        SelectionResult moveLocation = context.ui.OfferSingleHexSelection(movementCandidates);
+        SelectionResult moveLocation = context.Ui.OfferSingleHexSelection(movementCandidates);
 
         // Wait until the player has made a selection or cancels the action
         yield return new WaitUntil(moveLocation.IsReadyOrCancelled);
@@ -42,7 +42,7 @@ public class CRamjetDash : CardData
         if (!moveLocation.WasCancelled())
         {
             // Move to the location they selected
-            context.player.MoveTo(moveLocation.GetResult());
+            context.Player.MoveTo(moveLocation.GetResult());
             outcome.Complete();
         }
         else

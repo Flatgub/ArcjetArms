@@ -20,10 +20,10 @@ public class CStep : CardData
     {
         
         // Get the list of possible locations to move to
-        List<Hex> movementCandidates = gc.player.GetPosition().GetAllNeighbours();
+        List<Hex> movementCandidates = gc.Player.GetPosition().GetAllNeighbours();
 
         // Show the locations to the player and let them pick one
-        SelectionResult moveLocation = gc.ui.OfferSingleHexSelection(movementCandidates);
+        SelectionResult moveLocation = gc.Ui.OfferSingleHexSelection(movementCandidates);
 
         // Wait until the player has made a selection or cancels the action
         yield return new WaitUntil(moveLocation.IsReadyOrCancelled);
@@ -32,7 +32,7 @@ public class CStep : CardData
         if (!moveLocation.WasCancelled())
         {
             // Move to the location they selected
-            gc.player.MoveTo(moveLocation.GetResult());
+            gc.Player.MoveTo(moveLocation.GetResult());
             outcome.Complete();
         }
         else
