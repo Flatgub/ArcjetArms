@@ -7,6 +7,7 @@ public class InterfaceManager : MonoBehaviour
 {
     public Canvas uiCanvas;
     public HexGrid grid;
+    public GameManager manager;
 
     public GameObject selectionPrefab;
     public Color selectionIdleColour;
@@ -14,7 +15,7 @@ public class InterfaceManager : MonoBehaviour
 
     private HashSet<SelectionResponder> activeSelectionHexes;
 
-    public event Action<Hex> OnSelectionMade;
+    //public event Action<Hex> OnSelectionMade;
     private SelectionResult activeSelection;
 
     public HandContainer hand;
@@ -45,30 +46,41 @@ public class InterfaceManager : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (activeSelection != null)
         {
-            if (activeCardRenderer != null)
+            if (Input.GetMouseButtonDown(1))
             {
-                hand.AddCardToHand(activeCardRenderer);
-                hand.HoldCardsDown = false;
-                activeCardRenderer = null;
+                ClearSelectionHexes();
+                activeSelection.Cancel();
             }
         }
+
     }
 
     public void OnPlayerSelectCard(CardRenderer cr)
     {
-        //TODO: put energy cost restriction checking in here
-        if (activeCardRenderer == null)
+        manager.AttemptPlayingCard(cr.tiedTo);
+    }
+
+    public void SelectCardFromHand(Card card)
+    {
+        CardRenderer cr = card.tiedTo;
+        hand.RemoveCardFromHand(cr);
+        cr.transform.SetParent(activeCardLocation);
+        LeanTween.cancel(cr.gameObject);
+        LeanTween.rotateZ(cr.gameObject, 0f, 0.2f);
+        LeanTween.move(cr.gameObject, activeCardLocation.position, 0.2f);
+        hand.HoldCardsDown = true;
+        activeCardRenderer = cr;
+    }
+
+    public void DeselectActiveCard()
+    {
+        if (activeCardRenderer != null)
         {
-            Card selectedCard = cr.tiedTo;
-            hand.RemoveCardFromHand(cr);
-            cr.transform.SetParent(activeCardLocation);
-            LeanTween.cancel(cr.gameObject);
-            LeanTween.rotateZ(cr.gameObject, 0f, 0.2f);
-            LeanTween.move(cr.gameObject, activeCardLocation.position, 0.2f);
-            hand.HoldCardsDown = true;
-            activeCardRenderer = cr;
+            hand.AddCardToHand(activeCardRenderer);
+            hand.HoldCardsDown = false;
+            activeCardRenderer = null;
         }
     }
 
@@ -76,7 +88,10 @@ public class InterfaceManager : MonoBehaviour
     {
         foreach (Hex hex in options)
         {
-            GenerateSelectionHex(hex);
+            if (grid.Contains(hex))
+            {
+                GenerateSelectionHex(hex);
+            }
         }
 
         activeSelection = new SelectionResult();
@@ -125,6 +140,6 @@ public class InterfaceManager : MonoBehaviour
         activeSelection.AddSelection(hex);
         activeSelection = null;
 
-        OnSelectionMade?.Invoke(hex);
+        //OnSelectionMade?.Invoke(hex);
     }
 }

@@ -479,6 +479,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiCanvas: {fileID: 1840655578}
   grid: {fileID: 274503773}
+  manager: {fileID: 60055482}
   selectionPrefab: {fileID: 7243521656958316603, guid: 3494291e19d2eec4da2ff9858611a15c,
     type: 3}
   selectionIdleColour: {r: 0, g: 0.7222755, b: 1, a: 0.49019608}

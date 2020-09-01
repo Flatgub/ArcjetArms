@@ -80,7 +80,7 @@ public class HexGrid : MonoBehaviour
     /// Check whether a given Hex location is within the grid
     /// </summary>
     /// <param name="pos">the location to check</param>
-    public bool ContainsHex(Hex pos)
+    public bool Contains(Hex pos)
     {
         return allHexes.Contains(pos);
     }
@@ -94,7 +94,7 @@ public class HexGrid : MonoBehaviour
     {
         Vector2 mousepos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         Hex outhex = layout.WorldToHex(mousepos).RoundToHex();
-        if (ContainsHex(outhex))
+        if (Contains(outhex))
         {
             return outhex;
         }
@@ -106,7 +106,7 @@ public class HexGrid : MonoBehaviour
 
     public bool IsHexOccupied(Hex pos)
     {
-        return !(GetEntityAtHex(pos) is null) || !ContainsHex(pos);
+        return !(GetEntityAtHex(pos) is null) || !Contains(pos);
     }
 
     public void AddEntityToGrid(Entity ent)

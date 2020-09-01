@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// HandContainer is a UI component used for visually arranging the player's hand of cards and
+/// facilitating player interaction with those cards for selection purposes.
+/// </summary>
 [RequireComponent(typeof(RectTransform))]
 public class HandContainer : MonoBehaviour
 {
@@ -49,7 +53,9 @@ public class HandContainer : MonoBehaviour
         holdCardsDown = false;
     }
 
-
+    /// <summary>
+    /// Update the transforms of all the cards in the hand, as well as the render order
+    /// </summary>
     public void UpdatePositions()
     {
         int numberOfCards = cardsInHand.Count;
@@ -86,6 +92,10 @@ public class HandContainer : MonoBehaviour
         UpdateCardOrder();
     }
 
+    /// <summary>
+    /// Add a card to hand
+    /// </summary>
+    /// <param name="card">The CardRenderer tied to the card to add</param>
     public void AddCardToHand(CardRenderer card)
     {
         if (!cardsInHand.Contains(card))
@@ -98,6 +108,10 @@ public class HandContainer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Remove a card from the hand
+    /// </summary>
+    /// <param name="card">The CardRenderer tied to the card to remove</param>
     public void RemoveCardFromHand(CardRenderer card)
     {
         if (cardsInHand.Contains(card))
@@ -116,6 +130,10 @@ public class HandContainer : MonoBehaviour
     }
 
     //TODO: make this order correct
+    /// <summary>
+    /// Sort the render order of the cards in the hand from back to front, so the highlighted card
+    /// is at the front
+    /// </summary>
     private void UpdateCardOrder()
     {
         int cardToUse = (highlightedCard == -1) ? lastHighlightedCard : highlightedCard;
@@ -136,11 +154,19 @@ public class HandContainer : MonoBehaviour
         UpdatePositions();
     }
 
+    /// <summary>
+    /// The event cards trigger when they are moused over
+    /// </summary>
+    /// <param name="cr"></param>
     public void OnCardMouseOver(CardRenderer cr)
     {
         SetHighlightedCard(cr);
     }
 
+    /// <summary>
+    /// The event cards trigger when the mouse leaves a card
+    /// </summary>
+    /// <param name="cr"></param>
     public void OnCardMouseLeave(CardRenderer cr)
     {
         if (highlightedCard == cardsInHand.IndexOf(cr))
@@ -150,9 +176,17 @@ public class HandContainer : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// The event cards trigger when they're clicked on
+    /// </summary>
+    /// <param name="cr"></param>
     public void OnCardMouseClick(CardRenderer cr)
     {
-        manager.OnPlayerSelectCard(cr);
+        if (!holdCardsDown)
+        {
+            manager.OnPlayerSelectCard(cr);
+        }
     }
 
 }

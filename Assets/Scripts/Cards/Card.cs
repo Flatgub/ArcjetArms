@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class Card
 {
-
     public CardData cardData;
+    public CardRenderer tiedTo;
 
     public Card(CardData data)
     {
