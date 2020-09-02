@@ -9,14 +9,9 @@ public class InterfaceManager : MonoBehaviour
     public HexGrid grid;
     public GameManager manager;
 
-    public GameObject selectionPrefab;
-    public Color selectionIdleColour;
-    public Color selectionMouseOverColour;
+    public SingleHexSelection singleHexPromptPrefab;
 
-    private HashSet<SelectionResponder> activeSelectionHexes;
-
-    //public event Action<Hex> OnSelectionMade;
-    private SingleHexSelection activeSelection;
+    private ISelectionPrompt activeSelection;
     private IDelayable pendingResult;
 
     public HandContainer hand;
@@ -34,7 +29,6 @@ public class InterfaceManager : MonoBehaviour
 
     public void Awake()
     {
-        activeSelectionHexes = new HashSet<SelectionResponder>();
         state = InterfaceState.Idle;
     }
 
@@ -44,40 +38,16 @@ public class InterfaceManager : MonoBehaviour
         {
             case InterfaceState.BusyWithSelection:
             {
-                UpdateSelectionVisuals();
-
-                if (Input.GetMouseButtonDown(1))
-                {
-                    ClearSelectionHexes();
-                    activeSelection.Cancel();
-                }
 
                 if (pendingResult.IsReadyOrCancelled())
                 {
                     pendingResult = null;
+                    activeSelection.Cleanup();
                     activeSelection = null;
+                    state = InterfaceState.Idle;
                 }
 
             };break;
-        }
-    }
-
-    public void UpdateSelectionVisuals()
-    {
-        Hex mousehex = grid.GetHexUnderMouse();
-        if (!(mousehex is null))
-        {
-            foreach (SelectionResponder hex in activeSelectionHexes)
-            {
-                if (hex.position == mousehex)
-                {
-                    hex.appearance.color = selectionMouseOverColour;
-                }
-                else
-                {
-                    hex.appearance.color = selectionIdleColour;
-                }
-            }
         }
     }
 
@@ -113,54 +83,16 @@ public class InterfaceManager : MonoBehaviour
 
         SingleHexResult result = new SingleHexResult();
 
-        activeSelection = new SingleHexSelection(this, options, result);
+        SingleHexSelection shs = Instantiate(singleHexPromptPrefab);
+        shs.Initialize(this, options, result);
+
+        activeSelection = shs;
         pendingResult = result;
+
+        state = InterfaceState.BusyWithSelection;
 
         return result;
     }
 
-    /// <summary>
-    /// Instantiate a <see cref="SelectionResponder"/> at the given hex position
-    /// </summary>
-    /// <param name="pos"></param>
-    public void GenerateSelectionHex(Hex pos, SingleHexSelection belongsTo)
-    {
-        GameObject hex = Instantiate(selectionPrefab);
-
-        hex.transform.parent = transform;
-        hex.transform.position = grid.GetWorldPosition(pos);
-
-        SelectionResponder responder = hex.GetComponent<SelectionResponder>();
-        responder.Initialize(belongsTo, pos);
-        responder.appearance.color = selectionIdleColour;
-
-        activeSelectionHexes.Add(responder);
-    }
-
-    /// <summary>
-    /// Destroy all active selection hexes and clear the ActiveSelectionHexes list
-    /// </summary>
-    public void ClearSelectionHexes()
-    {
-        foreach (SelectionResponder hex in activeSelectionHexes)
-        {
-            Destroy(hex.gameObject);
-        };
-        activeSelectionHexes.Clear();
-    }
-
-    /// <summary>
-    /// The event callback method that's triggered when a <see cref="SelectionResponder"/> is 
-    /// clicked
-    /// </summary>
-    /// <param name="hex">The hex represented by the clicked SelectionResponder</param>
-    /*public void HexSelected(Hex hex)
-    {
-        ClearSelectionHexes();
-
-        activeSelection.AddSelection(hex);
-        activeSelection = null;
-
-        //OnSelectionMade?.Invoke(hex);
-    }*/
+    
 }
