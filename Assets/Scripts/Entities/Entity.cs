@@ -25,6 +25,7 @@ public class Entity : MonoBehaviour
     {
         appearance = GetComponent<SpriteRenderer>();
         Health = GetComponent<HealthComponent>();
+        Health.OnDeath += Die;
     }
 
     public void AddToGrid(HexGrid grid, Hex pos)
@@ -44,6 +45,23 @@ public class Entity : MonoBehaviour
         //transform.position = grid.GetWorldPosition(pos);
         //TODO: Calculate travel time using speed somehow?
         LeanTween.moveLocal(gameObject, grid.GetWorldPosition(pos), 0.1f);
+    }
+
+    public void ReceiveDamage(Entity attacker, int damage)
+    {
+        Debug.Log("i'm been attacked by " + attacker.entityName);
+        Health.ApplyDamage(damage);
+    }
+
+    public void DealDamageTo(Entity victim, int damage)
+    {
+        Debug.Log("i'm attacking " + victim.entityName);
+        victim.ReceiveDamage(this, damage);
+    }
+
+    public void Die()
+    {
+        Debug.Log("i'm dead");
     }
 
 }

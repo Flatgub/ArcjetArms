@@ -33,7 +33,7 @@ public class CPunch : CardData
         if (!target.WasCancelled())
         {
             //hit 'em
-            CombatEntity victim = target.GetResult() as CombatEntity;
+            Entity victim = target.GetResult();
             context.Player.DealDamageTo(victim, baseDamage);
             outcome.Complete();
         }

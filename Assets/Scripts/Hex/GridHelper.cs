@@ -60,11 +60,12 @@ public static class GridHelper
 
         foreach (Hex n in neighbours)
         {
-            Entity ent = grid.GetEntityAtHex(n) ;
-            if (ent is CombatEntity)
+            Entity ent = grid.GetEntityAtHex(n);
+            if (ent is Entity)
             {
                 output.Add(ent);
             }
+            
         }
 
         return output;

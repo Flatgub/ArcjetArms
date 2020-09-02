@@ -5,11 +5,11 @@ using UnityEngine;
 public class GameplayContext 
 {
     public GameManager Manager { get; private set; }
-    public CombatEntity Player { get; private set; }
+    public Entity Player { get; private set; }
     public HexGrid Grid { get; private set; }
     public InterfaceManager Ui { get; private set; }
 
-    public GameplayContext(GameManager gm, CombatEntity player, HexGrid grid, InterfaceManager ui)
+    public GameplayContext(GameManager gm, Entity player, HexGrid grid, InterfaceManager ui)
     {
         Manager = gm;
         Player = player;

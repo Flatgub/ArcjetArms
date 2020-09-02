@@ -43,24 +43,13 @@ public class EntityFactory : MonoBehaviour
     /// <param name="grid">The <see cref="HexGrid"/> the entity exists within</param>
     /// <param name="position">The hex position of the entity within the grid</param>
     /// <returns>An Entity Component, attached to the BasicEntity Prefab</returns>
-    protected Entity CreateEntity(int maxHealth)
+    public Entity CreateEntity(int maxHealth)
     {
         //construct new entity prefab
         GameObject entityObj = new GameObject("Entity");//Instantiate(entityPrefab);
         AddRenderComponent(entityObj);
         HealthComponent.AddHealthComponent(entityObj, maxHealth);
         Entity entComponent = entityObj.AddComponent<Entity>();
-        entComponent.Initialize();
-        return entComponent;
-    }
-
-    public CombatEntity CreateCombatEntity(int maxHealth)
-    {
-        //construct new entity prefab
-        GameObject entityObj = new GameObject("CombatEntity");//Instantiate(entityPrefab);
-        AddRenderComponent(entityObj);
-        HealthComponent.AddHealthComponent(entityObj, maxHealth);
-        CombatEntity entComponent = entityObj.AddComponent<CombatEntity>();
         entComponent.Initialize();
         return entComponent;
     }

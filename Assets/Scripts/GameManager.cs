@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
     public HexGrid worldGrid;
     private EntityFactory entFactory;
     private CardRendererFactory cardFactory;
-    private CombatEntity player;
-    public CombatEntity enemy;
+    private Entity player;
+    public Entity enemy;
     public InterfaceManager interfaceManager;
     public GameplayContext currentContext;
 
@@ -42,16 +42,16 @@ public class GameManager : MonoBehaviour
         entFactory = EntityFactory.GetFactory;
         cardFactory = CardRendererFactory.GetFactory;
 
-        player = entFactory.CreateCombatEntity(10);
+        player = entFactory.CreateEntity(10);
         player.AddToGrid(worldGrid, new Hex(1, 0));
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
 
-        enemy = entFactory.CreateCombatEntity(10);
+        enemy = entFactory.CreateEntity(10);
         enemy.AddToGrid(worldGrid, new Hex(0, 1));
         enemy.entityName = "enemy";
 
-        entFactory.CreateCombatEntity(10).AddToGrid(worldGrid, new Hex(1, 1));
+        entFactory.CreateEntity(10).AddToGrid(worldGrid, new Hex(1, 1));
 
         currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
 
