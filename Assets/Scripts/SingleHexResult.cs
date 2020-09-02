@@ -15,18 +15,18 @@ public class SingleHexResult : DelayedResult<Hex>
 {
 
     /// <summary>
-    /// Used by the InterfaceManager to set the result of the selection, which can only be done
+    /// Used by the selection promps to set the result of the selection, which can only be done
     /// once
     /// </summary>
     public void AddSelection(Hex hex)
     {
         if (isReady)
         {
-            throw new InvalidOperationException("SelectionResult already has a result");
+            throw new InvalidOperationException("SingleHexResult already has a result");
         }
         else if (isCancelled)
         {
-            throw new InvalidOperationException("SelectionResult was cancelled and isn't " +
+            throw new InvalidOperationException("SingleHexResult was cancelled and isn't " +
                 "accepting results");
         }
         else

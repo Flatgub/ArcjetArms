@@ -2,38 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleHexSelection: MonoBehaviour, ISelectionPrompt
+public class SingleEntitySelection : MonoBehaviour, ISelectionPrompt
 {
-    public SingleHexResult result;
+    public SingleEntityResult result;
     public InterfaceManager manager;
 
     public SelectionResponder selectionPrefab;
     public Color selectionIdleColour;
     public Color selectionMouseOverColour;
 
-    private HashSet<SelectionResponder> activeSelectionHexes;
+    private HashSet<SelectionResponder> activeSelectables;
+    private Dictionary<Hex, Entity> whoIsWhere;
 
-    public void Initialize(InterfaceManager manager, ICollection<Hex> candidates,
-        SingleHexResult result)
+    public void Initialize(InterfaceManager manager, ICollection<Entity> candidates,
+        SingleEntityResult result)
     {
         this.manager = manager;
         this.result = result;
-        foreach (Hex hex in candidates)
+        foreach (Entity ent in candidates)
         {
-            if (manager.grid.Contains(hex))
-            {
-                // add a selection hex to the interfacemanager
-                GenerateSelectionHex(hex);
-            }
+            Hex pos = ent.Position;
+            whoIsWhere.Add(pos, ent);
+            GenerateSelectionHex(pos);
         }
     }
 
     public void Awake()
     {
-        activeSelectionHexes = new HashSet<SelectionResponder>();
+        activeSelectables = new HashSet<SelectionResponder>();
+        whoIsWhere = new Dictionary<Hex, Entity>();
     }
 
-    public void Update()
+    // Update is called once per frame
+    void Update()
     {
         UpdateSelectionVisuals();
 
@@ -41,6 +42,18 @@ public class SingleHexSelection: MonoBehaviour, ISelectionPrompt
         {
             Cancel();
         }
+    }
+
+    /// <summary>
+    /// The event callback method that's triggered when a <see cref="SelectionResponder"/> is 
+    /// clicked
+    /// </summary>
+    /// <param name="hex">The hex represented by the clicked SelectionResponder</param>
+    public void OnCandidateSelected(Hex hex)
+    {
+        result.AddSelection(whoIsWhere[hex]);
+        ClearSelectables();
+        //and then we die
     }
 
     /// <summary>
@@ -57,31 +70,19 @@ public class SingleHexSelection: MonoBehaviour, ISelectionPrompt
         responder.Initialize(pos, OnCandidateSelected);
         responder.appearance.color = selectionIdleColour;
 
-        activeSelectionHexes.Add(responder);
+        activeSelectables.Add(responder);
     }
 
     /// <summary>
-    /// Destroy all active selection hexes and clear the ActiveSelectionHexes list
+    /// Destroy all active selectables and clear the activeSelectables list
     /// </summary>
-    public void ClearSelectionHexes()
+    public void ClearSelectables()
     {
-        foreach (SelectionResponder hex in activeSelectionHexes)
+        foreach (SelectionResponder hex in activeSelectables)
         {
             Destroy(hex.gameObject);
         };
-        activeSelectionHexes.Clear();
-    }
-
-    /// <summary>
-    /// The event callback method that's triggered when a <see cref="SelectionResponder"/> is 
-    /// clicked
-    /// </summary>
-    /// <param name="hex">The hex represented by the clicked SelectionResponder</param>
-    public void OnCandidateSelected(Hex hex)
-    {
-        result.AddSelection(hex);
-        ClearSelectionHexes();
-        //and then we die
+        activeSelectables.Clear();
     }
 
     public void UpdateSelectionVisuals()
@@ -89,7 +90,7 @@ public class SingleHexSelection: MonoBehaviour, ISelectionPrompt
         Hex mousehex = manager.grid.GetHexUnderMouse();
         if (!(mousehex is null))
         {
-            foreach (SelectionResponder hex in activeSelectionHexes)
+            foreach (SelectionResponder hex in activeSelectables)
             {
                 if (hex.position == mousehex)
                 {
@@ -106,7 +107,7 @@ public class SingleHexSelection: MonoBehaviour, ISelectionPrompt
     public void Cancel()
     {
         result.Cancel();
-        ClearSelectionHexes();
+        ClearSelectables();
         //and then we die
     }
 

@@ -485,6 +485,8 @@ MonoBehaviour:
   manager: {fileID: 60055482}
   singleHexPromptPrefab: {fileID: 6453099546767695771, guid: 0ceaec17fcef4f04b87364553184ff88,
     type: 3}
+  singleEntityPromptPrefab: {fileID: 4387535903435782970, guid: 04119b4b78933ee46b32131b0366796e,
+    type: 3}
   hand: {fileID: 677359722}
   activeCardLocation: {fileID: 463299361}
   activeCardRenderer: {fileID: 0}

@@ -18,15 +18,29 @@ public class CPunch : CardData
 
     public override IEnumerator CardBehaviour(GameplayContext context, CardActionResult outcome)
     {
-        List<CombatEntity> adjacentEnts = GridHelper.GetAdjacentEntities(context.Grid,
+        //get a list of adjacent entities
+        List<Entity> adjacentEnts = GridHelper.GetAdjacentEntities(context.Grid,
             context.Player.Position);
 
+        //let the player select one of the adjacent enties
+        SingleEntityResult target = 
+            context.Ui.OfferSingleEntitySelection(adjacentEnts);
 
+        //wait for the player to make a selection
+        yield return new WaitUntil(target.IsReadyOrCancelled);
 
-        //context.Player.DealDamageTo(target, baseDamage);
-
-        outcome.Cancel();
-        yield break;
+        // If the player didn't cancel the selection
+        if (!target.WasCancelled())
+        {
+            //hit 'em
+            CombatEntity victim = target.GetResult() as CombatEntity;
+            context.Player.DealDamageTo(victim, baseDamage);
+            outcome.Complete();
+        }
+        else
+        {
+            outcome.Cancel();
+        }
     }
 
 }

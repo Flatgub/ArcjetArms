@@ -53,14 +53,14 @@ public static class GridHelper
         }
     }
 
-    public static List<CombatEntity> GetAdjacentEntities(HexGrid grid, Hex pos)
+    public static List<Entity> GetAdjacentEntities(HexGrid grid, Hex pos)
     {
         List<Hex> neighbours = pos.GetAllNeighbours();
-        List<CombatEntity> output = new List<CombatEntity>();
+        List<Entity> output = new List<Entity>();
 
         foreach (Hex n in neighbours)
         {
-            CombatEntity ent = grid.GetEntityAtHex(n) as CombatEntity;
+            Entity ent = grid.GetEntityAtHex(n) ;
             if (ent is CombatEntity)
             {
                 output.Add(ent);

@@ -10,6 +10,7 @@ public class InterfaceManager : MonoBehaviour
     public GameManager manager;
 
     public SingleHexSelection singleHexPromptPrefab;
+    public SingleEntitySelection singleEntityPromptPrefab;
 
     private ISelectionPrompt activeSelection;
     private IDelayable pendingResult;
@@ -94,5 +95,18 @@ public class InterfaceManager : MonoBehaviour
         return result;
     }
 
-    
+    public SingleEntityResult OfferSingleEntitySelection(ICollection<Entity> options)
+    {
+        SingleEntityResult result = new SingleEntityResult();
+
+        SingleEntitySelection ses = Instantiate(singleEntityPromptPrefab);
+        ses.Initialize(this, options, result);
+
+        activeSelection = ses;
+        pendingResult = result;
+
+        state = InterfaceState.BusyWithSelection;
+
+        return result;
+    }
 }
