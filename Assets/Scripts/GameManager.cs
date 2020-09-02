@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class GameManager : MonoBehaviour
     public GameplayContext currentContext;
 
     private CardActionResult currentCardAction;
+
+    public Text playerText;
+    public Text enemyText;
 
     //TODO: replace this enum with a different system
     enum GameState
@@ -62,7 +66,8 @@ public class GameManager : MonoBehaviour
         {
             case GameState.PlayerIdle:
             {
-                
+                playerText.text = "PLAYER HEALTH: " + player.Health.Current.ToString();
+                enemyText.text = "ENEMY HEALTH: " + enemy.Health.Current.ToString();
             };break;
 
             case GameState.PlayerCardPending:

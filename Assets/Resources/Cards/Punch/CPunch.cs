@@ -18,11 +18,14 @@ public class CPunch : CardData
 
     public override IEnumerator CardBehaviour(GameplayContext context, CardActionResult outcome)
     {
-        CombatEntity target = context.Manager.enemy; //TODO: DON'T DO THIS
+        List<CombatEntity> adjacentEnts = GridHelper.GetAdjacentEntities(context.Grid,
+            context.Player.Position);
 
-        context.Player.DealDamageTo(target, baseDamage);
 
-        outcome.Complete();
+
+        //context.Player.DealDamageTo(target, baseDamage);
+
+        outcome.Cancel();
         yield break;
     }
 

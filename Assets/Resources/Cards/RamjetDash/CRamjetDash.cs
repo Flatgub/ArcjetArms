@@ -27,13 +27,13 @@ public class CRamjetDash : CardData
         foreach (Hex dir in Hex.Directions)
         {
             List<Hex> line = GridHelper.CastLineInDirection(context.Grid,
-                context.Player.GetPosition(), dir, moveDistance, includeStart: false);
+                context.Player.Position, dir, moveDistance, includeStart: false);
 
             movementCandidates.AddRange(line);
         }
 
         // Show the locations to the player and let them pick one
-        SelectionResult moveLocation = context.Ui.OfferSingleHexSelection(movementCandidates);
+        SingleHexResult moveLocation = context.Ui.OfferSingleHexSelection(movementCandidates);
 
         // Wait until the player has made a selection or cancels the action
         yield return new WaitUntil(moveLocation.IsReadyOrCancelled);

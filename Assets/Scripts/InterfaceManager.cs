@@ -16,7 +16,7 @@ public class InterfaceManager : MonoBehaviour
     private HashSet<SelectionResponder> activeSelectionHexes;
 
     //public event Action<Hex> OnSelectionMade;
-    private SelectionResult activeSelection;
+    private SingleHexResult activeSelection;
 
     public HandContainer hand;
     public Transform activeCardLocation;
@@ -84,7 +84,7 @@ public class InterfaceManager : MonoBehaviour
         }
     }
 
-    public SelectionResult OfferSingleHexSelection(ICollection<Hex> options)
+    public SingleHexResult OfferSingleHexSelection(ICollection<Hex> options)
     {
         foreach (Hex hex in options)
         {
@@ -94,7 +94,7 @@ public class InterfaceManager : MonoBehaviour
             }
         }
 
-        activeSelection = new SelectionResult();
+        activeSelection = new SingleHexResult();
         return activeSelection;
     }
 

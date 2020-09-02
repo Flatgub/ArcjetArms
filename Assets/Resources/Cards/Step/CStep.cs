@@ -20,11 +20,11 @@ public class CStep : CardData
     {
 
         // Get the list of possible locations to move to
-        List<Hex> movementCandidates = gc.Player.GetPosition().GetAllNeighbours();
+        List<Hex> movementCandidates = gc.Player.Position.GetAllNeighbours();
         GridHelper.RemoveOccupiedHexes(gc.Grid, movementCandidates);
 
         // Show the locations to the player and let them pick one
-        SelectionResult moveLocation = gc.Ui.OfferSingleHexSelection(movementCandidates);
+        SingleHexResult moveLocation = gc.Ui.OfferSingleHexSelection(movementCandidates);
 
         // Wait until the player has made a selection or cancels the action
         yield return new WaitUntil(moveLocation.IsReadyOrCancelled);

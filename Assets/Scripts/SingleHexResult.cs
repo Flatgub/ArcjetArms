@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// SelectionResult is used as asynchronous container for getting the result of a selection.
+/// SingleHexResult is used as asynchronous container for getting the result of a selection.
 /// Methods which require the player to make a selection using the UI will immediately return a
-/// SelectionResult, but data must not be extracted until <see cref="IsReady"/> returns true.
+/// SingleHexResult, but data must not be extracted until <see cref="IsReady"/> returns true.
 /// </summary>
-/// <remarks>The primary use case for SelectionResult is in coroutines, where you request a 
+/// <remarks>The primary use case for SingleHexResult is in coroutines, where you request a 
 /// selection from the user and then <see cref="WaitUntil"/>(<see cref="IsReady"/>)</remarks>,
 /// at which point the coroutine will resume execution when the choice has been made
-public class SelectionResult : DelayedResult<Hex>
+public class SingleHexResult : DelayedResult<Hex>
 {
 
     /// <summary>

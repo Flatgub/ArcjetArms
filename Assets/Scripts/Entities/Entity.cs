@@ -14,7 +14,7 @@ public class Entity : MonoBehaviour
     public string entityName = "Unnamed";
 
     private HexGrid grid;
-    private Hex position;
+    public Hex Position { get; private set; }
     public SpriteRenderer appearance;
 
     public HealthComponent Health { get;
@@ -34,18 +34,13 @@ public class Entity : MonoBehaviour
         grid.AddEntityToGrid(this);
     }
 
-    public Hex GetPosition()
-    {
-        return position;
-    }
-
     public void MoveTo(Hex pos)
     {
         if (pos == null)
         {
             throw new ArgumentNullException("Cannot move to null position");
         }
-        position = pos;
+        Position = pos;
         //transform.position = grid.GetWorldPosition(pos);
         //TODO: Calculate travel time using speed somehow?
         LeanTween.moveLocal(gameObject, grid.GetWorldPosition(pos), 0.1f);

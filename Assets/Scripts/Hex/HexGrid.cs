@@ -115,7 +115,7 @@ public class HexGrid : MonoBehaviour
     public void AddEntityToGrid(Entity ent)
     {
         allEntities.Add(ent);
-        ent.MoveTo(ent.GetPosition());
+        ent.MoveTo(ent.Position);
     }
 
     //TODO: this method is only performs half the transaction which is dangerous, change it soon
@@ -141,7 +141,7 @@ public class HexGrid : MonoBehaviour
     {
         foreach (Entity e in allEntities)
         {
-            if (e.GetPosition() == pos)
+            if (e.Position == pos)
             {
                 return e;
             }
