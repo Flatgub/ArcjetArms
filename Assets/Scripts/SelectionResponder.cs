@@ -10,7 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class SelectionResponder : MonoBehaviour
 {
-    public InterfaceManager owner;
+    public SingleHexSelection owner;
     public Hex position;
     public SpriteRenderer appearance;
 
@@ -25,15 +25,17 @@ public class SelectionResponder : MonoBehaviour
     /// </summary>
     /// <param name="owner"></param>
     /// <param name="pos"></param>
-    public void Initialize(InterfaceManager owner, Hex pos)
+    public void Initialize(SingleHexSelection owner, Hex pos)
     {
         this.owner = owner;
         position = pos;
-        OnSelect += owner.HexSelected;
+        OnSelect += owner.OnCandidateSelected;
+        //Debug.Log("Added " + onSelect);
+        //Debug.Log(OnSelect);
     }
 
     public void OnMouseDown()
     {
-        OnSelect.Invoke(position);
+        OnSelect?.Invoke(position);
     }
 }

@@ -11,7 +11,7 @@ using UnityEngine;
 /// <remarks>The primary use case for DelayedResult is in coroutines, where you request some 
 /// data and then <see cref="WaitUntil"/>(<see cref="IsReadyOrCancelled"/>)</remarks>,
 /// at which point the coroutine will resume execution when the choice has been made
-public abstract class DelayedResult<T>
+public abstract class DelayedResult<T>: IDelayable
 {
     protected bool isReady;
     protected bool isCancelled;
@@ -71,4 +71,9 @@ public abstract class DelayedResult<T>
     {
         return isCancelled;
     }
+}
+
+public interface IDelayable
+{
+    bool IsReadyOrCancelled();
 }

@@ -16,19 +16,53 @@ public class InterfaceManager : MonoBehaviour
     private HashSet<SelectionResponder> activeSelectionHexes;
 
     //public event Action<Hex> OnSelectionMade;
-    private SingleHexResult activeSelection;
+    private SingleHexSelection activeSelection;
+    private IDelayable pendingResult;
 
     public HandContainer hand;
     public Transform activeCardLocation;
 
     public CardRenderer activeCardRenderer;
 
+    enum InterfaceState
+    {
+        Idle,
+        BusyWithSelection
+    }
+
+    private InterfaceState state;
+
     public void Awake()
     {
         activeSelectionHexes = new HashSet<SelectionResponder>();
+        state = InterfaceState.Idle;
     }
 
     public void Update()
+    {
+        switch (state)
+        {
+            case InterfaceState.BusyWithSelection:
+            {
+                UpdateSelectionVisuals();
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    ClearSelectionHexes();
+                    activeSelection.Cancel();
+                }
+
+                if (pendingResult.IsReadyOrCancelled())
+                {
+                    pendingResult = null;
+                    activeSelection = null;
+                }
+
+            };break;
+        }
+    }
+
+    public void UpdateSelectionVisuals()
     {
         Hex mousehex = grid.GetHexUnderMouse();
         if (!(mousehex is null))
@@ -45,16 +79,6 @@ public class InterfaceManager : MonoBehaviour
                 }
             }
         }
-
-        if (activeSelection != null)
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-                ClearSelectionHexes();
-                activeSelection.Cancel();
-            }
-        }
-
     }
 
     public void OnPlayerSelectCard(CardRenderer cr)
@@ -86,23 +110,20 @@ public class InterfaceManager : MonoBehaviour
 
     public SingleHexResult OfferSingleHexSelection(ICollection<Hex> options)
     {
-        foreach (Hex hex in options)
-        {
-            if (grid.Contains(hex))
-            {
-                GenerateSelectionHex(hex);
-            }
-        }
 
-        activeSelection = new SingleHexResult();
-        return activeSelection;
+        SingleHexResult result = new SingleHexResult();
+
+        activeSelection = new SingleHexSelection(this, options, result);
+        pendingResult = result;
+
+        return result;
     }
 
     /// <summary>
     /// Instantiate a <see cref="SelectionResponder"/> at the given hex position
     /// </summary>
     /// <param name="pos"></param>
-    private void GenerateSelectionHex(Hex pos)
+    public void GenerateSelectionHex(Hex pos, SingleHexSelection belongsTo)
     {
         GameObject hex = Instantiate(selectionPrefab);
 
@@ -110,7 +131,7 @@ public class InterfaceManager : MonoBehaviour
         hex.transform.position = grid.GetWorldPosition(pos);
 
         SelectionResponder responder = hex.GetComponent<SelectionResponder>();
-        responder.Initialize(this, pos);
+        responder.Initialize(belongsTo, pos);
         responder.appearance.color = selectionIdleColour;
 
         activeSelectionHexes.Add(responder);
@@ -119,7 +140,7 @@ public class InterfaceManager : MonoBehaviour
     /// <summary>
     /// Destroy all active selection hexes and clear the ActiveSelectionHexes list
     /// </summary>
-    private void ClearSelectionHexes()
+    public void ClearSelectionHexes()
     {
         foreach (SelectionResponder hex in activeSelectionHexes)
         {
@@ -133,7 +154,7 @@ public class InterfaceManager : MonoBehaviour
     /// clicked
     /// </summary>
     /// <param name="hex">The hex represented by the clicked SelectionResponder</param>
-    public void HexSelected(Hex hex)
+    /*public void HexSelected(Hex hex)
     {
         ClearSelectionHexes();
 
@@ -141,5 +162,5 @@ public class InterfaceManager : MonoBehaviour
         activeSelection = null;
 
         //OnSelectionMade?.Invoke(hex);
-    }
+    }*/
 }
