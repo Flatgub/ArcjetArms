@@ -57,7 +57,7 @@ public class EntityFactory : MonoBehaviour
     public CombatEntity CreateCombatEntity(int maxHealth)
     {
         //construct new entity prefab
-        GameObject entityObj = new GameObject("Entity");//Instantiate(entityPrefab);
+        GameObject entityObj = new GameObject("CombatEntity");//Instantiate(entityPrefab);
         AddRenderComponent(entityObj);
         HealthComponent.AddHealthComponent(entityObj, maxHealth);
         CombatEntity entComponent = entityObj.AddComponent<CombatEntity>();

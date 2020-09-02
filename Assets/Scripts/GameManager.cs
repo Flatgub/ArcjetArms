@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private EntityFactory entFactory;
     private CardRendererFactory cardFactory;
     private CombatEntity player;
-    private CombatEntity enemy;
+    public CombatEntity enemy;
     public InterfaceManager interfaceManager;
     public GameplayContext currentContext;
 
@@ -40,9 +40,11 @@ public class GameManager : MonoBehaviour
 
         player = entFactory.CreateCombatEntity(10);
         player.AddToGrid(worldGrid, new Hex(1, 0));
+        player.entityName = "Player";
 
         enemy = entFactory.CreateCombatEntity(10);
         enemy.AddToGrid(worldGrid, new Hex(0, 1));
+        enemy.entityName = "enemy";
 
         currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
 
@@ -93,7 +95,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            Card card = CardDatabase.CreateCardFromID(bop ? 0 : 9);
+            Card card = CardDatabase.CreateCardFromID(bop ? 0 : 1);
             CardRenderer cr = cardFactory.CreateCardRenderer(card);
             interfaceManager.hand.AddCardToHand(cr);
             bop = !bop;

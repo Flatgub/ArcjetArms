@@ -11,6 +11,8 @@ using UnityEngine;
 [RequireComponent(typeof(HealthComponent))]
 public class Entity : MonoBehaviour
 {
+    public string entityName = "Unnamed";
+
     private HexGrid grid;
     private Hex position;
     public SpriteRenderer appearance;
