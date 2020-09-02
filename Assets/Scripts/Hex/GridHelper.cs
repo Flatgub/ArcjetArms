@@ -41,4 +41,15 @@ public static class GridHelper
 
         return output;
     }
+
+    public static void RemoveOccupiedHexes(HexGrid grid, List<Hex> input)
+    {
+        for (int i = input.Count - 1; i >= 0; i--)
+        {
+            if(grid.IsHexOccupied(input[i])) 
+            {
+                input.RemoveAt(i);
+            }
+        }
+    }
 }

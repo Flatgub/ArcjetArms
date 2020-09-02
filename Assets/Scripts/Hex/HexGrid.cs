@@ -17,6 +17,7 @@ public class HexGrid : MonoBehaviour
 
     private HashSet<Hex> allHexes;
     private List<Entity> allEntities;
+    private int backgroundSortingLayer;
     
     Camera mainCamera; //fixme: maybe don't store this here?
 
@@ -28,6 +29,7 @@ public class HexGrid : MonoBehaviour
         layout = new HexLayout(OrientationTransform.PointyTopLayout, size, transform.position);
         allHexes = new HashSet<Hex>();
         allEntities = new List<Entity>();
+        backgroundSortingLayer = SortingLayer.NameToID("Background");
     }
 
     /// <summary>
@@ -74,6 +76,7 @@ public class HexGrid : MonoBehaviour
         hex.transform.position = hexPos;
         SpriteRenderer spr = hex.AddComponent<SpriteRenderer>();
         spr.sprite = hexSprite;
+        spr.sortingLayerID = backgroundSortingLayer;
     }
 
     /// <summary>

@@ -16,7 +16,7 @@ public class CardRendererFactory : MonoBehaviour
         {
             if (factoryInstance == null)
             {
-                GameObject obj = new GameObject();
+                GameObject obj = new GameObject("Card Renderer Factory");
                 factoryInstance = obj.AddComponent<CardRendererFactory>();
             }
             return factoryInstance;

@@ -18,9 +18,10 @@ public class CStep : CardData
 
     public override IEnumerator CardBehaviour(GameplayContext gc, CardActionResult outcome)
     {
-        
+
         // Get the list of possible locations to move to
         List<Hex> movementCandidates = gc.Player.GetPosition().GetAllNeighbours();
+        GridHelper.RemoveOccupiedHexes(gc.Grid, movementCandidates);
 
         // Show the locations to the player and let them pick one
         SelectionResult moveLocation = gc.Ui.OfferSingleHexSelection(movementCandidates);

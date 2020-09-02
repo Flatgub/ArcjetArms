@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: 93c87d922e6a95944a35040a2b3aa9d6
+guid: 056a88be9e7a21d4eb58e14ab1df7a3a
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - defaultEntitySprite: {fileID: 21300000, guid: 503980957941f804a8a43443fdd6c270,
-      type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

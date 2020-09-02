@@ -10,7 +10,7 @@ using UnityEngine;
 public class HealthComponent : MonoBehaviour
 {
     public int MaxHealth {get; private set;}
-    public int Health {get; private set;}
+    public int Current {get; private set;}
     public bool IsDead { get; private set; }
 
     /// <summary>
@@ -22,10 +22,10 @@ public class HealthComponent : MonoBehaviour
     {
         if (!IsDead)
         {
-            Health -= Math.Max(amount,0); //consider using ApplyHealing when damage is negative?
-            if (Health <= 0)
+            Current -= Math.Max(amount,0); //consider using ApplyHealing when damage is negative?
+            if (Current <= 0)
             {
-                Health = 0;
+                Current = 0;
                 OnDeath?.Invoke();
                 IsDead = true;
             }
@@ -35,12 +35,12 @@ public class HealthComponent : MonoBehaviour
     public void ApplyHealing(int amount)
     {
         amount = Math.Max(amount, 0); //force amount to be positive;
-        Health = Math.Min(Health + amount, MaxHealth);
+        Current = Math.Min(Current + amount, MaxHealth);
     }
 
     public float HealthAsFraction()
     {
-        return Health / (float)MaxHealth;
+        return Current / (float)MaxHealth;
     }
 
     public void SetMaxHealth(int newValue, bool updateHealth = false)
@@ -49,18 +49,18 @@ public class HealthComponent : MonoBehaviour
         MaxHealth = Math.Max(0, newValue);
         if (updateHealth)
         {
-            Health = (int)Math.Ceiling(MaxHealth * beforeFrac);
+            Current = (int)Math.Ceiling(MaxHealth * beforeFrac);
         }
         else
         {
-            Health = Math.Min(Health, MaxHealth);
+            Current = Math.Min(Current, MaxHealth);
         }
     }
 
     public void SetHealth(int newValue)
     {
-        Health = Math.Max(0, Math.Min(MaxHealth, newValue));
-        if (Health == 0)
+        Current = Math.Max(0, Math.Min(MaxHealth, newValue));
+        if (Current == 0)
         {
             OnDeath?.Invoke();
             IsDead = true;

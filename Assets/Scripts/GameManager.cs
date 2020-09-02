@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     public HexGrid worldGrid;
     private EntityFactory entFactory;
     private CardRendererFactory cardFactory;
-    private Entity player;
+    private CombatEntity player;
+    private CombatEntity enemy;
     public InterfaceManager interfaceManager;
     public GameplayContext currentContext;
 
@@ -36,7 +37,12 @@ public class GameManager : MonoBehaviour
         worldGrid.GenerateMap(mapRadius);
         entFactory = EntityFactory.GetFactory;
         cardFactory = CardRendererFactory.GetFactory;
-        player = entFactory.CreateEntity(worldGrid, new Hex(0, 0));
+
+        player = entFactory.CreateCombatEntity(10);
+        player.AddToGrid(worldGrid, new Hex(1, 0));
+
+        enemy = entFactory.CreateCombatEntity(10);
+        enemy.AddToGrid(worldGrid, new Hex(0, 1));
 
         currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
 
