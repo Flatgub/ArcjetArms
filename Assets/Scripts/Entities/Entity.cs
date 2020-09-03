@@ -65,7 +65,10 @@ public class Entity : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("i'm dead");
+        if (Grid is HexGrid)
+        {
+            Grid.RemoveEntityFromGrid(this);
+        }
     }
 
 }

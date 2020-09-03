@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     private EntityFactory entFactory;
     private CardRendererFactory cardFactory;
     private Entity player;
-    public Entity enemy;
+    private List<Entity> allEnemies;
     public InterfaceManager interfaceManager;
     public GameplayContext currentContext;
 
@@ -48,18 +48,17 @@ public class GameManager : MonoBehaviour
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
 
         currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
+        allEnemies = new List<Entity>();
 
-        enemy = entFactory.CreateEntity(10);
-        enemy.AddToGrid(worldGrid, new Hex(0, 1));
-        enemy.entityName = "enemy";
-        entFactory.AddAIController(enemy);
-        
-
-
-
-        entFactory.CreateEntity(10).AddToGrid(worldGrid, new Hex(1, 1));
-
-        
+        for (int i = 0; i <= 3; i++)
+        {
+            Entity e = entFactory.CreateEntity(10);
+            e.AddToGrid(worldGrid, new Hex(3-i, i));
+            e.entityName = "enemy";
+            entFactory.AddAIController(e);
+            allEnemies.Add(e);
+        }
+       
 
         CardDatabase.LoadAllCards();
 
@@ -76,7 +75,7 @@ public class GameManager : MonoBehaviour
             case GameState.PlayerIdle:
             {
                 playerText.text = "PLAYER HEALTH: " + player.Health.Current.ToString();
-                enemyText.text = "ENEMY HEALTH: " + enemy.Health.Current.ToString();
+                //enemyText.text = "ENEMY HEALTH: " + enemy.Health.Current.ToString();
             };break;
 
             case GameState.PlayerCardPending:
@@ -97,16 +96,23 @@ public class GameManager : MonoBehaviour
                         card.tiedTo = null;
                         interfaceManager.activeCardRenderer = null;
                         interfaceManager.hand.HoldCardsDown = false;
+
+                        CleanDeadEnemies();
+
+                        //each entity takes a turn
+                        foreach (Entity enemy in allEnemies)
+                        {
+                            enemy.AIController.DoRandomAction(currentContext);
+                        }
                     }
 
                     state = GameState.PlayerIdle;
                     currentCardAction = null;
-                    enemy.AIController.DoRandomAction(currentContext);
+
                 }
             };
             break;
         }
-
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -129,4 +135,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void CleanDeadEnemies()
+    {
+        for (int i = allEnemies.Count - 1; i >= 0; i--)
+        {
+            Entity ent = allEnemies[i];
+            if (ent.Health.IsDead)
+            {
+                allEnemies.RemoveAt(i);
+                Destroy(ent.gameObject);
+            }
+        }
+    }
 }
