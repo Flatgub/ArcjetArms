@@ -86,6 +86,7 @@ public class InterfaceManager : MonoBehaviour
 
         SingleHexSelection shs = Instantiate(singleHexPromptPrefab);
         shs.Initialize(this, options, result);
+        shs.transform.parent = transform;
 
         activeSelection = shs;
         pendingResult = result;
@@ -101,6 +102,7 @@ public class InterfaceManager : MonoBehaviour
 
         SingleEntitySelection ses = Instantiate(singleEntityPromptPrefab);
         ses.Initialize(this, options, result);
+        ses.transform.parent = transform;
 
         activeSelection = ses;
         pendingResult = result;

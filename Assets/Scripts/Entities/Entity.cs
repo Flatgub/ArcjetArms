@@ -13,13 +13,12 @@ public class Entity : MonoBehaviour
 {
     public string entityName = "Unnamed";
 
-    private HexGrid grid;
+    public HexGrid Grid { get; private set; }
     public Hex Position { get; private set; }
     public SpriteRenderer appearance;
 
-    public HealthComponent Health { get;
-        private set;
-    }
+    public HealthComponent Health { get; private set;}
+    public EntityAIController AIController { get; private set;}
 
     public void Initialize()
     {
@@ -28,9 +27,14 @@ public class Entity : MonoBehaviour
         Health.OnDeath += Die;
     }
 
+    public void SetAIController(EntityAIController controller)
+    {
+        AIController = controller;
+    }
+
     public void AddToGrid(HexGrid grid, Hex pos)
     {
-        this.grid = grid;
+        this.Grid = grid;
         MoveTo(pos);
         grid.AddEntityToGrid(this);
     }
@@ -44,7 +48,7 @@ public class Entity : MonoBehaviour
         Position = pos;
         //transform.position = grid.GetWorldPosition(pos);
         //TODO: Calculate travel time using speed somehow?
-        LeanTween.moveLocal(gameObject, grid.GetWorldPosition(pos), 0.1f);
+        LeanTween.moveLocal(gameObject, Grid.GetWorldPosition(pos), 0.1f);
     }
 
     public void ReceiveDamage(Entity attacker, int damage)

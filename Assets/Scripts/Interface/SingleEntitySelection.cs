@@ -113,6 +113,6 @@ public class SingleEntitySelection : MonoBehaviour, ISelectionPrompt
 
     public void Cleanup()
     {
-        Destroy(this);
+        Destroy(gameObject);
     }
 }

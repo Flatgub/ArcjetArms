@@ -61,5 +61,11 @@ public class EntityFactory : MonoBehaviour
         return sr;
     }
 
+    public EntityAIController AddAIController(Entity ent)
+    {
+        EntityAIController ai = ent.gameObject.AddComponent<EntityAIController>();
+        ai.AddAction(new SingleStep());
+        return ai;
+    }
 }
 

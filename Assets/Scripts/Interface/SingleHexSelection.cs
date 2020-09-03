@@ -112,6 +112,6 @@ public class SingleHexSelection: MonoBehaviour, ISelectionPrompt
 
     public void Cleanup()
     {
-        Destroy(this);
+        Destroy(gameObject);
     }
 }

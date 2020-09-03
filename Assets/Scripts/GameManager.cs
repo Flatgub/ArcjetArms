@@ -47,13 +47,19 @@ public class GameManager : MonoBehaviour
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
 
+        currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
+
         enemy = entFactory.CreateEntity(10);
         enemy.AddToGrid(worldGrid, new Hex(0, 1));
         enemy.entityName = "enemy";
+        entFactory.AddAIController(enemy);
+        
+
+
 
         entFactory.CreateEntity(10).AddToGrid(worldGrid, new Hex(1, 1));
 
-        currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
+        
 
         CardDatabase.LoadAllCards();
 
@@ -95,6 +101,7 @@ public class GameManager : MonoBehaviour
 
                     state = GameState.PlayerIdle;
                     currentCardAction = null;
+                    enemy.AIController.DoRandomAction(currentContext);
                 }
             };
             break;
