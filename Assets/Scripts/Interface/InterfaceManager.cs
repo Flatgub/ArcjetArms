@@ -99,14 +99,26 @@ public class InterfaceManager : MonoBehaviour
 
     // GameManager event responders
 
-    //responds to OnCardDrawn
+    /// <summary>
+    /// Creates a new <see cref="CardRenderer"/> to match the input card and adds it to the hand.
+    /// </summary>
+    /// <remarks>Used to respond to <see cref="GameManager.OnCardDrawn"/></remarks>
+    /// <param name="card">The card to create a <c>CardRenderer</c> for</param>
     public void VisualiseNewCard(Card card)
     {
-        CardRenderer cr = cardFactory.CreateCardRenderer(card);
+        CardRenderer cr = card.tiedTo;
+        if (card.tiedTo is null)
+        {
+            cr = cardFactory.CreateCardRenderer(card);
+        }
         hand.AddCardToHand(cr);
     }
 
-    //responds to OnCardSelected
+    /// <summary>
+    /// Moves the <see cref="CardRenderer"/> that matches this card into the active card location
+    /// </summary>
+    /// <remarks>Used to respond to <see cref="GameManager.OnCardSelected"/></remarks>
+    /// <param name="card">The card that was selected</param>
     public void SelectCardFromHand(Card card)
     {
         CardRenderer cr = card.tiedTo;
@@ -119,7 +131,10 @@ public class InterfaceManager : MonoBehaviour
         activeCardRenderer = cr;
     }
 
-    //responds to OnCardDeselected
+    /// <summary>
+    /// Moves the <see cref="CardRenderer"/> that matches the active card back into the hand.
+    /// </summary>
+    /// <remarks>Used to respond to <see cref="GameManager.OnCardDeselected"/></remarks>
     public void DeselectActiveCard()
     {
         if (activeCardRenderer != null)
@@ -130,7 +145,12 @@ public class InterfaceManager : MonoBehaviour
         }
     }
 
-    //responds to OnCardDiscarded
+    /// <summary>
+    /// Moves the <see cref="CardRenderer"/> that matches this card to the discard card location,
+    /// then destroys it.
+    /// </summary>
+    /// <remarks>Used to respond to <see cref="GameManager.OnCardDiscarded"/></remarks>
+    /// <param name="card">The card to discard</param>
     public void DiscardCard(Card card)
     {
         if (card.tiedTo is CardRenderer cr)

@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// SelectionResponder is a small helper class used for triggering onClick events in the owner
-/// <see cref="InterfaceManager"/> 
+/// SelectionResponder is a small helper class used for triggering onClick events.
 /// </summary>
+/// <seealso cref="SingleHexSelection"/> 
+/// <seealso cref="SingleEntitySelection"/> 
 [RequireComponent(typeof(SpriteRenderer))]
 public class SelectionResponder : MonoBehaviour
 {
@@ -19,8 +20,7 @@ public class SelectionResponder : MonoBehaviour
     public event Action<Hex> OnSelect;
 
     /// <summary>
-    /// Initializes the SelectionResponder and <see cref=">InterfaceManager"/> <c>owner</c> to its
-    /// <c>OnSelect</c> event
+    /// Initializes the SelectionResponder
     /// </summary>
     /// <param name="pos"></param>
     /// <param name="onSelect"></param>

@@ -22,7 +22,6 @@ public class SingleHexSelection: MonoBehaviour, ISelectionPrompt
         {
             if (manager.grid.Contains(hex))
             {
-                // add a selection hex to the interfacemanager
                 GenerateSelectionHex(hex);
             }
         }

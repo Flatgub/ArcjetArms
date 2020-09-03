@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
+/// <summary>
+/// A Deck is a collection of cards with various methods for drawing, merging and shuffling
+/// </summary>
 public class Deck : IEnumerable<Card>
 {
-    private List<Card> cards;
+    private readonly List<Card> cards;
 
     public int Count
     {
@@ -20,16 +23,28 @@ public class Deck : IEnumerable<Card>
         cards = new List<Card>();
     }
 
+    /// <summary>
+    /// Puts a card on the top of the deck
+    /// </summary>
+    /// <param name="card">The card to add</param>
     public void AddToTop(Card card)
     {
         cards.Insert(0, card);
     }
 
+    /// <summary>
+    /// Puts a card on the bottom of the deck
+    /// </summary>
+    /// <param name="card">The card to add</param>
     public void AddToBottom(Card card)
     {
         cards.Add(card);
     }
 
+    /// <summary>
+    /// Gets and removes the top card from the deck
+    /// </summary>
+    /// <returns>The top card from the deck</returns>
     public Card TakeFromTop()
     {
         if (cards.Count == 0)
@@ -41,6 +56,12 @@ public class Deck : IEnumerable<Card>
         return card;
     }
 
+    /// <summary>
+    /// Takes all the cards in this deck and moves them to another deck instead.
+    /// </summary>
+    /// <param name="other">The deck to move all the carsd to</param>
+    /// <param name="addToTop">Whether the cards should be added to the top instead of the 
+    /// bottom of the other deck</param>
     public void MergeAllInto(Deck other, bool addToTop = false)
     {
         for (var i = cards.Count - 1; i >= 0; i--)
@@ -81,6 +102,7 @@ public class Deck : IEnumerable<Card>
         return cards.GetEnumerator();
     }
 
+    // helper for debugging
     public void PrintContents()
     {
         

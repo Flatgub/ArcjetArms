@@ -31,9 +31,21 @@ public class GameManager : MonoBehaviour
     private List<Card> playerHand;
     private Card activeCard;
 
+    /// <summary>
+    /// The event triggered when a card is added from the draw pile into the hand
+    /// </summary>
     public event Action<Card> OnCardDrawn;
+    /// <summary>
+    /// The event triggered when a card is selected to be the active card
+    /// </summary>
     public event Action<Card> OnCardSelected;
+    /// <summary>
+    /// The event triggered when the active card is deselected
+    /// </summary>
     public event Action       OnCardDeselected;
+    /// <summary>
+    /// The event triggered when a card is discarded (either from the hand or as the active card)
+    /// </summary>
     public event Action<Card> OnCardDiscarded;
 
     //TODO: replace this enum with a different system
@@ -125,10 +137,7 @@ public class GameManager : MonoBehaviour
                     else
                     {
                         //card was played, put it in the discard pile
-                        //CardRenderer cr = interfaceManager.activeCardRenderer;
                         DiscardCard(activeCard);
-                        //interfaceManager.DiscardCard(cr);
-                        //interfaceManager.hand.HoldCardsDown = false;
                         energy -= currentContext.ActiveCard.cardData.energyCost;
                     }
 
@@ -190,7 +199,6 @@ public class GameManager : MonoBehaviour
     {
         playerHand.Add(activeCard);
         OnCardDeselected?.Invoke();
-        //interfaceManager.DeselectActiveCard();
         activeCard = null;
     }
 
@@ -207,7 +215,6 @@ public class GameManager : MonoBehaviour
                 OnCardSelected?.Invoke(activeCard);
 
                 playerHand.Remove(card);
-                //interfaceManager.SelectCardFromHand(card);
                 
                 currentCardAction = card.AttemptToPlay(currentContext);
                 state = GameState.PlayerCardPending;
@@ -221,9 +228,6 @@ public class GameManager : MonoBehaviour
         {
             Card card = playerHand[0];
             DiscardCard(card);
-            //playerHand.RemoveAt(0);
-            //discardPile.AddToTop(card);
-            //interfaceManager.DiscardCard(card.tiedTo);
         }
     }
 
@@ -238,14 +242,24 @@ public class GameManager : MonoBehaviour
         discardPile.AddToTop(card);
     }
 
+    /// <summary>
+    /// Draws a full hand of cards. Will eventually 
+    /// </summary>
     public void DrawHand()
     {
-        //force the drawing of a step and a punch, then randomly fill the rest
-        //DrawCard(0);
-        //DrawCard(1);
+        //TODO: force the drawing of a step and a punch, then randomly fill the rest
+        //NOTE: this requires a way to ensure certain cards are deleted instead of discarded
+        //      otherwise the deck will get bigger every turn as we add cards
         DrawCards(HandSize);
     }
 
+    /// <summary>
+    /// Draw a number of cards from the top of the draw pile at once. 
+    /// </summary>
+    /// <remarks>n should never be more than the number of total cards in both the draw and discard 
+    /// piles</remarks>
+    /// <param name="n">How many cards to draw</param>
+    /// <returns>A list of all the cards that were drawn</returns>
     public List<Card> DrawCards(int n)
     {
         List<Card> cards = new List<Card>();
@@ -256,7 +270,12 @@ public class GameManager : MonoBehaviour
         return cards;
     }
 
-    public Card DrawCard(int id = -1)
+    /// <summary>
+    /// Draws a card from the draw pile. If the draw pile is empty, the discard pile will be merged
+    /// into the draw pile and then the draw pile will be shuffled before a card is drawn.
+    /// </summary>
+    /// <returns>The card from the top of the draw pile</returns>
+    public Card DrawCard()
     {
         if (drawPile.Count == 0)
         {
@@ -267,11 +286,10 @@ public class GameManager : MonoBehaviour
         Card card = drawPile.TakeFromTop();
         playerHand.Add(card);
         OnCardDrawn?.Invoke(card);
-        //CardRenderer cr = cardFactory.CreateCardRenderer(card);
-        //interfaceManager.hand.AddCardToHand(cr);
         return card;
     }
 
+    ///<summary>Sweep and remove any entities from the entities list that are no longer alive.</summary>
     private void CleanDeadEnemies()
     {
         for (int i = allEnemies.Count - 1; i >= 0; i--)
