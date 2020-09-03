@@ -57,12 +57,13 @@ public class GameManager : MonoBehaviour
         EnemyTurn
     }
 
-    private GameState state;
+    private Stack<GameState> stateStack;
 
     // Start is called before the first frame update
     void Start()
     {
-        state = GameState.PlayerIdle;
+        stateStack = new Stack<GameState>();
+        stateStack.Push(GameState.PlayerIdle);
         
         if (worldGrid == null)
         {
@@ -107,13 +108,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (state)
+        switch (stateStack.Peek())
         {
             case GameState.PlayerIdle:
             {
                 if (Input.GetButtonDown("Jump"))
                 {
-                    state = GameState.EnemyTurn;
+                    stateStack.Pop();
+                    stateStack.Push(GameState.EnemyTurn);
                 }
             }
             ;break;
@@ -136,7 +138,7 @@ public class GameManager : MonoBehaviour
 
                     CleanDeadEnemies();
 
-                    state = GameState.PlayerIdle;
+                    stateStack.Pop();
                     currentCardAction = null;
                     currentContext.ActiveCard = null;
 
@@ -173,10 +175,8 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            Debug.Log("draw pile");
-            drawPile.PrintContents();
-            Debug.Log("discard pile");
-            discardPile.PrintContents();
+            drawPile.PrintContents("draw pile");
+            discardPile.PrintContents("discard pile");
         }
     }
 
@@ -185,7 +185,8 @@ public class GameManager : MonoBehaviour
         energy = 5;
         DiscardHand();
         DrawHand();
-        state = GameState.PlayerIdle;
+        stateStack.Pop();
+        stateStack.Push(GameState.PlayerIdle);
     }
 
     public void DeselectActiveCard()
@@ -198,7 +199,7 @@ public class GameManager : MonoBehaviour
     public void AttemptPlayingCard(Card card)
     {
         //TODO: put energy cost restriction checking in here
-        if (state == GameState.PlayerIdle)
+        if (stateStack.Peek() == GameState.PlayerIdle)
         {
             if (energy >= card.cardData.energyCost)
             {
@@ -210,13 +211,14 @@ public class GameManager : MonoBehaviour
                 playerHand.Remove(card);
                 
                 currentCardAction = card.AttemptToPlay(currentContext);
-                state = GameState.PlayerCardPending;
+                stateStack.Push(GameState.PlayerCardPending);
             }
         }
     }
 
     public void DiscardHand()
     {
+        Debug.Log("------- discarding  " + playerHand.Count + " cards -------");
         while (playerHand.Count != 0)
         {
             Card card = playerHand[0];
@@ -243,6 +245,7 @@ public class GameManager : MonoBehaviour
         //TODO: force the drawing of a step and a punch, then randomly fill the rest
         //NOTE: this requires a way to ensure certain cards are deleted instead of discarded
         //      otherwise the deck will get bigger every turn as we add cards
+        Debug.Log("------- drawing " + HandSize + " cards -------");
         DrawCards(HandSize);
     }
 
@@ -274,6 +277,7 @@ public class GameManager : MonoBehaviour
         {
             discardPile.MergeAllInto(drawPile);
             drawPile.Shuffle();
+            Debug.Log("discard pile moved into draw pile");
         }
 
         Card card = drawPile.TakeFromTop();

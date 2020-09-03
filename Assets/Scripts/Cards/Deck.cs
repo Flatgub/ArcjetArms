@@ -109,14 +109,13 @@ public class Deck : IEnumerable<Card>
     }
 
     // helper for debugging
-    public void PrintContents()
+    public void PrintContents(string title)
     {
-        
-        StringBuilder sb = new StringBuilder("Contains: \n");
+        StringBuilder sb = new StringBuilder(title + " contains: "+Count+"\n");
         foreach(Card c in cards)
         {
-            sb.AppendLine("  " + c.cardData.title);
-        }
+            sb.AppendLine("  " + c.cardData.title + " - " + c.guid.GetShort());
+        } 
         Debug.Log(sb.ToString());
     }
 

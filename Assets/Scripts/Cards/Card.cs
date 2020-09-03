@@ -9,10 +9,12 @@ public class Card
 {
     public CardData cardData;
     public CardRenderer tiedTo;
+    public Guid guid;
 
     public Card(CardData data)
     {
         cardData = data;
+        guid = Guid.NewGuid();
     }
 
     public CardActionResult AttemptToPlay(GameplayContext gc)

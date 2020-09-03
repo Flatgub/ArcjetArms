@@ -53,13 +53,13 @@ public class Entity : MonoBehaviour
 
     public void ReceiveDamage(Entity attacker, int damage)
     {
-        Debug.Log("i'm been attacked by " + attacker.entityName);
+        //Debug.Log("i'm been attacked by " + attacker.entityName);
         Health.ApplyDamage(damage);
     }
 
     public void DealDamageTo(Entity victim, int damage)
     {
-        Debug.Log("i'm attacking " + victim.entityName);
+        //Debug.Log("i'm attacking " + victim.entityName);
         victim.ReceiveDamage(this, damage);
     }
 
