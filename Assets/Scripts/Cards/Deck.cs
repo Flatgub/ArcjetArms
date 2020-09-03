@@ -1,10 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class Deck : IEnumerable<Card>
 {
     private List<Card> cards;
+
+    public int Count
+    {
+        get
+        {
+            return cards.Count;
+        }
+    }
 
     public Deck()
     {
@@ -70,5 +79,16 @@ public class Deck : IEnumerable<Card>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return cards.GetEnumerator();
+    }
+
+    public void PrintContents()
+    {
+        
+        StringBuilder sb = new StringBuilder("Contains: \n");
+        foreach(Card c in cards)
+        {
+            sb.AppendLine("  " + c.cardData.title);
+        }
+        Debug.Log(sb.ToString());
     }
 }

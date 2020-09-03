@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public HexGrid worldGrid;
     private EntityFactory entFactory;
-    private CardRendererFactory cardFactory;
+    
     private Entity player;
     private List<Entity> allEnemies;
     public InterfaceManager interfaceManager;
@@ -21,8 +22,19 @@ public class GameManager : MonoBehaviour
     public Text playerEnergyText;
     public Text enemyText;
 
+    private Deck drawPile;
+    private Deck discardPile;
+
     public int HandSize = 5;
     private int energy;
+
+    private List<Card> playerHand;
+    private Card activeCard;
+
+    public event Action<Card> OnCardDrawn;
+    public event Action<Card> OnCardSelected;
+    public event Action       OnCardDeselected;
+    public event Action<Card> OnCardDiscarded;
 
     //TODO: replace this enum with a different system
     enum GameState
@@ -45,7 +57,6 @@ public class GameManager : MonoBehaviour
         }
         worldGrid.GenerateMap(mapRadius);
         entFactory = EntityFactory.GetFactory;
-        cardFactory = CardRendererFactory.GetFactory;
 
         player = entFactory.CreateEntity(40);
         player.AddToGrid(worldGrid, new Hex(1, 0));
@@ -63,16 +74,30 @@ public class GameManager : MonoBehaviour
             entFactory.AddAIController(e);
             allEnemies.Add(e);
         }
-       
+
+        drawPile = new Deck();
+        discardPile = new Deck();
+        playerHand = new List<Card>();
 
         CardDatabase.LoadAllCards();
 
+        for (int i = 0; i < 4; i++) //four steps
+        {
+            drawPile.AddToTop(CardDatabase.CreateCardFromID(0));
+        }
+        for (int i = 0; i < 4; i++) //four punches
+        {
+            drawPile.AddToTop(CardDatabase.CreateCardFromID(1)); 
+        }
+        for (int i = 0; i < 2; i++) //two dashes
+        {
+            drawPile.AddToTop(CardDatabase.CreateCardFromID(9)); 
+        }
+
+        drawPile.Shuffle();
+
         energy = 5;
-
-        bop = true;
     }
-
-    private bool bop;
 
     // Update is called once per frame
     void Update()
@@ -95,17 +120,16 @@ public class GameManager : MonoBehaviour
                     if (currentCardAction.WasCancelled())
                     {
                         //card was cancelled, return it to the hand
-                        interfaceManager.DeselectActiveCard();
+                        DeselectActiveCard();
                     }
                     else
                     {
                         //card was played, put it in the discard pile
-                        CardRenderer cr = interfaceManager.activeCardRenderer;
-                        interfaceManager.DiscardCard(cr);
-                        interfaceManager.hand.HoldCardsDown = false;
+                        //CardRenderer cr = interfaceManager.activeCardRenderer;
+                        DiscardCard(activeCard);
+                        //interfaceManager.DiscardCard(cr);
+                        //interfaceManager.hand.HoldCardsDown = false;
                         energy -= currentContext.ActiveCard.cardData.energyCost;
-
-                        
                     }
 
                     CleanDeadEnemies();
@@ -145,14 +169,29 @@ public class GameManager : MonoBehaviour
             enemyText.enabled = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            Debug.Log("draw pile");
+            drawPile.PrintContents();
+            Debug.Log("discard pile");
+            discardPile.PrintContents();
+        }
     }
 
     public void StartNewTurn()
     {
         energy = 5;
-        interfaceManager.DiscardHand();
+        DiscardHand();
         DrawHand();
         state = GameState.PlayerIdle;
+    }
+
+    public void DeselectActiveCard()
+    {
+        playerHand.Add(activeCard);
+        OnCardDeselected?.Invoke();
+        //interfaceManager.DeselectActiveCard();
+        activeCard = null;
     }
 
     public void AttemptPlayingCard(Card card)
@@ -162,20 +201,49 @@ public class GameManager : MonoBehaviour
         {
             if (energy >= card.cardData.energyCost)
             {
-                interfaceManager.SelectCardFromHand(card);
+                activeCard = card;
                 currentContext.ActiveCard = card;
+
+                OnCardSelected?.Invoke(activeCard);
+
+                playerHand.Remove(card);
+                //interfaceManager.SelectCardFromHand(card);
+                
                 currentCardAction = card.AttemptToPlay(currentContext);
                 state = GameState.PlayerCardPending;
             }
         }
     }
 
+    public void DiscardHand()
+    {
+        while (playerHand.Count != 0)
+        {
+            Card card = playerHand[0];
+            DiscardCard(card);
+            //playerHand.RemoveAt(0);
+            //discardPile.AddToTop(card);
+            //interfaceManager.DiscardCard(card.tiedTo);
+        }
+    }
+
+    public void DiscardCard(Card card)
+    {
+        if (activeCard == card)
+        {
+            activeCard = null;
+        }
+        playerHand.Remove(card);
+        OnCardDiscarded?.Invoke(card);
+        discardPile.AddToTop(card);
+    }
+
     public void DrawHand()
     {
         //force the drawing of a step and a punch, then randomly fill the rest
-        DrawCard(0);
-        DrawCard(1);
-        DrawCards(HandSize - 2);
+        //DrawCard(0);
+        //DrawCard(1);
+        DrawCards(HandSize);
     }
 
     public List<Card> DrawCards(int n)
@@ -190,16 +258,17 @@ public class GameManager : MonoBehaviour
 
     public Card DrawCard(int id = -1)
     {
-        //pick a random card if ID isn't defined
-        if (id == -1)
+        if (drawPile.Count == 0)
         {
-            id = CardDatabase.GetAllIDs().GetRandom();
+            discardPile.MergeAllInto(drawPile);
+            drawPile.Shuffle();
         }
-        
-        Card card = CardDatabase.CreateCardFromID(id);
-        CardRenderer cr = cardFactory.CreateCardRenderer(card);
-        interfaceManager.hand.AddCardToHand(cr);
-        bop = !bop;
+
+        Card card = drawPile.TakeFromTop();
+        playerHand.Add(card);
+        OnCardDrawn?.Invoke(card);
+        //CardRenderer cr = cardFactory.CreateCardRenderer(card);
+        //interfaceManager.hand.AddCardToHand(cr);
         return card;
     }
 
