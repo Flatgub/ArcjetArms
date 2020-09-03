@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public Text playerEnergyText;
     public Text enemyText;
 
+    private DeckTemplate basicDeck;
     private Deck drawPile;
     private Deck discardPile;
 
@@ -87,24 +88,16 @@ public class GameManager : MonoBehaviour
             allEnemies.Add(e);
         }
 
-        drawPile = new Deck();
-        discardPile = new Deck();
-        playerHand = new List<Card>();
-
         CardDatabase.LoadAllCards();
 
-        for (int i = 0; i < 4; i++) //four steps
-        {
-            drawPile.AddToTop(CardDatabase.CreateCardFromID(0));
-        }
-        for (int i = 0; i < 4; i++) //four punches
-        {
-            drawPile.AddToTop(CardDatabase.CreateCardFromID(1)); 
-        }
-        for (int i = 0; i < 2; i++) //two dashes
-        {
-            drawPile.AddToTop(CardDatabase.CreateCardFromID(9)); 
-        }
+        basicDeck = new DeckTemplate();
+        basicDeck.AddCardID(0, 4); //four steps
+        basicDeck.AddCardID(1, 4); //four punches
+        basicDeck.AddCardID(9, 2); //two dashes
+
+        drawPile = basicDeck.ConvertToDeck();
+        discardPile = new Deck();
+        playerHand = new List<Card>();
 
         drawPile.Shuffle();
 

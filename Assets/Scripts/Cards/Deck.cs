@@ -23,6 +23,12 @@ public class Deck : IEnumerable<Card>
         cards = new List<Card>();
     }
 
+    public Deck(DeckTemplate template)
+    {
+        cards = new List<Card>();
+        template.ConvertToDeck(this);
+    }
+
     /// <summary>
     /// Puts a card on the top of the deck
     /// </summary>
@@ -112,5 +118,10 @@ public class Deck : IEnumerable<Card>
             sb.AppendLine("  " + c.cardData.title);
         }
         Debug.Log(sb.ToString());
+    }
+
+    public void Clear()
+    {
+        cards.Clear();
     }
 }
