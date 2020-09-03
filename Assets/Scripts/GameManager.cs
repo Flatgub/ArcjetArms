@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     public Text playerText;
     public Text playerEnergyText;
+    public Text enemyText;
 
     public int HandSize = 5;
     private int energy;
@@ -79,9 +80,8 @@ public class GameManager : MonoBehaviour
         {
             case GameState.PlayerIdle:
             {
-                playerText.text = "PLAYER HEALTH: " + player.Health.Current.ToString();
-                playerEnergyText.text = "ENERGY: " + energy.ToString();
-            };break;
+            }
+            ;break;
 
             case GameState.PlayerCardPending:
             {
@@ -114,6 +114,21 @@ public class GameManager : MonoBehaviour
             break;
         }
 
+        playerText.text = "PLAYER HEALTH: " + player.Health;
+        playerEnergyText.text = "ENERGY: " + energy.ToString();
+
+        if (worldGrid.GetHexUnderMouse() is Hex mousehex  
+            && worldGrid.GetEntityAtHex(mousehex) is Entity entUnderMouse
+            && entUnderMouse != player)
+        {
+            enemyText.enabled = true;
+            enemyText.text = "ENEMY HEALTH: " + entUnderMouse.Health;
+        }
+        else
+        {
+            enemyText.enabled = false;
+        }
+
         if (Input.GetButtonDown("Jump"))
         {
             StartNewTurn();
@@ -131,7 +146,7 @@ public class GameManager : MonoBehaviour
         
         energy = 5;
         interfaceManager.DiscardHand();
-        DrawCards(HandSize);
+        DrawHand();
     }
 
     public void AttemptPlayingCard(Card card)
@@ -149,6 +164,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void DrawHand()
+    {
+        //force the drawing of a step and a punch, then randomly fill the rest
+        DrawCard(0);
+        DrawCard(1);
+        DrawCards(HandSize - 2);
+    }
+
     public List<Card> DrawCards(int n)
     {
         List<Card> cards = new List<Card>();
@@ -159,9 +182,15 @@ public class GameManager : MonoBehaviour
         return cards;
     }
 
-    public Card DrawCard()
+    public Card DrawCard(int id = -1)
     {
-        Card card = CardDatabase.CreateCardFromID(bop ? 0 : 1);
+        //pick a random card if ID isn't defined
+        if (id == -1)
+        {
+            id = CardDatabase.GetAllIDs().GetRandom();
+        }
+        
+        Card card = CardDatabase.CreateCardFromID(id);
         CardRenderer cr = cardFactory.CreateCardRenderer(card);
         interfaceManager.hand.AddCardToHand(cr);
         bop = !bop;

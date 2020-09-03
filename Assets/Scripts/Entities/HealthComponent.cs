@@ -74,4 +74,9 @@ public class HealthComponent : MonoBehaviour
         comp.SetHealth(maxHealth);
         return comp;
     }
+
+    public override string ToString()
+    {
+        return Current + " / " + MaxHealth;
+    }
 }

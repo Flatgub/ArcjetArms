@@ -62,6 +62,11 @@ public static class CardDatabase
         return allCards.GetEnumerator();
     }
 
+    public static List<int> GetAllIDs()
+    {
+        return new List<int>(allCards.Keys);
+    }
+
     /// <summary>
     /// Recursively load all CardData assets from this folder and any folders belowit
     /// </summary>
