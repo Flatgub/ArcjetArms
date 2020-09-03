@@ -59,6 +59,11 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         return CardDatabase.EnergyCostFrames[ec];
     }
 
+    public void OnDestroy()
+    {
+        tiedTo.tiedTo = null;
+    }
+
     /// <summary>
     /// The event triggered when a card is clicked on
     /// </summary>

@@ -17,6 +17,7 @@ public class InterfaceManager : MonoBehaviour
 
     public HandContainer hand;
     public Transform activeCardLocation;
+    public Transform discardPileLocation;
 
     public CardRenderer activeCardRenderer;
 
@@ -67,6 +68,31 @@ public class InterfaceManager : MonoBehaviour
         LeanTween.move(cr.gameObject, activeCardLocation.position, 0.2f);
         hand.HoldCardsDown = true;
         activeCardRenderer = cr;
+    }
+
+    public void DiscardCard(CardRenderer cr)
+    {
+        if (activeCardRenderer == cr)
+        {
+            activeCardRenderer = null;
+        }
+        if (hand.Contains(cr))
+        {
+            hand.RemoveCardFromHand(cr);
+        }
+        cr.transform.SetParent(discardPileLocation);
+        LeanTween.cancel(cr.gameObject);
+        LeanTween.rotateZ(cr.gameObject, 0f, 0.2f);
+        LeanTween.move(cr.gameObject, discardPileLocation.position, 0.2f).destroyOnComplete = true;
+    }
+
+    public void DiscardHand()
+    {
+        for (int i = hand.cardsInHand.Count - 1; i >= 0; i--)
+        {
+            CardRenderer cr = hand.cardsInHand[i];
+            DiscardCard(cr);
+        }
     }
 
     public void DeselectActiveCard()

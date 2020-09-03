@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     public Text playerText;
     public Text enemyText;
 
+    public int HandSize = 5;
+
     //TODO: replace this enum with a different system
     enum GameState
     {
@@ -91,10 +93,7 @@ public class GameManager : MonoBehaviour
                     {
                         //card was played, put it in the discard pile
                         CardRenderer cr = interfaceManager.activeCardRenderer;
-                        Card card = cr.tiedTo;
-                        Destroy(cr.gameObject);
-                        card.tiedTo = null;
-                        interfaceManager.activeCardRenderer = null;
+                        interfaceManager.DiscardCard(cr);
                         interfaceManager.hand.HoldCardsDown = false;
 
                         CleanDeadEnemies();
@@ -116,10 +115,8 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            Card card = CardDatabase.CreateCardFromID(bop ? 0 : 1);
-            CardRenderer cr = cardFactory.CreateCardRenderer(card);
-            interfaceManager.hand.AddCardToHand(cr);
-            bop = !bop;
+            interfaceManager.DiscardHand();
+            DrawCards(HandSize);
         }
 
     }
@@ -133,6 +130,25 @@ public class GameManager : MonoBehaviour
             currentCardAction = card.AttemptToPlay(currentContext);
             state = GameState.PlayerCardPending;
         }
+    }
+
+    public List<Card> DrawCards(int n)
+    {
+        List<Card> cards = new List<Card>();
+        for (int i = 0; i < n; i++)
+        {
+            cards.Add(DrawCard());
+        }
+        return cards;
+    }
+
+    public Card DrawCard()
+    {
+        Card card = CardDatabase.CreateCardFromID(bop ? 0 : 1);
+        CardRenderer cr = cardFactory.CreateCardRenderer(card);
+        interfaceManager.hand.AddCardToHand(cr);
+        bop = !bop;
+        return card;
     }
 
     private void CleanDeadEnemies()

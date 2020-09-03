@@ -11,7 +11,8 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform))]
 public class HandContainer : MonoBehaviour
 {
-    private List<CardRenderer> cardsInHand;
+    [HideInInspector]
+    public List<CardRenderer> cardsInHand;
     private RectTransform rect;
     private float width;
     private int highlightedCard;
@@ -152,6 +153,11 @@ public class HandContainer : MonoBehaviour
         highlightedCard = cardsInHand.IndexOf(cr);
         lastHighlightedCard = highlightedCard;
         UpdatePositions();
+    }
+
+    public bool Contains(CardRenderer cr)
+    {
+        return cardsInHand.Contains(cr);
     }
 
     /// <summary>
