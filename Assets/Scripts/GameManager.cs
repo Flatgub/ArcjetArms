@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerIdle,
         PlayerCardPending,
+        EnemyTurn
     }
 
     private GameState state;
@@ -80,6 +81,10 @@ public class GameManager : MonoBehaviour
         {
             case GameState.PlayerIdle:
             {
+                if (Input.GetButtonDown("Jump"))
+                {
+                    state = GameState.EnemyTurn;
+                }
             }
             ;break;
 
@@ -112,6 +117,17 @@ public class GameManager : MonoBehaviour
                 }
             };
             break;
+
+            case GameState.EnemyTurn:
+            {
+                //each entity takes a turn
+                foreach (Entity enemy in allEnemies)
+                {
+                    enemy.AIController.DoRandomAction(currentContext);
+                }
+
+                StartNewTurn();
+            };break;
         }
 
         playerText.text = "PLAYER HEALTH: " + player.Health;
@@ -129,24 +145,14 @@ public class GameManager : MonoBehaviour
             enemyText.enabled = false;
         }
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            StartNewTurn();
-        }
-
     }
 
     public void StartNewTurn()
     {
-        //each entity takes a turn
-        foreach (Entity enemy in allEnemies)
-        {
-            enemy.AIController.DoRandomAction(currentContext);
-        }
-        
         energy = 5;
         interfaceManager.DiscardHand();
         DrawHand();
+        state = GameState.PlayerIdle;
     }
 
     public void AttemptPlayingCard(Card card)
