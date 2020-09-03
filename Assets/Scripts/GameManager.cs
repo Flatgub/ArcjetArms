@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         entFactory = EntityFactory.GetFactory;
         cardFactory = CardRendererFactory.GetFactory;
 
-        player = entFactory.CreateEntity(10);
+        player = entFactory.CreateEntity(40);
         player.AddToGrid(worldGrid, new Hex(1, 0));
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
