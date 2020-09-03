@@ -18,9 +18,10 @@ public class GameManager : MonoBehaviour
     private CardActionResult currentCardAction;
 
     public Text playerText;
-    public Text enemyText;
+    public Text playerEnergyText;
 
     public int HandSize = 5;
+    private int energy;
 
     //TODO: replace this enum with a different system
     enum GameState
@@ -64,6 +65,8 @@ public class GameManager : MonoBehaviour
 
         CardDatabase.LoadAllCards();
 
+        energy = 5;
+
         bop = true;
     }
 
@@ -77,7 +80,7 @@ public class GameManager : MonoBehaviour
             case GameState.PlayerIdle:
             {
                 playerText.text = "PLAYER HEALTH: " + player.Health.Current.ToString();
-                //enemyText.text = "ENEMY HEALTH: " + enemy.Health.Current.ToString();
+                playerEnergyText.text = "ENERGY: " + energy.ToString();
             };break;
 
             case GameState.PlayerCardPending:
@@ -95,18 +98,16 @@ public class GameManager : MonoBehaviour
                         CardRenderer cr = interfaceManager.activeCardRenderer;
                         interfaceManager.DiscardCard(cr);
                         interfaceManager.hand.HoldCardsDown = false;
+                        energy -= currentContext.ActiveCard.cardData.energyCost;
 
-                        CleanDeadEnemies();
-
-                        //each entity takes a turn
-                        foreach (Entity enemy in allEnemies)
-                        {
-                            enemy.AIController.DoRandomAction(currentContext);
-                        }
+                        
                     }
+
+                    CleanDeadEnemies();
 
                     state = GameState.PlayerIdle;
                     currentCardAction = null;
+                    currentContext.ActiveCard = null;
 
                 }
             };
@@ -115,10 +116,22 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            interfaceManager.DiscardHand();
-            DrawCards(HandSize);
+            StartNewTurn();
         }
 
+    }
+
+    public void StartNewTurn()
+    {
+        //each entity takes a turn
+        foreach (Entity enemy in allEnemies)
+        {
+            enemy.AIController.DoRandomAction(currentContext);
+        }
+        
+        energy = 5;
+        interfaceManager.DiscardHand();
+        DrawCards(HandSize);
     }
 
     public void AttemptPlayingCard(Card card)
@@ -126,9 +139,13 @@ public class GameManager : MonoBehaviour
         //TODO: put energy cost restriction checking in here
         if (state == GameState.PlayerIdle)
         {
-            interfaceManager.SelectCardFromHand(card);
-            currentCardAction = card.AttemptToPlay(currentContext);
-            state = GameState.PlayerCardPending;
+            if (energy >= card.cardData.energyCost)
+            {
+                interfaceManager.SelectCardFromHand(card);
+                currentContext.ActiveCard = card;
+                currentCardAction = card.AttemptToPlay(currentContext);
+                state = GameState.PlayerCardPending;
+            }
         }
     }
 
