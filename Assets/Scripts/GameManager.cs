@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
             allEnemies.Add(e);
         }
 
+
         CardDatabase.LoadAllCards();
 
         basicDeck = new DeckTemplate();
@@ -114,6 +115,8 @@ public class GameManager : MonoBehaviour
         drawPile.Shuffle();
 
         energy = 5;
+
+        
     }
 
     // Update is called once per frame

@@ -6,18 +6,17 @@ public class SingleStep : IAIAction
 {
     public void Do(GameplayContext context, Entity with)
     {
-        List<Hex> canditates = with.Position.GetAllNeighbours();
-        GridHelper.RemoveOccupiedHexes(with.Grid, canditates);
-        with.MoveTo(canditates.GetRandom());
+        List<Hex> path = GridHelper.GetPathToHex(context.Grid, with.Position,
+            context.Player.Position);
+
+        with.MoveTo(path[0]);
     }
 
     public bool IsDoable(GameplayContext context, Entity with)
     {
+        List<Hex> path = GridHelper.GetPathToHex(context.Grid, with.Position,
+            context.Player.Position);
 
-        List<Hex> canditates = with.Position.GetAllNeighbours();
-        GridHelper.RemoveOccupiedHexes(with.Grid, canditates);
-
-        return (canditates.Count != 0);
-
+        return (path != null && path.Count > 1); //count 1 is adjacent
     }
 }
