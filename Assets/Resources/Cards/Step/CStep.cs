@@ -20,8 +20,9 @@ public class CStep : CardData
     {
 
         // Get the list of possible locations to move to
-        List<Hex> movementCandidates = gc.Player.Position.GetAllNeighbours();
-        GridHelper.RemoveOccupiedHexes(gc.Grid, movementCandidates);
+        List<Hex> movementCandidates = 
+            GridHelper.GetHexesInRange(gc.Grid, gc.Player.Position, moveDistance);
+        movementCandidates.Remove(gc.Player.Position);
 
         // Show the locations to the player and let them pick one
         SingleHexResult moveLocation = gc.Ui.OfferSingleHexSelection(movementCandidates);

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,6 +41,53 @@ public static class GridHelper
         }
 
         return output;
+    }
+
+    public static List<Hex> GetHexesInRange(HexGrid grid, Hex start, int range,
+        bool stopAtObstructions = true)
+    {
+        Dictionary<Hex, int> seenHexes = new Dictionary<Hex, int>(); //pairs are <Hex, Distance>
+        Queue<Hex> frontier = new Queue<Hex>();
+        List<Hex> output = new List<Hex>();
+
+        frontier.Enqueue(start);
+        seenHexes.Add(start, 0);
+
+        while (frontier.Count != 0)
+        {
+            Hex cell = frontier.Dequeue();
+            int distance = seenHexes[cell];
+
+            output.Add(cell);
+
+            List<Hex> edges = cell.GetAllNeighbours();
+            foreach(Hex e in edges)
+            {
+                if (!grid.Contains(e) || (stopAtObstructions && grid.IsHexOccupied(e)))
+                {
+                    continue;
+                }
+
+                if (distance + 1 <= range && !seenHexes.ContainsKey(e))
+                {
+                    frontier.Enqueue(e);
+                    seenHexes.Add(e, distance + 1);
+                }
+            }
+        }
+
+        return output;
+    }
+
+    public static List<Entity> GetEntitiesInRange(HexGrid grid, Hex start, int range)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static List<Hex> GetPathToHex(HexGrid grid, Hex start, Hex end,
+        int maxLength = int.MaxValue, bool stopAtObstructions = true)
+    {
+        throw new NotImplementedException();
     }
 
     public static void RemoveOccupiedHexes(HexGrid grid, List<Hex> input)

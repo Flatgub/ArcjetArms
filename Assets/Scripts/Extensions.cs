@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ListExtensions 
+public static class Extensions 
 {
     public static T GetRandom<T>(this List<T> list)
     {
