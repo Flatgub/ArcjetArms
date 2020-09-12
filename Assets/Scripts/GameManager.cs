@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,11 +27,13 @@ public class GameManager : MonoBehaviour
     private Deck drawPile;
     private Deck discardPile;
 
-    public int HandSize = 5;
+    public int HandSize = 1;
     private int energy;
 
     private List<Card> playerHand;
     private Card activeCard;
+
+    private List<Card> allExistingCards = null; //TODO: REMOVE
 
     /// <summary>
     /// The event triggered when a card is added from the draw pile into the hand
@@ -54,7 +57,9 @@ public class GameManager : MonoBehaviour
     {
         PlayerIdle,
         PlayerCardPending,
-        EnemyTurn
+        EnemyTurn,
+
+        ResettingDrawPile
     }
 
     private Stack<GameState> stateStack;
@@ -92,11 +97,17 @@ public class GameManager : MonoBehaviour
         CardDatabase.LoadAllCards();
 
         basicDeck = new DeckTemplate();
-        basicDeck.AddCardID(0, 4); //four steps
-        basicDeck.AddCardID(1, 4); //four punches
-        basicDeck.AddCardID(9, 2); //two dashes
+        basicDeck.AddCardID(0, numberOf: 4); //four steps
+        basicDeck.AddCardID(1, numberOf: 4); //four punches
+        basicDeck.AddCardID(9, numberOf: 2); //two dashes
 
         drawPile = basicDeck.ConvertToDeck();
+        allExistingCards = new List<Card>();
+        foreach (Card c in drawPile)
+        {
+            allExistingCards.Add(c);
+        }
+
         discardPile = new Deck();
         playerHand = new List<Card>();
 
@@ -155,6 +166,10 @@ public class GameManager : MonoBehaviour
                 }
 
                 StartNewTurn();
+            };break;
+
+            case GameState.ResettingDrawPile:
+            {
             };break;
         }
 
@@ -218,7 +233,6 @@ public class GameManager : MonoBehaviour
 
     public void DiscardHand()
     {
-        Debug.Log("------- discarding  " + playerHand.Count + " cards -------");
         while (playerHand.Count != 0)
         {
             Card card = playerHand[0];
@@ -245,7 +259,6 @@ public class GameManager : MonoBehaviour
         //TODO: force the drawing of a step and a punch, then randomly fill the rest
         //NOTE: this requires a way to ensure certain cards are deleted instead of discarded
         //      otherwise the deck will get bigger every turn as we add cards
-        Debug.Log("------- drawing " + HandSize + " cards -------");
         DrawCards(HandSize);
     }
 
@@ -277,7 +290,6 @@ public class GameManager : MonoBehaviour
         {
             discardPile.MergeAllInto(drawPile);
             drawPile.Shuffle();
-            Debug.Log("discard pile moved into draw pile");
         }
 
         Card card = drawPile.TakeFromTop();
@@ -299,4 +311,5 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
 }

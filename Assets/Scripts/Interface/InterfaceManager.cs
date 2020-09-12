@@ -110,8 +110,7 @@ public class InterfaceManager : MonoBehaviour
         if (card.tiedTo is null)
         {
             cr = cardFactory.CreateCardRenderer(card);
-            cr.gameObject.name = "Renderer for " + card.cardData.title + " - " + card.guid.GetShort();
-            //Debug.Log("Created renderer for " + card.cardData.title + " - " + card.guid.GetShort());
+            cr.gameObject.name = "Renderer for " + card.cardData.title;
         }
         hand.AddCardToHand(cr);
     }
@@ -157,7 +156,6 @@ public class InterfaceManager : MonoBehaviour
     {
         if (card.tiedTo is CardRenderer cr)
         {
-            Debug.Log("destroying renderer for " + card.cardData.title + " - " + card.guid.GetShort());
             if (activeCardRenderer == cr)
             {
                 activeCardRenderer = null;
@@ -173,9 +171,5 @@ public class InterfaceManager : MonoBehaviour
             LeanTween.move(cr.gameObject, discardPileLocation.position, 0.2f).destroyOnComplete = true;
             card.tiedTo = null;
         }
-        else
-        {
-            Debug.Log(card.cardData.title + " - " + card.guid.GetShort() + " had no renderer to destroy");
-        } 
     }
 }
