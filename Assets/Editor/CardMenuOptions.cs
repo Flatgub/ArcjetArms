@@ -39,4 +39,26 @@ public class CardMenuOptions : MonoBehaviour
         MonoScript scr = Selection.activeObject as MonoScript;
         return scr.GetClass().IsSubclassOf(typeof(CardData));
     }
+
+    [MenuItem("Assets/Cards/CreateNewCard")]
+    static void CreateCard()
+    {
+        string path = "Assets/Resources/Cards";
+        AssetDatabase.CreateFolder(path, "CNewCard");
+        AssetDatabase.CopyAsset("Assets/Scripts/Cards/CardDataTemplate.cs",
+            path + "/CNewCard/CNewCard.cs");
+        AssetDatabase.SaveAssets();
+    }
+
+    [MenuItem("Assets/Cards/CreateNewCard",true)]
+    static bool CreateCardValidator()
+    {
+        if (!(Selection.activeObject is UnityEditor.DefaultAsset))
+        {
+            return false;
+        }
+        //if(AssetDatabase.GetAssetPath(Selection.activeObject))
+
+        return (AssetDatabase.GetAssetPath(Selection.activeObject) == "Assets/Resources/Cards");
+    }
 }

@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
         basicDeck.AddCardID(0, numberOf: 4); //four steps
         basicDeck.AddCardID(1, numberOf: 4); //four punches
         basicDeck.AddCardID(9, numberOf: 2); //two dashes
+        basicDeck.AddCardID(7, numberOf: 2); //two salvages
 
         drawPile = basicDeck.ConvertToDeck();
         allExistingCards = new List<Card>();
@@ -272,7 +273,7 @@ public class GameManager : MonoBehaviour
     /// piles</remarks>
     /// <param name="n">How many cards to draw</param>
     /// <returns>A list of all the cards that were drawn</returns>
-    public List<Card> DrawCards(int n)
+    private List<Card> DrawCards(int n)
     {
         List<Card> cards = new List<Card>();
         for (int i = 0; i < n; i++)
@@ -287,7 +288,7 @@ public class GameManager : MonoBehaviour
     /// into the draw pile and then the draw pile will be shuffled before a card is drawn.
     /// </summary>
     /// <returns>The card from the top of the draw pile</returns>
-    public Card DrawCard()
+    private Card DrawCard()
     {
         if (drawPile.Count == 0)
         {
@@ -299,6 +300,15 @@ public class GameManager : MonoBehaviour
         playerHand.Add(card);
         OnCardDrawn?.Invoke(card);
         return card;
+    }
+
+    public void AttemptDrawCard(int n = 1)
+    {
+        if (drawPile.Count == 0 && discardPile.Count == 0)
+        {
+            return;
+        }
+        DrawCards(n);
     }
 
     ///<summary>Sweep and remove any entities from the entities list that are no longer alive.</summary>
