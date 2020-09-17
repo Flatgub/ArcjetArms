@@ -9,6 +9,7 @@ public class BasicMelee : IAIAction
     public void Do(GameplayContext context, Entity with)
     {
         with.DealDamageTo(context.Player, baseDamage);
+        with.TriggerAttackEvent(context.Player, context);
     }
 
     public bool IsDoable(GameplayContext context, Entity with)

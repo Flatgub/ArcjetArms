@@ -20,8 +20,11 @@ public class Entity : MonoBehaviour
     public HealthComponent Health { get; private set;}
     public EntityAIController AIController { get; private set;}
 
+    private List<StatusEffect> statusEffects;
+
     public void Initialize()
     {
+        statusEffects = new List<StatusEffect>();
         appearance = GetComponent<SpriteRenderer>();
         Health = GetComponent<HealthComponent>();
         Health.OnDeath += Die;
@@ -53,14 +56,13 @@ public class Entity : MonoBehaviour
 
     public void ReceiveDamage(Entity attacker, int damage)
     {
-        //Debug.Log("i'm been attacked by " + attacker.entityName);
         Health.ApplyDamage(damage);
     }
 
-    public void DealDamageTo(Entity victim, int damage)
+    public void DealDamageTo(Entity victim, int baseDamage)
     {
-        //Debug.Log("i'm attacking " + victim.entityName);
-        victim.ReceiveDamage(this, damage);
+        int realDamage = CalculateDamage(baseDamage);
+        victim.ReceiveDamage(this, realDamage);
     }
 
     public void Die()
@@ -71,4 +73,85 @@ public class Entity : MonoBehaviour
         }
     }
 
+    public void ApplyStatusEffect(StatusEffect effect)
+    {
+        statusEffects.Add(effect);
+    }
+
+    public void RemoveStatusEffect(StatusEffect effect)
+    {
+        statusEffects.Remove(effect);
+    }
+
+    public IEnumerator<StatusEffect> GetStatusEffects()
+    {
+        return statusEffects.GetEnumerator();
+    }
+
+    public void StartTurn(GameplayContext gc)
+    {
+        //we iterate the loop backwards because statuses might destroy themselves during the loop
+        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        {
+            StatusEffect effect = statusEffects[i];
+            if (effect is IStatusTurnStartEventHandler startResponder)
+            {
+                startResponder.OnTurnStart(this, gc);
+            }
+        }
+    }
+
+    public void EndTurn(GameplayContext gc)
+    {
+        //we iterate the loop backwards because statuses might destroy themselves during the loop
+        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        {
+            StatusEffect effect = statusEffects[i];
+            if (effect is IStatusTurnEndEventHandler endResponder)
+            {
+                endResponder.OnTurnEnd(this, gc);
+            }
+        }
+    }
+
+    public void TriggerAttackEvent(Entity target, GameplayContext gc)
+    {
+        //we iterate the loop backwards because statuses might destroy themselves during the loop
+        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        {
+            StatusEffect effect = statusEffects[i];
+            if (effect is IStatusAttackEventHandler attackResponder)
+            {
+                attackResponder.OnAttack(this, target, gc);
+            }
+        }
+    }
+
+    public int CalculateDamage(int baseDamage)
+    {
+        int result = baseDamage;
+        //Additive pass, only + and - operations are used here
+        foreach (StatusEffect e in statusEffects)
+        {
+            if (e is IStatusCalculateDamageEventHandler calculator)
+            {
+                result = calculator.OnCalculateDamageAdditive(result);
+            }
+        }
+
+        float floatResult = result;
+        //Multiplicative pass, all calculators apply multiplication together
+        foreach (StatusEffect e in statusEffects)
+        {
+            if (e is IStatusCalculateDamageEventHandler calculator)
+            {
+                floatResult = calculator.OnCalculateDamageMultiplicative(floatResult);
+            }
+        }
+
+        //always round up
+        result = Mathf.CeilToInt(floatResult);
+        Debug.Log("input: " + baseDamage + ", output: " + result);
+        return result;
+    }
 }

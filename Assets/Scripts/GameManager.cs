@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
         player.AddToGrid(worldGrid, new Hex(1, 0));
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
+        player.ApplyStatusEffect(new DebugStatusEffect());
 
         currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
         allEnemies = new List<Entity>();
@@ -89,7 +90,8 @@ public class GameManager : MonoBehaviour
         {
             Entity e = entFactory.CreateEntity(10);
             e.AddToGrid(worldGrid, new Hex(3-i, i));
-            e.entityName = "enemy";
+            e.entityName = "enemy " + i;
+            //e.ApplyStatusEffect(new DebugStatusEffect());
             entFactory.AddAIController(e);
             allEnemies.Add(e);
         }
@@ -129,8 +131,7 @@ public class GameManager : MonoBehaviour
             {
                 if (Input.GetButtonDown("Jump"))
                 {
-                    stateStack.Pop();
-                    stateStack.Push(GameState.EnemyTurn);
+                    EndPlayerTurn();
                 }
             }
             ;break;
@@ -166,7 +167,9 @@ public class GameManager : MonoBehaviour
                 //each entity takes a turn
                 foreach (Entity enemy in allEnemies)
                 {
+                    enemy.StartTurn(currentContext);
                     enemy.AIController.DoRandomAction(currentContext);
+                    enemy.EndTurn(currentContext);
                 }
 
                 StartNewTurn();
@@ -203,9 +206,17 @@ public class GameManager : MonoBehaviour
     {
         energy = 5;
         DiscardHand();
+        player.StartTurn(currentContext);
         DrawHand();
         stateStack.Pop();
         stateStack.Push(GameState.PlayerIdle);
+    }
+
+    public void EndPlayerTurn()
+    {
+        player.EndTurn(currentContext);
+        stateStack.Pop();
+        stateStack.Push(GameState.EnemyTurn);
     }
 
     public void DeselectActiveCard()

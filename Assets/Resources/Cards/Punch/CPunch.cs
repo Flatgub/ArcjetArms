@@ -35,6 +35,7 @@ public class CPunch : CardData
             //hit 'em
             Entity victim = target.GetResult();
             context.Player.DealDamageTo(victim, baseDamage);
+            context.Player.TriggerAttackEvent(victim, context);
             outcome.Complete();
         }
         else
