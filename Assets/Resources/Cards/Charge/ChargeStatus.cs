@@ -8,7 +8,7 @@ public class ChargeStatus : StatusEffect, IStatusAttackEventHandler,
     int remainingCharges = 1;
 
     //if charge is applied again, we gain an extra charge
-    public void GainStack() 
+    public void GainStack(IStackableStatus other) 
     {
         remainingCharges++;
         Debug.Log("charge now has " + remainingCharges + " charges");

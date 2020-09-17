@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour
         basicDeck.AddCardID(0, numberOf: 4); //four steps
         basicDeck.AddCardID(1, numberOf: 4); //four punches
         basicDeck.AddCardID(8, numberOf: 2); //two charges
+        basicDeck.AddCardID(13, numberOf: 2); //two overdrives
         basicDeck.AddCardID(7, numberOf: 2); //two salvages
 
         drawPile = basicDeck.ConvertToDeck();

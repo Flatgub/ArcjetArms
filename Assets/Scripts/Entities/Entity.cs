@@ -56,7 +56,18 @@ public class Entity : MonoBehaviour
 
     public void ReceiveDamage(Entity attacker, int damage)
     {
-        Health.ApplyDamage(damage);
+        int result = damage;
+
+        //this is lazy but it should be fine for now
+        foreach (StatusEffect e in statusEffects)
+        {
+            if (e is IStatusReceiveDamageEventHandler calculator)
+            {
+                result = calculator.OnReceivingDamage(result);
+            }
+        }
+
+        Health.ApplyDamage(result);
     }
 
     public void DealDamageTo(Entity victim, int baseDamage)
@@ -95,7 +106,7 @@ public class Entity : MonoBehaviour
             //if we can stack, we stack
             if (existingCopy is IStackableStatus stack)
             {
-                stack.GainStack();
+                stack.GainStack(effect as IStackableStatus);
             }
             else //if we can't stack, we replace the old one with the new one
             {

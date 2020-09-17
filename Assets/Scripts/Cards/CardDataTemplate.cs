@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //rename CardDataTemplate to the name of the card, like CStep or CSalvage
-public class CardDataTemplate : CardData
+public class CardDataTemplate: CardData
 {
     //put any numbers relevant to the card here
 

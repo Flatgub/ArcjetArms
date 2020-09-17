@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IStackableStatus
 {
-    void GainStack();
+    void GainStack(IStackableStatus other);
 
 }
