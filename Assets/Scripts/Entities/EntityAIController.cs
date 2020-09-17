@@ -23,22 +23,22 @@ public class EntityAIController : MonoBehaviour
         }
     }
 
-    public void DoRandomAction(GameplayContext context)
+    public void DoRandomAction()
     {
-        List<IAIAction> candidates = GetPossibleActions(context);
+        List<IAIAction> candidates = GetPossibleActions();
         if (candidates.Count != 0)
         {
             IAIAction action = candidates.GetRandom();
-            action.Do(context, controlling);
+            action.Do(controlling);
         }
     }
 
-    public List<IAIAction> GetPossibleActions(GameplayContext context)
+    public List<IAIAction> GetPossibleActions()
     {
         List<IAIAction> possibleActions = new List<IAIAction>();
         foreach (IAIAction action in actions)
         {
-            if (action.IsDoable(context, controlling))
+            if (action.IsDoable(controlling))
             {
                 possibleActions.Add(action);
             } 

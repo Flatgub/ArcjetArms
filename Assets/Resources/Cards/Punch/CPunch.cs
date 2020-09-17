@@ -11,20 +11,20 @@ public class CPunch : CardData
         return string.Format(descriptionTemplate, baseDamage);
     }
 
-    public override string GenerateCurrentDescription(GameplayContext context)
+    public override string GenerateCurrentDescription()
     {
         return GenerateStaticDescription();
     }
 
-    public override IEnumerator CardBehaviour(GameplayContext context, CardActionResult outcome)
+    public override IEnumerator CardBehaviour(CardActionResult outcome)
     {
         //get a list of adjacent entities
-        List<Entity> adjacentEnts = GridHelper.GetAdjacentEntities(context.Grid,
-            context.Player.Position);
+        List<Entity> adjacentEnts = GridHelper.GetAdjacentEntities(GameplayContext.Grid,
+            GameplayContext.Player.Position);
 
         //let the player select one of the adjacent enties
-        SingleEntityResult target = 
-            context.Ui.OfferSingleEntitySelection(adjacentEnts);
+        SingleEntityResult target =
+            GameplayContext.Ui.OfferSingleEntitySelection(adjacentEnts);
 
         //wait for the player to make a selection
         yield return new WaitUntil(target.IsReadyOrCancelled);
@@ -34,8 +34,8 @@ public class CPunch : CardData
         {
             //hit 'em
             Entity victim = target.GetResult();
-            context.Player.DealDamageTo(victim, baseDamage);
-            context.Player.TriggerAttackEvent(victim, context);
+            GameplayContext.Player.DealDamageTo(victim, baseDamage);
+            GameplayContext.Player.TriggerAttackEvent(victim);
             outcome.Complete();
         }
         else

@@ -17,7 +17,7 @@ public class Card
         guid = Guid.NewGuid();
     }
 
-    public CardActionResult AttemptToPlay(GameplayContext gc)
+    public CardActionResult AttemptToPlay()
     {
         if (cardData == null)
         {
@@ -26,7 +26,7 @@ public class Card
 
         CardActionResult returnResult = new CardActionResult();
 
-        gc.StartCoroutineOnManager(cardData.CardBehaviour(gc, returnResult));
+        GameplayContext.StartCoroutineOnManager(cardData.CardBehaviour(returnResult));
 
         return returnResult;
     }

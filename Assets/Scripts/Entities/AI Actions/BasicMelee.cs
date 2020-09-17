@@ -6,17 +6,17 @@ public class BasicMelee : IAIAction
 {
     public int baseDamage = 5;
 
-    public void Do(GameplayContext context, Entity with)
+    public void Do(Entity with)
     {
-        with.DealDamageTo(context.Player, baseDamage);
-        with.TriggerAttackEvent(context.Player, context);
+        with.DealDamageTo(GameplayContext.Player, baseDamage);
+        with.TriggerAttackEvent(GameplayContext.Player);
     }
 
-    public bool IsDoable(GameplayContext context, Entity with)
+    public bool IsDoable(Entity with)
     {
         List<Entity> adjacent= GridHelper.GetAdjacentEntities(with.Grid, with.Position);
 
-        return (adjacent.Contains(context.Player));
+        return (adjacent.Contains(GameplayContext.Player));
 
     }
 }

@@ -6,9 +6,9 @@ public class CSalvage : CardData
 {
     public int cardsToDraw;
 
-    public override IEnumerator CardBehaviour(GameplayContext context, CardActionResult outcome)
+    public override IEnumerator CardBehaviour(CardActionResult outcome)
     {
-        context.Manager.AttemptDrawCard(n: cardsToDraw);
+        GameplayContext.Manager.AttemptDrawCard(n: cardsToDraw);
         outcome.Complete();
         yield break;
     }
@@ -18,7 +18,7 @@ public class CSalvage : CardData
         return string.Format(descriptionTemplate, cardsToDraw);
     }
 
-    public override string GenerateCurrentDescription(GameplayContext context)
+    public override string GenerateCurrentDescription()
     {
         return GenerateStaticDescription();
     }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class DebugStatusEffect : StatusEffect, IStatusAttackEventHandler, 
     IStatusCalculateDamageEventHandler
 {
-    public void OnAttack(Entity subject, Entity target, GameplayContext gc)
+    public void OnAttack(Entity subject, Entity target)
     {
-        if (gc.ActiveCard is Card card && card.cardData.title == "Punch")
+        if (GameplayContext.ActiveCard is Card card && card.cardData.title == "Punch")
         {
             Debug.Log("that was a punch!");
             subject.RemoveStatusEffect(this);

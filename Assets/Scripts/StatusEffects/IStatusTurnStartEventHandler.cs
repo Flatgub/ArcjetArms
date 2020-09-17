@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IStatusTurnStartEventHandler
 {
-    void OnTurnStart(Entity subject, GameplayContext gc);
+    void OnTurnStart(Entity subject);
 }

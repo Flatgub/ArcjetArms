@@ -88,7 +88,7 @@ public class Entity : MonoBehaviour
         return statusEffects.GetEnumerator();
     }
 
-    public void StartTurn(GameplayContext gc)
+    public void StartTurn()
     {
         //we iterate the loop backwards because statuses might destroy themselves during the loop
         for (int i = statusEffects.Count - 1; i >= 0; i--)
@@ -96,12 +96,12 @@ public class Entity : MonoBehaviour
             StatusEffect effect = statusEffects[i];
             if (effect is IStatusTurnStartEventHandler startResponder)
             {
-                startResponder.OnTurnStart(this, gc);
+                startResponder.OnTurnStart(this);
             }
         }
     }
 
-    public void EndTurn(GameplayContext gc)
+    public void EndTurn()
     {
         //we iterate the loop backwards because statuses might destroy themselves during the loop
         for (int i = statusEffects.Count - 1; i >= 0; i--)
@@ -109,12 +109,12 @@ public class Entity : MonoBehaviour
             StatusEffect effect = statusEffects[i];
             if (effect is IStatusTurnEndEventHandler endResponder)
             {
-                endResponder.OnTurnEnd(this, gc);
+                endResponder.OnTurnEnd(this);
             }
         }
     }
 
-    public void TriggerAttackEvent(Entity target, GameplayContext gc)
+    public void TriggerAttackEvent(Entity target)
     {
         //we iterate the loop backwards because statuses might destroy themselves during the loop
         for (int i = statusEffects.Count - 1; i >= 0; i--)
@@ -122,7 +122,7 @@ public class Entity : MonoBehaviour
             StatusEffect effect = statusEffects[i];
             if (effect is IStatusAttackEventHandler attackResponder)
             {
-                attackResponder.OnAttack(this, target, gc);
+                attackResponder.OnAttack(this, target);
             }
         }
     }

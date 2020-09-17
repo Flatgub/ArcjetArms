@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IAIAction
 {
-    bool IsDoable(GameplayContext context, Entity with);
+    bool IsDoable(Entity with);
 
-    void Do(GameplayContext context, Entity with);
+    void Do(Entity with);
 }

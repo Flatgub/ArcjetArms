@@ -2,27 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameplayContext 
+public static class GameplayContext 
 {
-    public GameManager Manager { get; private set; }
-    public Entity Player { get; private set; }
-    public HexGrid Grid { get; private set; }
-    public InterfaceManager Ui { get; private set; }
-    public Entity ActiveEntity { get; set; }
-    public Card ActiveCard { get; set;}
+    public static GameManager Manager { get; private set; }
+    public static Entity Player { get; private set; }
+    public static HexGrid Grid { get; private set; }
+    public static InterfaceManager Ui { get; private set; }
+    public static Entity ActiveEntity { get; set; }
+    public static Card ActiveCard { get; set;}
 
-    public GameplayContext(GameManager gm, Entity player, HexGrid grid, InterfaceManager ui,
-        Entity active = null, Card card = null)
+    public static void Define(GameManager gm, Entity player, HexGrid grid, InterfaceManager ui)
     {
         Manager = gm;
         Player = player;
         Grid = grid;
         Ui = ui;
-        ActiveEntity = active;
-        ActiveCard = card;
     }
 
-    public Coroutine StartCoroutineOnManager(IEnumerator coroutine)
+    public static void Clear()
+    {
+        Manager = null;
+        Player = null;
+        Grid = null;
+        Ui = null;
+    }
+
+    public static Coroutine StartCoroutineOnManager(IEnumerator coroutine)
     {
         return Manager.StartCoroutine(coroutine);
     }

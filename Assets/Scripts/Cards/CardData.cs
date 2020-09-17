@@ -27,7 +27,7 @@ public abstract class CardData : ScriptableObject
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
-    public abstract string GenerateCurrentDescription(GameplayContext context);
+    public abstract string GenerateCurrentDescription();
 
     /// <summary>
     /// 
@@ -35,7 +35,7 @@ public abstract class CardData : ScriptableObject
     /// <param name="context"></param>
     /// <param name="outcome"></param>
     /// <returns></returns>
-    public abstract IEnumerator CardBehaviour(GameplayContext context, CardActionResult outcome);
+    public abstract IEnumerator CardBehaviour(CardActionResult outcome);
 
 
 }

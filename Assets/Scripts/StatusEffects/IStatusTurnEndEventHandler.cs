@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IStatusTurnEndEventHandler
 {
-    void OnTurnEnd(Entity subject, GameplayContext gc);
+    void OnTurnEnd(Entity subject);
 }

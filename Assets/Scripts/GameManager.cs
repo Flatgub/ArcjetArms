@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     private Entity player;
     private List<Entity> allEnemies;
     public InterfaceManager interfaceManager;
-    public GameplayContext currentContext;
 
     private CardActionResult currentCardAction;
 
@@ -83,7 +82,8 @@ public class GameManager : MonoBehaviour
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
         player.ApplyStatusEffect(new DebugStatusEffect());
 
-        currentContext = new GameplayContext(this, player, worldGrid, interfaceManager);
+        GameplayContext.Define(this, player, worldGrid, interfaceManager);
+
         allEnemies = new List<Entity>();
 
         for (int i = 0; i <= 3; i++)
@@ -149,14 +149,14 @@ public class GameManager : MonoBehaviour
                     {
                         //card was played, put it in the discard pile
                         DiscardCard(activeCard);
-                        energy -= currentContext.ActiveCard.cardData.energyCost;
+                        energy -= GameplayContext.ActiveCard.cardData.energyCost;
                     }
 
                     CleanDeadEnemies();
 
                     stateStack.Pop();
                     currentCardAction = null;
-                    currentContext.ActiveCard = null;
+                    GameplayContext.ActiveCard = null;
 
                 }
             };
@@ -167,9 +167,9 @@ public class GameManager : MonoBehaviour
                 //each entity takes a turn
                 foreach (Entity enemy in allEnemies)
                 {
-                    enemy.StartTurn(currentContext);
-                    enemy.AIController.DoRandomAction(currentContext);
-                    enemy.EndTurn(currentContext);
+                    enemy.StartTurn();
+                    enemy.AIController.DoRandomAction();
+                    enemy.EndTurn();
                 }
 
                 StartNewTurn();
@@ -206,7 +206,7 @@ public class GameManager : MonoBehaviour
     {
         energy = 5;
         DiscardHand();
-        player.StartTurn(currentContext);
+        player.StartTurn();
         DrawHand();
         stateStack.Pop();
         stateStack.Push(GameState.PlayerIdle);
@@ -214,7 +214,7 @@ public class GameManager : MonoBehaviour
 
     public void EndPlayerTurn()
     {
-        player.EndTurn(currentContext);
+        player.EndTurn();
         stateStack.Pop();
         stateStack.Push(GameState.EnemyTurn);
     }
@@ -234,13 +234,13 @@ public class GameManager : MonoBehaviour
             if (energy >= card.cardData.energyCost)
             {
                 activeCard = card;
-                currentContext.ActiveCard = card;
+                GameplayContext.ActiveCard = card;
 
                 OnCardSelected?.Invoke(activeCard);
 
                 playerHand.Remove(card);
                 
-                currentCardAction = card.AttemptToPlay(currentContext);
+                currentCardAction = card.AttemptToPlay();
                 stateStack.Push(GameState.PlayerCardPending);
             }
         }

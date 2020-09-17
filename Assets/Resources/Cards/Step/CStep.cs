@@ -11,22 +11,24 @@ public class CStep : CardData
         return string.Format(descriptionTemplate, moveDistance);
     }
 
-    public override string GenerateCurrentDescription(GameplayContext context)
+    public override string GenerateCurrentDescription()
     {
         return GenerateStaticDescription();
     }
 
-    public override IEnumerator CardBehaviour(GameplayContext gc, CardActionResult outcome)
+    public override IEnumerator CardBehaviour(CardActionResult outcome)
     {
 
         // Get the list of possible locations to move to
         List<Hex> movementCandidates = 
-            GridHelper.GetHexesInRange(gc.Grid, gc.Player.Position, moveDistance);
+            GridHelper.GetHexesInRange(GameplayContext.Grid, GameplayContext.Player.Position,
+            moveDistance);
 
-        movementCandidates.Remove(gc.Player.Position);
+        movementCandidates.Remove(GameplayContext.Player.Position);
 
         // Show the locations to the player and let them pick one
-        SingleHexResult moveLocation = gc.Ui.OfferSingleHexSelection(movementCandidates);
+        SingleHexResult moveLocation 
+            = GameplayContext.Ui.OfferSingleHexSelection(movementCandidates);
 
         // Wait until the player has made a selection or cancels the action
         yield return new WaitUntil(moveLocation.IsReadyOrCancelled);
@@ -35,7 +37,7 @@ public class CStep : CardData
         if (!moveLocation.WasCancelled())
         {
             // Move to the location they selected
-            gc.Player.MoveTo(moveLocation.GetResult());
+            GameplayContext.Player.MoveTo(moveLocation.GetResult());
             outcome.Complete();
         }
         else

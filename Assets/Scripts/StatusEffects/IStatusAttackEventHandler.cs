@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IStatusAttackEventHandler
 {
-    void OnAttack(Entity subject, Entity target, GameplayContext gc);
+    void OnAttack(Entity subject, Entity target);
 }
