@@ -75,7 +75,34 @@ public class Entity : MonoBehaviour
 
     public void ApplyStatusEffect(StatusEffect effect)
     {
-        statusEffects.Add(effect);
+        //find if we already have a status of this type
+        StatusEffect existingCopy = null;
+        foreach (StatusEffect e in statusEffects)
+        {
+            if (e.GetType() == effect.GetType())
+            {
+                existingCopy = e;
+                break;
+            }
+        }
+
+        if (existingCopy == null)
+        {
+            statusEffects.Add(effect);
+        }
+        else
+        {
+            //if we can stack, we stack
+            if (existingCopy is IStackableStatus stack)
+            {
+                stack.GainStack();
+            }
+            else //if we can't stack, we replace the old one with the new one
+            {
+                statusEffects.Remove(existingCopy);
+                statusEffects.Add(effect);
+            }
+        }   
     }
 
     public void RemoveStatusEffect(StatusEffect effect)

@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour
         player.AddToGrid(worldGrid, new Hex(1, 0));
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
-        player.ApplyStatusEffect(new DebugStatusEffect());
 
         GameplayContext.Define(this, player, worldGrid, interfaceManager);
 
@@ -102,7 +101,7 @@ public class GameManager : MonoBehaviour
         basicDeck = new DeckTemplate();
         basicDeck.AddCardID(0, numberOf: 4); //four steps
         basicDeck.AddCardID(1, numberOf: 4); //four punches
-        basicDeck.AddCardID(9, numberOf: 2); //two dashes
+        basicDeck.AddCardID(8, numberOf: 2); //two charges
         basicDeck.AddCardID(7, numberOf: 2); //two salvages
 
         drawPile = basicDeck.ConvertToDeck();
