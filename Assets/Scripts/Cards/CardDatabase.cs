@@ -11,12 +11,14 @@ using UnityEngine;
 public static class CardDatabase
 {
     private static readonly SortedList<int, CardData> allCards;
+    private static readonly Dictionary<string, CardData> cardsByName;
     private static readonly string cardsDirectory;
     public static readonly Sprite[] EnergyCostFrames;
 
     static CardDatabase()
     {
         allCards = new SortedList<int, CardData>();
+        cardsByName = new Dictionary<string, CardData>();
         cardsDirectory = Application.dataPath + "/Resources/Cards";
         EnergyCostFrames = Resources.LoadAll<Sprite>("Cards/CardPriceSprites");
     }
@@ -47,9 +49,39 @@ public static class CardDatabase
         }
     }
 
+    public static CardData GetCardDataByName(string name)
+    {
+        if (cardsByName.TryGetValue(name, out CardData cd))
+        {
+            return cd;
+        }
+        else
+        {
+            throw new IndexOutOfRangeException("No such card exists for name '" + name + "'");
+        }
+    }
+
+    public static int GetCardIDByName(string name)
+    {
+        if (cardsByName.TryGetValue(name, out CardData cd))
+        {
+            return cd.cardID;
+        }
+        else
+        {
+            throw new IndexOutOfRangeException("No such card exists for name '" + name + "'");
+        }
+    }
+
     public static Card CreateCardFromID(int id)
     {
         CardData data = GetCardDataByID(id);
+        return new Card(data);
+    }
+
+    public static Card CreateCardFromName(string name)
+    {
+        CardData data = GetCardDataByName(name);
         return new Card(data);
     }
 
@@ -82,6 +114,7 @@ public static class CardDatabase
             cardpath = cardpath.Substring(0, cardpath.Length - 6); //remove .asset from the path
             CardData cardasset = Resources.Load<CardData>(cardpath);
             allCards.Add(cardasset.cardID, cardasset);
+            cardsByName.Add(cardasset.title, cardasset);
         }
         
         //recursively load cards in subdirectories

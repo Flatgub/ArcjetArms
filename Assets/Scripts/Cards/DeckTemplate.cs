@@ -11,32 +11,13 @@ public class DeckTemplate
         cardsInTemplate = new Dictionary<int, int>();
     }
 
-    public void AddCardID(int id)
-    {
-        cardsInTemplate.TryGetValue(id, out int number);
-        cardsInTemplate[id] = number + 1;
-    }
-
-    public void AddCardID(int id, int numberOf)
+    public void AddCardID(int id, int numberOf = 1)
     {
         cardsInTemplate.TryGetValue(id, out int number);
         cardsInTemplate[id] = number + numberOf;
     }
 
-    public void RemoveCardID(int id)
-    {
-        cardsInTemplate.TryGetValue(id, out int number);
-        if (number > 1)
-        {
-            cardsInTemplate[id] = number - 1;
-        }
-        else
-        {
-            cardsInTemplate.Remove(id);
-        }
-    }
-
-    public void RemoveCardID(int id, int numberOf)
+    public void RemoveCardID(int id, int numberOf = 1)
     {
         cardsInTemplate.TryGetValue(id, out int number);
         if (number > numberOf)

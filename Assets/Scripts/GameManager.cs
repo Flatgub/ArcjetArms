@@ -99,14 +99,12 @@ public class GameManager : MonoBehaviour
         CardDatabase.LoadAllCards();
 
         basicDeck = new DeckTemplate();
-        basicDeck.AddCardID(0, numberOf: 3); //three steps
-        basicDeck.AddCardID(1, numberOf: 3); //four punches
-        basicDeck.AddCardID(11, numberOf: 3); //three snipers
-        basicDeck.AddCardID(9, numberOf: 2); //two dashes
-        basicDeck.AddCardID(7, numberOf: 3); //two ignites
-        //basicDeck.AddCardID(2, numberOf: 2); //two blocks
-        //basicDeck.AddCardID(4, numberOf: 2); //two overdrives
-        //basicDeck.AddCardID(7, numberOf: 2); //two ignites
+        basicDeck.AddCardID(CardDatabase.GetCardIDByName("Step"), numberOf: 3); 
+        basicDeck.AddCardID(CardDatabase.GetCardIDByName("Punch"), numberOf: 3); 
+        basicDeck.AddCardID(11, numberOf: 3); //highcaliber sniper
+        basicDeck.AddCardID(CardDatabase.GetCardIDByName("Ramjet Dash"), numberOf: 2); 
+        basicDeck.AddCardID(CardDatabase.GetCardIDByName("Ignite"), numberOf: 3); 
+        
 
         drawPile = basicDeck.ConvertToDeck();
         allExistingCards = new List<Card>();
