@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IStatusReceiveDamageEventHandler
 {
     int OnReceivingDamage(int baseDamage);
+    void OnAttacked(Entity subject, Entity attacker);
 }

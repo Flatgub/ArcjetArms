@@ -68,6 +68,11 @@ public class Entity : MonoBehaviour
         }
 
         Health.ApplyDamage(result);
+
+        if (attacker is Entity)
+        {
+            TriggerAttackedEvent(attacker);
+        }
     }
 
     public void DealDamageTo(Entity victim, int baseDamage)
@@ -169,6 +174,19 @@ public class Entity : MonoBehaviour
             if (effect is IStatusAttackEventHandler attackResponder)
             {
                 attackResponder.OnAttack(this, target);
+            }
+        }
+    }
+
+    public void TriggerAttackedEvent(Entity attacker)
+    {
+        //we iterate the loop backwards because statuses might destroy themselves during the loop
+        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        {
+            StatusEffect effect = statusEffects[i];
+            if (effect is IStatusReceiveDamageEventHandler attackResponder)
+            {
+                attackResponder.OnAttacked(this, attacker);
             }
         }
     }

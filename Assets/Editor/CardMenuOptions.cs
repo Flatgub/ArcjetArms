@@ -48,6 +48,12 @@ public class CardMenuOptions : MonoBehaviour
         AssetDatabase.CopyAsset("Assets/Scripts/Cards/CardDataTemplate.cs",
             path + "/NewCard/CNewCard.cs");
         AssetDatabase.SaveAssets();
+
+        path = "Assets/Resources/Cards/NewCard";
+
+        UnityEngine.Object folder = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+        Selection.activeObject = folder;
+        EditorGUIUtility.PingObject(folder);
     }
 
     [MenuItem("Assets/Cards/CreateNewCard",true)]

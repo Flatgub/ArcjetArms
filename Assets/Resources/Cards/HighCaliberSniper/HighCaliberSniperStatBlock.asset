@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c965c1fce44e9d47bcc8f59989fa047, type: 3}
+  m_Name: HighCaliberSniperStatBlock
+  m_EditorClassIdentifier: 
+  cardID: 11
+  title: High Caliber Sniper
+  cardArt: {fileID: 21300000, guid: 83eea0e5e43929949885383f6d526c5a, type: 3}
+  cardFrame: {fileID: 21300000, guid: 99a77cbfbb1f7fc4ab0a6d77796fc396, type: 3}
+  descriptionTemplate: 'Range {0}
+
+    Deal {1} DMG for each tile between you and
+    target'
+  energyCost: 2
+  upgradesTo: {fileID: 0}
+  range: 5
+  damageOverDistance: 3
