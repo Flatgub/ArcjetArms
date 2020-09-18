@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChargeStatus : StatusEffect, IStatusAttackEventHandler, 
+public class ChargeStatusEffect : StatusEffect, IStatusAttackEventHandler, 
     IStatusCalculateDamageEventHandler, IStackableStatus
 {
     int remainingCharges = 1;

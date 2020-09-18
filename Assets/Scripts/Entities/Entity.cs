@@ -100,6 +100,10 @@ public class Entity : MonoBehaviour
         if (existingCopy == null)
         {
             statusEffects.Add(effect);
+            if (effect is IStatusApplyEventHandler applyResponder)
+            {
+                applyResponder.OnApply(this);
+            }
         }
         else
         {
@@ -112,6 +116,10 @@ public class Entity : MonoBehaviour
             {
                 statusEffects.Remove(existingCopy);
                 statusEffects.Add(effect);
+                if (effect is IStatusApplyEventHandler applyResponder)
+                {
+                    applyResponder.OnApply(this);
+                }
             }
         }   
     }

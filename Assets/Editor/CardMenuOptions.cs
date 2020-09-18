@@ -14,7 +14,7 @@ public class CardMenuOptions : MonoBehaviour
 
         string scriptPath = AssetDatabase.GetAssetPath(buildingFrom);
         string scriptDirectory = System.IO.Path.GetDirectoryName(scriptPath).Replace("\\","/");
-        string newAssetName = "New" + statBlockType.Name + "_StatBlock.asset";
+        string newAssetName = statBlockType.Name.Substring(1) + "StatBlock.asset";
         string fullPath = scriptDirectory + "/" + newAssetName;
 
 
@@ -44,9 +44,9 @@ public class CardMenuOptions : MonoBehaviour
     static void CreateCard()
     {
         string path = "Assets/Resources/Cards";
-        AssetDatabase.CreateFolder(path, "CNewCard");
+        AssetDatabase.CreateFolder(path, "NewCard");
         AssetDatabase.CopyAsset("Assets/Scripts/Cards/CardDataTemplate.cs",
-            path + "/CNewCard/CNewCard.cs");
+            path + "/NewCard/CNewCard.cs");
         AssetDatabase.SaveAssets();
     }
 

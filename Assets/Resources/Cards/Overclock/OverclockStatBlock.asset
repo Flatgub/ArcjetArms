@@ -9,14 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df6168721b9f0674c9307b7ccfac7102, type: 3}
-  m_Name: SalvageStatBlock
+  m_Script: {fileID: 11500000, guid: d93c4f14cbef40c4198c0fd7658f31e1, type: 3}
+  m_Name: OverclockStatBlock
   m_EditorClassIdentifier: 
-  cardID: 5
-  title: Salvage
-  cardArt: {fileID: 21300000, guid: e05abb7d555e0494da404fd45a0b0106, type: 3}
+  cardID: 4
+  title: Overclock
+  cardArt: {fileID: 21300000, guid: a46734bc026886740a8dc9b54103e4e2, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
-  descriptionTemplate: Draw {0} cards
+  descriptionTemplate: Lose {0}% health and deal {1}x dmg for the rest of the turn
   energyCost: 1
   upgradesTo: {fileID: 0}
-  cardsToDraw: 2
+  healthPenalty: 0.2
+  damageMultiplier: 2

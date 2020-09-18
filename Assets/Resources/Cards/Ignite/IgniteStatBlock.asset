@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df6168721b9f0674c9307b7ccfac7102, type: 3}
-  m_Name: SalvageStatBlock
+  m_Script: {fileID: 11500000, guid: bda23f8bb6be9cd40b9c2e0f9d3eee35, type: 3}
+  m_Name: IgniteStatBlock
   m_EditorClassIdentifier: 
-  cardID: 5
-  title: Salvage
-  cardArt: {fileID: 21300000, guid: e05abb7d555e0494da404fd45a0b0106, type: 3}
+  cardID: 7
+  title: Ignite
+  cardArt: {fileID: 21300000, guid: 4b78c2a0142aeaf4a8a8f499d0fd02e9, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
-  descriptionTemplate: Draw {0} cards
+  descriptionTemplate: Next attack does {0}% more damage
   energyCost: 1
   upgradesTo: {fileID: 0}
-  cardsToDraw: 2
+  increasePrecentage: 20
