@@ -132,7 +132,7 @@ public static class CardDatabase
     /// for example, converts "E:/foo/bar/Assets/Resources/baz/qux" into just "baz/qux" </remarks>
     /// <param name="dir">the directory to convert</param>
     /// <returns>a Resources.Load compatable shortened directory</returns>
-    private static string ConvertRealDirToResourceDir(string dir)
+    public static string ConvertRealDirToResourceDir(string dir)
     {
         dir = dir.Replace("\\", "/");
         int assetStart = dir.IndexOf("/Resource") + 11;

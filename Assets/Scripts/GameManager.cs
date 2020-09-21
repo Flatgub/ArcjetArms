@@ -97,14 +97,26 @@ public class GameManager : MonoBehaviour
 
 
         CardDatabase.LoadAllCards();
+        GearDatabase.LoadAllGear();
 
-        basicDeck = new DeckTemplate();
-        basicDeck.AddCardID(CardDatabase.GetCardIDByName("Step"), numberOf: 3); 
-        basicDeck.AddCardID(CardDatabase.GetCardIDByName("Punch"), numberOf: 3); 
-        basicDeck.AddCardID(11, numberOf: 3); //highcaliber sniper
-        basicDeck.AddCardID(CardDatabase.GetCardIDByName("Ramjet Dash"), numberOf: 2); 
-        basicDeck.AddCardID(CardDatabase.GetCardIDByName("Ignite"), numberOf: 3); 
-        
+        GearLoadout loadout = new GearLoadout();
+        GearData leg = GearDatabase.GetGearDataByID(0);
+        GearData arm = GearDatabase.GetGearDataByID(1);
+
+        loadout.EquipIntoSlot(leg, GearLoadout.LoadoutSlots.LeftLeg);
+        loadout.EquipIntoSlot(leg, GearLoadout.LoadoutSlots.RightLeg);
+        loadout.EquipIntoSlot(arm, GearLoadout.LoadoutSlots.LeftArm);
+        loadout.EquipIntoSlot(arm, GearLoadout.LoadoutSlots.RightArm);
+
+        basicDeck = loadout.LoadoutToDeckTemplate();
+
+        //basicDeck = new DeckTemplate();
+        //basicDeck.AddCardID(CardDatabase.GetCardIDByName("Step"), numberOf: 3); 
+        //basicDeck.AddCardID(CardDatabase.GetCardIDByName("Punch"), numberOf: 3); 
+        //basicDeck.AddCardID(11, numberOf: 3); //highcaliber sniper
+        //basicDeck.AddCardID(CardDatabase.GetCardIDByName("Ramjet Dash"), numberOf: 2); 
+        //basicDeck.AddCardID(CardDatabase.GetCardIDByName("Ignite"), numberOf: 3); 
+
 
         drawPile = basicDeck.ConvertToDeck();
         allExistingCards = new List<Card>();

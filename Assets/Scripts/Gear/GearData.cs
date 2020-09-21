@@ -5,6 +5,7 @@ using static GearLoadout;
 [CreateAssetMenu(fileName = "NewGear", menuName = "Gear/Generic", order = 1)]
 public class GearData : ScriptableObject
 {
+    public int gearID;
     public string gearName;
     public string faction;
     public GearSlotTypes requiredSlot;
