@@ -7,7 +7,8 @@ public class GearData : ScriptableObject
 {
     public string gearName;
     public string faction;
-    public GearSlotTypes[] requiredSlots;
+    public GearSlotTypes requiredSlot;
+    //public GearSlotTypes[] requiredSlots;
     public GearData upgradesTo;
 
     [Serializable]
