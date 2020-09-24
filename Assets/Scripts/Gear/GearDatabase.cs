@@ -9,6 +9,7 @@ public static class GearDatabase
     private static readonly SortedList<int, GearData> allGear;
     private static readonly Dictionary<string, GearData> gearByName;
     private static readonly string gearDirectory;
+    private static bool loaded = false;
 
     static GearDatabase()
     {
@@ -65,7 +66,11 @@ public static class GearDatabase
     /// </summary>
     public static void LoadAllGear()
     {
-        LoadAllGearInFolder(gearDirectory);
+        if (!loaded)
+        {
+            LoadAllGearInFolder(gearDirectory);
+            loaded = true;
+        }
     }
 
     /// <summary>

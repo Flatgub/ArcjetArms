@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 334fbc0c98e407240adbae4c8279fd10, type: 3}
   m_Name: BasicLeg
   m_EditorClassIdentifier: 
+  gearID: 0
   gearName: Improvised Leg
   faction: None
-  requiredSlots: 05000000
+  requiredSlot: 5
   upgradesTo: {fileID: 0}
+  art: {fileID: 21300000, guid: 4384a11db9ae4b64790bc180be77c606, type: 3}
   Cards:
   - card: {fileID: 11400000, guid: 2d60371b3eef77f44bf442644c84114b, type: 2}
     amount: 2

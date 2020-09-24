@@ -31,6 +31,21 @@ public class GearLoadout
         RightLeg
     }
 
+    private static Dictionary<LoadoutSlots, GearSlotTypes> _slotTypes =
+        new Dictionary<LoadoutSlots, GearSlotTypes> {
+            { LoadoutSlots.Head, GearSlotTypes.Head },
+            { LoadoutSlots.LeftShoulder, GearSlotTypes.Shoulder },
+            { LoadoutSlots.RightShoulder, GearSlotTypes.Shoulder },
+            { LoadoutSlots.LeftArm, GearSlotTypes.Arm },
+            { LoadoutSlots.RightArm, GearSlotTypes.Arm },
+            { LoadoutSlots.LeftHand, GearSlotTypes.Hand },
+            { LoadoutSlots.RightHand, GearSlotTypes.Hand },
+            { LoadoutSlots.Body, GearSlotTypes.Body },
+            { LoadoutSlots.Core, GearSlotTypes.Core },
+            { LoadoutSlots.LeftLeg, GearSlotTypes.Leg },
+            { LoadoutSlots.RightLeg, GearSlotTypes.Leg }
+        };
+
     public Dictionary<LoadoutSlots, LoadoutSlot> slots;
 
     public GearLoadout()
@@ -110,5 +125,14 @@ public class GearLoadout
         }
 
         return deck;
+    }
+
+    public static GearSlotTypes GetSlotType(LoadoutSlots slot)
+    {
+        if (_slotTypes.TryGetValue(slot, out GearSlotTypes result))
+        {
+            return result;
+        }
+        throw new ArgumentException(slot.ToString() + " is not a valid slot");
     }
 }

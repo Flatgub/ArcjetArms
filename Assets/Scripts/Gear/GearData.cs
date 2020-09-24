@@ -11,6 +11,7 @@ public class GearData : ScriptableObject
     public GearSlotTypes requiredSlot;
     //public GearSlotTypes[] requiredSlots;
     public GearData upgradesTo;
+    public Sprite art;
 
     [Serializable]
     public struct CardBundle
