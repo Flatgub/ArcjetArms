@@ -16,7 +16,7 @@ public class ChargeStatusEffect : StatusEffect, IStatusAttackEventHandler,
 
     public void OnAttack(Entity subject, Entity target)
     {
-        if (GameplayContext.ActiveCard?.cardData.title == "Punch")
+        if (GameplayContext.ActiveCard?.cardData.cardID == 1)
         {
             remainingCharges--;
             if (remainingCharges == 0)
@@ -34,7 +34,7 @@ public class ChargeStatusEffect : StatusEffect, IStatusAttackEventHandler,
 
     public float OnCalculateDamageMultiplicative(float damage)
     {
-        if (GameplayContext.ActiveCard?.cardData.title == "Punch")
+        if (GameplayContext.ActiveCard?.cardData.cardID == 1)
         {
             return damage * 2f;
         }

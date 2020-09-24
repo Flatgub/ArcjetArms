@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
 
-        GameplayContext.Define(this, player, worldGrid, interfaceManager);
+        GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
 
         allEnemies = new List<Entity>();
 
@@ -97,28 +97,12 @@ public class GameManager : MonoBehaviour
 
 
         CardDatabase.LoadAllCards();
-        GearDatabase.LoadAllGear();
 
-        GearLoadout loadout = new GearLoadout();
-        GearData leg = GearDatabase.GetGearDataByID(0);
-        GearData arm = GearDatabase.GetGearDataByID(1);
-
-        loadout.EquipIntoSlot(leg, GearLoadout.LoadoutSlots.LeftLeg);
-        loadout.EquipIntoSlot(leg, GearLoadout.LoadoutSlots.RightLeg);
-        loadout.EquipIntoSlot(arm, GearLoadout.LoadoutSlots.LeftArm);
-        loadout.EquipIntoSlot(arm, GearLoadout.LoadoutSlots.RightArm);
-
-        basicDeck = loadout.LoadoutToDeckTemplate();
-
-        //basicDeck = new DeckTemplate();
-        //basicDeck.AddCardID(CardDatabase.GetCardIDByName("Step"), numberOf: 3); 
-        //basicDeck.AddCardID(CardDatabase.GetCardIDByName("Punch"), numberOf: 3); 
-        //basicDeck.AddCardID(11, numberOf: 3); //highcaliber sniper
-        //basicDeck.AddCardID(CardDatabase.GetCardIDByName("Ramjet Dash"), numberOf: 2); 
-        //basicDeck.AddCardID(CardDatabase.GetCardIDByName("Ignite"), numberOf: 3); 
-
+        basicDeck = GameplayContext.CurrentLoadout.LoadoutToDeckTemplate();
 
         drawPile = basicDeck.ConvertToDeck();
+        drawPile.PrintContents("drawpile");
+
         allExistingCards = new List<Card>();
         foreach (Card c in drawPile)
         {
@@ -132,7 +116,7 @@ public class GameManager : MonoBehaviour
 
         energy = 5;
 
-        
+        Invoke("StartNewTurn", 0.25f);
     }
 
     // Update is called once per frame

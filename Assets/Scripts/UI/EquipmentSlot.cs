@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ public class EquipmentSlot : MonoBehaviour
     [SerializeField]
     private Image icon = null;
     [SerializeField]
-    private List<EquipmentSlot> dependants;
+    private List<EquipmentSlot> dependants = null;
 
     [SerializeField]
     private LoadoutSlots loadoutSlot = LoadoutSlots.Head;
@@ -63,8 +64,27 @@ public class EquipmentSlot : MonoBehaviour
     {
         foreach (EquipmentSlot slot in dependants)
         {
+            if (enabled && equippedGear != null)
+            {
+                //check if the slot is of a type that the equipped gear doesn't provide
+                if (Array.IndexOf(equippedGear.DoesntProvide, GearLoadout.GetSlotType(slot.SlotID)) > -1)
+                {
+                    slot.gameObject.SetActive(false);
+                    continue;
+                }
+            }
             slot.gameObject.SetActive(enabled);
         }
-    } 
+    }
+
+    private void OnEnable()
+    {
+        UpdateDependants(equippedGear != null);
+    }
+
+    private void OnDisable()
+    {
+        UpdateDependants(false);
+    }
 
 }

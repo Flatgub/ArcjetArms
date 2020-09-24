@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using static GearLoadout;
 
 public static class GearDatabase
 {
     private static readonly SortedList<int, GearData> allGear;
     private static readonly Dictionary<string, GearData> gearByName;
+    private static readonly Dictionary<GearSlotTypes, List<GearData>> gearBySlotType;
     private static readonly string gearDirectory;
     private static bool loaded = false;
 
@@ -15,6 +17,7 @@ public static class GearDatabase
     {
         allGear = new SortedList<int, GearData>();
         gearByName = new Dictionary<string, GearData>();
+        gearBySlotType = new Dictionary<GearSlotTypes, List<GearData>>();
         gearDirectory = Application.dataPath + "/Resources/Gear";
     }
 
@@ -61,6 +64,18 @@ public static class GearDatabase
         }
     }
 
+    public static List<GearData> GetAllGearBySlotType(GearSlotTypes slot)
+    {
+        if (gearBySlotType.TryGetValue(slot, out List<GearData> gd))
+        {
+            return gd;
+        }
+        else
+        {
+            return new List<GearData>();
+        }
+    }
+
     /// <summary>
     /// Load all gear from the resources folders into the allGear list.
     /// </summary>
@@ -87,15 +102,30 @@ public static class GearDatabase
             //TODO: referencing carddatabase here is bad, this function should just be a helper
             string gearpath = CardDatabase.ConvertRealDirToResourceDir(card.FullName);
             gearpath = gearpath.Substring(0, gearpath.Length - 6); //remove .asset from the path
-            GearData gearasset = Resources.Load<GearData>(gearpath);
-            allGear.Add(gearasset.gearID, gearasset);
-            gearByName.Add(gearasset.gearName, gearasset);
+            LoadGearAsset(Resources.Load<GearData>(gearpath));
         }
 
         //recursively load cards in subdirectories
         foreach (DirectoryInfo d in dirInfo.GetDirectories())
         {
             LoadAllGearInFolder(d.FullName);
+        }
+    }
+
+    private static void LoadGearAsset(GearData gear)
+    {
+        allGear.Add(gear.gearID, gear);
+        gearByName.Add(gear.gearName, gear);
+        //see if the list for this catagory already exists
+        if (gearBySlotType.TryGetValue(gear.requiredSlot, out List<GearData> catagory))
+        {
+            catagory.Add(gear);
+        }
+        else
+        {
+            List<GearData> newcatagory = new List<GearData>();
+            newcatagory.Add(gear);
+            gearBySlotType.Add(gear.requiredSlot, newcatagory);
         }
     }
 }

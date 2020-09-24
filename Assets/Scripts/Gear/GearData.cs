@@ -9,6 +9,7 @@ public class GearData : ScriptableObject
     public string gearName;
     public string faction;
     public GearSlotTypes requiredSlot;
+    public GearSlotTypes[] DoesntProvide;
     //public GearSlotTypes[] requiredSlots;
     public GearData upgradesTo;
     public Sprite art;

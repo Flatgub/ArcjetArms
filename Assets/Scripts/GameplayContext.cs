@@ -10,8 +10,9 @@ public static class GameplayContext
     public static InterfaceManager Ui { get; private set; }
     public static Entity ActiveEntity { get; set; }
     public static Card ActiveCard { get; set;}
+    public static GearLoadout CurrentLoadout { get; set; }
 
-    public static void Define(GameManager gm, Entity player, HexGrid grid, InterfaceManager ui)
+    public static void InitializeForEncounter(GameManager gm, Entity player, HexGrid grid, InterfaceManager ui)
     {
         Manager = gm;
         Player = player;
