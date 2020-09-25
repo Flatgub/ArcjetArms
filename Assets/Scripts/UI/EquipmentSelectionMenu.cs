@@ -35,7 +35,7 @@ public class EquipmentSelectionMenu : MonoBehaviour
 
         if (showUnequip)
         {
-            CreateButton("Unequip", null);
+            CreateButton("Uninstall", null, null);
         }
         foreach (GearData gear in candidates)
         {
@@ -46,13 +46,19 @@ public class EquipmentSelectionMenu : MonoBehaviour
 
     public void CreateButton(GearData gear)
     {
-        CreateButton(gear.gearName, gear);
+        CreateButton(gear.gearName, gear, gear.art);
     }
 
-    public void CreateButton(string label, GearData gear)
+    public void CreateButton(string label, GearData gear, Sprite icon)
     {
         Button newButton = Instantiate(buttonTemplate, transform);
         newButton.GetComponentInChildren<Text>().text = label;
+        if (icon != null)
+        {
+            Image img = newButton.transform.Find("GearIcon").GetComponent<Image>();
+            img.enabled = true;
+            img.sprite = icon;
+        }
         newButton.onClick.AddListener(() => { manager.OnEquipmentSelectionMade(gear); });
         newButton.gameObject.SetActive(true);
         newButton.gameObject.name = label;

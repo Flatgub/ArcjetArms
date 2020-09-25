@@ -27,6 +27,10 @@ public class EquipmentScreenManager : MonoBehaviour
         activeLoadout = new GearLoadout();
         SlotTitleText.enabled = false;
         GearTitleText.enabled = false;
+
+        GearLoadout template = new GearLoadout();
+        template.EquipIntoSlot(GearDatabase.GetGearDataByID(2), LoadoutSlots.Body);
+        CopyFromLoadout(template);
     }
 
     private void Update()
@@ -54,6 +58,15 @@ public class EquipmentScreenManager : MonoBehaviour
         }
     }
 
+    public void CopyFromLoadout(GearLoadout loadout)
+    {
+        foreach (EquipmentSlot slot in slots)
+        {
+            LoadoutSlots slotid = slot.SlotID;
+            slot.SetEquippedGear(loadout.slots[slotid].contains);
+        }
+    }
+
     private void SetHeaderText(string slotname, string gearname)
     {
         SlotTitleText.enabled = (slotname.Length > 0);
@@ -67,13 +80,13 @@ public class EquipmentScreenManager : MonoBehaviour
         if (slot != null)
         {
             string slotname = slot.SlotID.ToString();
-            string gearname = slot.GetEquippedGear()?.gearName ?? "";
+            string gearname = slot.GetEquippedGear()?.gearName ?? "Empty";
             SetHeaderText(slotname, gearname);
         }
         else if (pendingSlot != null)
         {
             string slotname = pendingSlot.SlotID.ToString();
-            string gearname = pendingSlot.GetEquippedGear()?.gearName ?? "";
+            string gearname = pendingSlot.GetEquippedGear()?.gearName ?? "Empty";
             SetHeaderText(slotname, gearname);
         }
         else
