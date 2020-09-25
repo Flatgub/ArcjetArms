@@ -102,7 +102,9 @@ public class HandContainer : MonoBehaviour
         if (!cardsInHand.Contains(card))
         {
             cardsInHand.Add(card);
-            card.inHand = this;
+            card.OnClick += OnCardMouseClick;
+            card.OnMouseEnter += OnCardMouseOver;
+            card.OnMouseExit += OnCardMouseLeave;
             card.transform.SetParent(transform);
             card.transform.localScale = Vector3.one*1.2f; //TODO: found out why this is happening
             UpdatePositions();
@@ -120,7 +122,11 @@ public class HandContainer : MonoBehaviour
             int index = cardsInHand.IndexOf(card);
             cardsInHand.RemoveAt(index);
             card.transform.SetParent(null);
-            card.inHand = null;
+
+            card.OnClick -= OnCardMouseClick;
+            card.OnMouseEnter -= OnCardMouseOver;
+            card.OnMouseExit -= OnCardMouseLeave;
+
             if (highlightedCard == index)
             {
                 highlightedCard = -1;

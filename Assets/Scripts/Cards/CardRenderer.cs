@@ -20,7 +20,10 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public Text bodyText;
     public CardData cardData;
     public Card tiedTo;
-    public HandContainer inHand;
+
+    public event Action<CardRenderer> OnClick;
+    public event Action<CardRenderer> OnMouseEnter;
+    public event Action<CardRenderer> OnMouseExit;
 
     /// <summary>
     /// Link this CardRenderer with a Card object, matching the visuals to that cards stats and
@@ -73,9 +76,9 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (inHand != null && eventData.button == 0)
+        if (eventData.button == 0)
         {
-            inHand.OnCardMouseClick(this);
+            OnClick?.Invoke(this);
         }
     }
 
@@ -85,10 +88,7 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData ped)
     {
-        if (inHand != null)
-        {
-            inHand.OnCardMouseOver(this);
-        }
+        OnMouseEnter?.Invoke(this);
     }
 
     /// <summary>
@@ -97,9 +97,6 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData ped)
     {
-        if (inHand != null)
-        {
-            inHand.OnCardMouseLeave(this);
-        }
+        OnMouseExit?.Invoke(this);
     }
 }
