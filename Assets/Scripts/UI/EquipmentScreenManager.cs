@@ -15,6 +15,8 @@ public class EquipmentScreenManager : MonoBehaviour
     [SerializeField]
     private EquipmentSelectionMenu selectionMenu = null;
     [SerializeField]
+    private DeckCardList deckList = null;
+    [SerializeField]
     private Text SlotTitleText = null;
     [SerializeField]
     private Text GearTitleText = null;
@@ -23,6 +25,7 @@ public class EquipmentScreenManager : MonoBehaviour
     
     void Start()
     {
+        CardDatabase.LoadAllCards();
         GearDatabase.LoadAllGear();
         activeLoadout = new GearLoadout();
         SlotTitleText.enabled = false;
@@ -43,19 +46,37 @@ public class EquipmentScreenManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     private void UpdateLoadout()
     {
         foreach (EquipmentSlot slot in slots)
         {
             LoadoutSlots slotID = slot.SlotID;
             activeLoadout.UnequipFromSlot(slotID);
-            if (!slot.Empty)
+            if (!slot.Empty && slot.isActiveAndEnabled)
             {
                 GearData gear = slot.GetEquippedGear();
                 activeLoadout.EquipIntoSlot(gear, slotID);
             }
         }
+
+        UpdateDeckList();
+    }
+
+    private void UpdateDeckList()
+    {
+        DeckTemplate template = activeLoadout.LoadoutToDeckTemplate();
+        Dictionary<string, CardData> cards = new Dictionary<string, CardData>();
+        foreach (KeyValuePair<int, int> pair in template)
+        {
+            CardData card = CardDatabase.GetCardDataByID(pair.Key);
+            string line = string.Format("{0} (x{1})", card.title, pair.Value);
+            cards.Add(line, card);
+        }
+        if (cards.Count == 0)
+        {
+            cards.Add("Nothing", null);
+        }
+        deckList.UpdateList(cards);
     }
 
     public void CopyFromLoadout(GearLoadout loadout)
@@ -65,6 +86,8 @@ public class EquipmentScreenManager : MonoBehaviour
             LoadoutSlots slotid = slot.SlotID;
             slot.SetEquippedGear(loadout.slots[slotid].contains);
         }
+
+        UpdateLoadout();
     }
 
     private void SetHeaderText(string slotname, string gearname)
@@ -113,6 +136,7 @@ public class EquipmentScreenManager : MonoBehaviour
         }
         pendingSlot = null;
         UpdateHeaderText(null);
+        UpdateLoadout();
     }
 
     public void OnSlotMousedOver(EquipmentSlot slot)

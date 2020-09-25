@@ -95,9 +95,6 @@ public class GameManager : MonoBehaviour
             allEnemies.Add(e);
         }
 
-
-        CardDatabase.LoadAllCards();
-
         basicDeck = GameplayContext.CurrentLoadout.LoadoutToDeckTemplate();
 
         drawPile = basicDeck.ConvertToDeck();

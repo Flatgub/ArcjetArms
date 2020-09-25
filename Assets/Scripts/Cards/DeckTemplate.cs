@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeckTemplate 
+public class DeckTemplate : IEnumerable
 {
     private readonly Dictionary<int, int> cardsInTemplate;
 
@@ -57,5 +57,10 @@ public class DeckTemplate
                 deck.AddToTop(CardDatabase.CreateCardFromID(id));
             }
         }
+    }
+
+    public IEnumerator GetEnumerator()
+    {
+        return cardsInTemplate.GetEnumerator();
     }
 }

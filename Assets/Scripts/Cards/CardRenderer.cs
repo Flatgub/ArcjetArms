@@ -64,7 +64,7 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnDestroy()
     {
-        if (tiedTo.tiedTo == this)
+        if (tiedTo?.tiedTo == this)
         {
             tiedTo.tiedTo = null;
         }
