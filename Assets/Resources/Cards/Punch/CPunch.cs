@@ -22,7 +22,7 @@ public class CPunch : CardData
         List<Entity> adjacentEnts = GridHelper.GetAdjacentEntities(GameplayContext.Grid,
             GameplayContext.Player.Position);
 
-        //let the player select one of the adjacent enties
+        //let the player select one of the adjacent entities
         SingleEntityResult target =
             GameplayContext.Ui.OfferSingleEntitySelection(adjacentEnts);
 

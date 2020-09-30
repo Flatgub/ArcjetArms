@@ -10,7 +10,7 @@ public class CardDataTemplate: CardData
     //generate the "basic" description, without doing any calculations.
     public override string GenerateStaticDescription()
     {
-        return string.Format(descriptionTemplate); // <- put stat numbers in here
+        return string.Format(descriptionTemplate); // <- put stat variables in here
     }
 
     public override string GenerateCurrentDescription()
