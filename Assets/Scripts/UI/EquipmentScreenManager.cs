@@ -21,6 +21,15 @@ public class EquipmentScreenManager : MonoBehaviour
     [SerializeField]
     private Text GearTitleText = null;
 
+    [SerializeField]
+    private AudioClip partAttachNoise;
+    [SerializeField]
+    private AudioClip partChangeRemoveNoise;
+    [SerializeField]
+    private AudioClip menuOpenNoise;
+    [SerializeField]
+    private AudioSource audioPlayer;
+
     private EquipmentSlot pendingSlot = null;
     
     void Start()
@@ -123,6 +132,7 @@ public class EquipmentScreenManager : MonoBehaviour
 
         GearSlotTypes type = GearLoadout.GetSlotType(slot.SlotID);
         selectionMenu.PresentMenu(GearDatabase.GetAllGearBySlotType(type), showUnequip: !slot.Empty);
+        //EmitSound(menuOpenNoise);
         pendingSlot = slot;
 
         UpdateHeaderText(slot);
@@ -132,6 +142,14 @@ public class EquipmentScreenManager : MonoBehaviour
     {
         if (pendingSlot != null)
         {
+            if (pendingSlot.Empty && gear != null)
+            {
+                EmitSound(partAttachNoise);
+            } 
+            else 
+            {
+                EmitSound(partChangeRemoveNoise);
+            }
             pendingSlot.SetEquippedGear(gear);
         }
         pendingSlot = null;
@@ -154,5 +172,12 @@ public class EquipmentScreenManager : MonoBehaviour
         UpdateLoadout();
         GameplayContext.CurrentLoadout = activeLoadout;
         SceneManager.LoadScene("CombatEncounter");
+    }
+
+    private void EmitSound(AudioClip sound)
+    {
+        audioPlayer.clip = sound;
+        audioPlayer.pitch = Random.Range(0.9f, 1.1f);
+        audioPlayer.Play();
     }
 }

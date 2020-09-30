@@ -1,0 +1,1 @@
+Gear in this folder only exist to provide access to cards for the playtesting prototype, they will be replaced later with other things
