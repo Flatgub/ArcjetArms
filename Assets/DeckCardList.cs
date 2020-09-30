@@ -10,7 +10,7 @@ public class DeckCardList : MonoBehaviour
     private DeckListMember memberTemplate;
     private List<DeckListMember> activeMembers;
     [SerializeField]
-    private CardRenderer visualizer;
+    private CardRenderer visualizer = null;
 
     // Start is called before the first frame update
     void Start()

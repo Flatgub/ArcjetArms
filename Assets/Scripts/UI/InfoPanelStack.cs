@@ -5,9 +5,9 @@ using UnityEngine;
 public class InfoPanelStack : MonoBehaviour
 {
     [SerializeField]
-    private InfoPanelRenderer panelPrefab;
+    private InfoPanelRenderer panelPrefab = null;
 
-    private List<InfoPanelRenderer> panels;
+    private List<InfoPanelRenderer> panels = null;
 
     public void AddPanel(string title, string body)
     {

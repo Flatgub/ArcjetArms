@@ -9,7 +9,7 @@ using static GearLoadout;
 public class EquipmentScreenManager : MonoBehaviour
 {
     [SerializeField]
-    private List<EquipmentSlot> slots;
+    private List<EquipmentSlot> slots = null;
     private GearLoadout activeLoadout;
 
     [SerializeField]

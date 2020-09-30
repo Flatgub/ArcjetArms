@@ -7,8 +7,8 @@ using static GearLoadout;
 
 public class EquipmentSlot : MonoBehaviour
 {
-    [SerializeField]
-    private Button button = null;
+    //[SerializeField]
+    //private Button button = null;
     [SerializeField]
     private Image icon = null;
     [SerializeField]
