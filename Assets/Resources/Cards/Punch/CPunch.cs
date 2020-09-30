@@ -13,7 +13,23 @@ public class CPunch : CardData
 
     public override string GenerateCurrentDescription()
     {
-        return GenerateStaticDescription();
+        if (GameplayContext.Player == null)
+        {
+            return GenerateStaticDescription();
+        }
+
+        int damage = baseDamage;
+        if (GameplayContext.EntityUnderMouse is Entity target)
+        {
+            damage = Entity.CalculateDamage(GameplayContext.Player, target, damage);
+        }
+        else
+        {
+            damage = GameplayContext.Player.CalculateDamage(damage);
+        }
+
+        string dmgstring = damage.Colored(Color.red);
+        return string.Format(descriptionTemplate, dmgstring);
     }
 
     public override IEnumerator CardBehaviour(CardActionResult outcome)

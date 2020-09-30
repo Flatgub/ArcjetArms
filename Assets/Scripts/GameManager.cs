@@ -239,10 +239,12 @@ public class GameManager : MonoBehaviour
         {
             enemyText.enabled = true;
             enemyText.text = "ENEMY HEALTH: " + entUnderMouse.Health;
+            GameplayContext.EntityUnderMouse = entUnderMouse;
         }
         else
         {
             enemyText.enabled = false;
+            GameplayContext.EntityUnderMouse = null;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftControl))

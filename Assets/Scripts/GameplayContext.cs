@@ -9,6 +9,7 @@ public static class GameplayContext
     public static HexGrid Grid { get; private set; }
     public static InterfaceManager Ui { get; private set; }
     public static Entity ActiveEntity { get; set; }
+    public static Entity EntityUnderMouse { get; set; }
     public static Card ActiveCard { get; set;}
     public static GearLoadout CurrentLoadout { get; set; }
 

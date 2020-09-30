@@ -62,6 +62,18 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         return CardDatabase.EnergyCostFrames[ec];
     }
 
+    public void UpdateDescription(bool useStatic = false)
+    {
+        if (useStatic)
+        {
+            bodyText.text = cardData.GenerateStaticDescription();
+        }
+        else
+        {
+            bodyText.text = cardData.GenerateCurrentDescription();
+        } 
+    }
+
     public void OnDestroy()
     {
         if (tiedTo?.tiedTo == this)

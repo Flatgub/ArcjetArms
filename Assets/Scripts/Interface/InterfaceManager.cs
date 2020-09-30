@@ -62,6 +62,11 @@ public class InterfaceManager : MonoBehaviour
 
             };break;
         }
+
+        if (activeCardRenderer != null)
+        {
+            activeCardRenderer.UpdateDescription(); //ABSOLUTELY DON'T DO THIS EVERY TURN
+        }
     }
 
     public void OnPlayerSelectCard(CardRenderer cr)
@@ -148,6 +153,7 @@ public class InterfaceManager : MonoBehaviour
         {
             hand.AddCardToHand(activeCardRenderer);
             hand.HoldCardsDown = false;
+            activeCardRenderer.UpdateDescription(useStatic: true);
             activeCardRenderer = null;
         }
     }

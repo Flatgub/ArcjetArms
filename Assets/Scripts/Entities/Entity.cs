@@ -58,16 +58,7 @@ public class Entity : MonoBehaviour
 
     public void ReceiveDamage(Entity attacker, int damage)
     {
-        int result = damage;
-
-        //this is lazy but it should be fine for now
-        foreach (StatusEffect e in statusEffects)
-        {
-            if (e is IStatusReceiveDamageEventHandler calculator)
-            {
-                result = calculator.OnReceivingDamage(result);
-            }
-        }
+        int result = CalculateReceivedDamage(damage);
 
         Health.ApplyDamage(result);
 
@@ -224,5 +215,28 @@ public class Entity : MonoBehaviour
         result = Mathf.CeilToInt(floatResult);
         Debug.Log("input: " + baseDamage + ", output: " + result);
         return result;
+    }
+
+    public int CalculateReceivedDamage(int baseDamage)
+    {
+        int result = baseDamage;
+
+        //this is lazy but it should be fine for now
+        foreach (StatusEffect e in statusEffects)
+        {
+            if (e is IStatusReceiveDamageEventHandler calculator)
+            {
+                result = calculator.OnReceivingDamage(result);
+            }
+        }
+
+        return result;
+    }
+
+    public static int CalculateDamage(Entity attacker, Entity victim, int baseDamage)
+    {
+        int outbound = attacker.CalculateDamage(baseDamage);
+        int received = victim.CalculateReceivedDamage(outbound);
+        return received;
     }
 }
