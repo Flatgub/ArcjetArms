@@ -30,6 +30,10 @@ public class GameManager : MonoBehaviour
     private float cardDrawTimer = 0f;
     private float cardDrawPause = 0.1f;
 
+    private float turnTimer = 0;
+    public float timeBetweenTurns = 0.25f;
+    private List<Entity> enemiesWhoNeedTurns;
+
     public int HandSize = 1;
     private int energy;
 
@@ -103,6 +107,8 @@ public class GameManager : MonoBehaviour
             entFactory.AddAIController(e);
             allEnemies.Add(e);
         }
+
+        enemiesWhoNeedTurns = new List<Entity>();
 
         if (GameplayContext.CurrentLoadout != null)
         {
@@ -178,15 +184,26 @@ public class GameManager : MonoBehaviour
 
             case GameState.EnemyTurn:
             {
-                //each entity takes a turn
-                foreach (Entity enemy in allEnemies)
+                endTurnButton.interactable = false;
+                if (turnTimer > 0)
                 {
+                    turnTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    //Do a turn with one enemy
+                    Entity enemy = enemiesWhoNeedTurns[0];
+                    enemiesWhoNeedTurns.RemoveAt(0);
                     enemy.StartTurn();
                     enemy.AIController.DoRandomAction();
                     enemy.EndTurn();
+                    turnTimer = timeBetweenTurns;
                 }
 
-                StartNewTurn();
+                if (enemiesWhoNeedTurns.Count == 0)
+                {
+                    StartNewTurn();
+                }                
             };break;
 
             case GameState.DrawingCards:
@@ -238,7 +255,6 @@ public class GameManager : MonoBehaviour
     public void StartNewTurn()
     {
         energy = 5;
-        DiscardHand();
         player.StartTurn();
         stateStack.Pop();
         stateStack.Push(GameState.PlayerIdle);
@@ -248,7 +264,16 @@ public class GameManager : MonoBehaviour
     public void EndPlayerTurn()
     {
         player.EndTurn();
+        DiscardHand();
+
         stateStack.Pop();
+
+        //each entity takes a turn
+        foreach (Entity enemy in allEnemies)
+        {
+            enemiesWhoNeedTurns.Add(enemy);
+        }
+        turnTimer = timeBetweenTurns;
         stateStack.Push(GameState.EnemyTurn);
     }
 
