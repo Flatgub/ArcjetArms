@@ -98,7 +98,19 @@ public class GameManager : MonoBehaviour
             allEnemies.Add(e);
         }
 
-        basicDeck = GameplayContext.CurrentLoadout.LoadoutToDeckTemplate();
+        if (GameplayContext.CurrentLoadout != null)
+        {
+            basicDeck = GameplayContext.CurrentLoadout.LoadoutToDeckTemplate();
+        }
+        else
+        {
+            //fudge a deck together so we can start on the combat scene without crashing
+            CardDatabase.LoadAllCards();
+            basicDeck = new DeckTemplate();
+            basicDeck.AddCardID(CardDatabase.GetCardDataByName("Shoot").cardID, 6);
+            basicDeck.AddCardID(CardDatabase.GetCardDataByName("Step").cardID, 4);
+        }
+        
 
         drawPile = basicDeck.ConvertToDeck();
         drawPile.PrintContents("drawpile");

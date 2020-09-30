@@ -672,6 +672,8 @@ MonoBehaviour:
   activeCardLocation: {fileID: 463299361}
   discardPileLocation: {fileID: 1769442592}
   activeCardRenderer: {fileID: 0}
+  damageNumberPrefab: {fileID: -3341666718133781614, guid: 08b13477e308a94428129dc625f72d82,
+    type: 3}
 --- !u!4 &1400311331
 Transform:
   m_ObjectHideFlags: 0

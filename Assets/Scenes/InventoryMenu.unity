@@ -3839,7 +3839,6 @@ MonoBehaviour:
   partAttachNoise: {fileID: 8300000, guid: 24d95a1a6f67fa44099a7b1678454cee, type: 3}
   partChangeRemoveNoise: {fileID: 8300000, guid: 710182e0e5f89564aa88be8c4170bc17,
     type: 3}
-  menuOpenNoise: {fileID: 8300000, guid: fe401900efd92e7468b28eafb1b28b72, type: 3}
   audioPlayer: {fileID: 1231407652}
 --- !u!4 &1957059790
 Transform:

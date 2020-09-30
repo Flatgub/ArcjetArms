@@ -22,6 +22,8 @@ public class InterfaceManager : MonoBehaviour
 
     public CardRenderer activeCardRenderer;
 
+    public DamageNumber damageNumberPrefab;
+
     enum InterfaceState
     {
         Idle,
@@ -171,5 +173,17 @@ public class InterfaceManager : MonoBehaviour
             LeanTween.move(cr.gameObject, discardPileLocation.position, 0.2f).destroyOnComplete = true;
             card.tiedTo = null;
         }
+    }
+
+    public void SpawnDamageNumber(Entity ent, int amount)
+    {
+        ///convert hex position to canvas position
+        Vector3 worldpoint = grid.GetWorldPosition(ent.Position);
+        RectTransform canvas = uiCanvas.GetComponent<RectTransform>();
+        Vector2 viewportpos = Camera.main.WorldToViewportPoint(worldpoint); //TODO: cache this
+        Vector2 position = viewportpos.IntoRect(canvas);
+
+        DamageNumber num = Instantiate(damageNumberPrefab, canvas);
+        num.Show(position, amount, Color.red);
     }
 }

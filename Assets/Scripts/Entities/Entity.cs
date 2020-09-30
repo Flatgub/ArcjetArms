@@ -75,6 +75,8 @@ public class Entity : MonoBehaviour
         {
             TriggerAttackedEvent(attacker);
         }
+
+        GameplayContext.Ui.SpawnDamageNumber(this, result);
     }
 
     public void DealDamageTo(Entity victim, int baseDamage)

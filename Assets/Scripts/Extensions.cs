@@ -26,4 +26,11 @@ public static class Extensions
     {
         return num.ToString().Colored(color);
     }
+
+    public static Vector2 IntoRect(this Vector2 v, RectTransform rect)
+    {
+        float x = (v.x * rect.sizeDelta.x) - (rect.sizeDelta.x * 0.5f);
+        float y = (v.y * rect.sizeDelta.y) - (rect.sizeDelta.y * 0.5f);
+        return new Vector2(x, y);
+    }
 }
