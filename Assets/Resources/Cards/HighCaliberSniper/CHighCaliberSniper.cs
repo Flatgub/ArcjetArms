@@ -15,7 +15,19 @@ public class CHighCaliberSniper: CardData
 
     public override string GenerateCurrentDescription()
     {
-        return GenerateStaticDescription(); 
+        if (GameplayContext.Player == null || GameplayContext.EntityUnderMouse == null)
+        {
+            return GenerateStaticDescription();
+        }
+
+        Entity player = GameplayContext.Player;
+        Entity target = GameplayContext.EntityUnderMouse;
+        int damage = target.Position.DistanceTo(player.Position) * damageOverDistance;
+        damage = Entity.CalculateDamage(player, target, damage);
+        
+
+        string dmgstring = damage.Colored(Color.red);
+        return string.Format(descriptionTemplate + " ({2})", range, damageOverDistance, dmgstring);
     }
 
     public override IEnumerator CardBehaviour(CardActionResult outcome)
