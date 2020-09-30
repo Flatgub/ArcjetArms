@@ -11,7 +11,21 @@ public class ChargeStatusEffect : StatusEffect, IStatusAttackEventHandler,
     public void GainStack(IStackableStatus other) 
     {
         remainingCharges++;
-        Debug.Log("charge now has " + remainingCharges + " charges");
+    }
+
+    public override string GetName()
+    {
+        return "Charged";
+    }
+
+    public override string GetDescription()
+    {
+        string noun = "punch";
+        if (remainingCharges != 1) 
+        {
+            noun = remainingCharges.Colored(Color.yellow) + " punches";
+        }
+        return string.Format("The next {0} will deal double damage.", noun);
     }
 
     public void OnAttack(Entity subject, Entity target)

@@ -22,13 +22,13 @@ public class EquipmentScreenManager : MonoBehaviour
     private Text GearTitleText = null;
 
     [SerializeField]
-    private AudioClip partAttachNoise;
+    private AudioClip partAttachNoise = null;
     [SerializeField]
-    private AudioClip partChangeRemoveNoise;
+    private AudioClip partChangeRemoveNoise = null;
+    //[SerializeField]
+    //private AudioClip menuOpenNoise = null;
     [SerializeField]
-    private AudioClip menuOpenNoise;
-    [SerializeField]
-    private AudioSource audioPlayer;
+    private AudioSource audioPlayer = null;
 
     private EquipmentSlot pendingSlot = null;
     

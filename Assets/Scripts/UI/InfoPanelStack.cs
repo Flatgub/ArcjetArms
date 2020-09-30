@@ -9,6 +9,11 @@ public class InfoPanelStack : MonoBehaviour
 
     private List<InfoPanelRenderer> panels = null;
 
+    public void Start()
+    {
+        panels = new List<InfoPanelRenderer>();
+    }
+
     public void AddPanel(string title, string body)
     {
         InfoPanelRenderer panel = Instantiate(panelPrefab, transform);
@@ -22,7 +27,7 @@ public class InfoPanelStack : MonoBehaviour
         while (panels.Count > 0)
         {
             InfoPanelRenderer panel = panels[0];
-            Destroy(panel);
+            Destroy(panel.gameObject);
             panels.RemoveAt(0);
         }
     }

@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
 
     private List<Card> allExistingCards = null; //TODO: REMOVE
 
+    public InfoPanelStack playerStatusEffectPanel;
+
     /// <summary>
     /// The event triggered when a card is added from the draw pile into the hand
     /// </summary>
@@ -80,6 +82,7 @@ public class GameManager : MonoBehaviour
         player.AddToGrid(worldGrid, new Hex(1, 0));
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
+        player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
 
         GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
 
@@ -144,6 +147,7 @@ public class GameManager : MonoBehaviour
                         //card was played, put it in the discard pile
                         DiscardCard(activeCard);
                         energy -= GameplayContext.ActiveCard.cardData.energyCost;
+                        UpdatePlayerStatusEventPanel();
                     }
 
                     CleanDeadEnemies();
@@ -328,6 +332,16 @@ public class GameManager : MonoBehaviour
                 Destroy(ent.gameObject);
             }
         }
+    }
+
+    private void UpdatePlayerStatusEventPanel()
+    {
+        playerStatusEffectPanel.Clear();
+        foreach (StatusEffect s in player.GetStatusEffects())
+        {
+            playerStatusEffectPanel.AddPanel(s.GetName(), s.GetDescription());
+        }
+        
     }
 
 }

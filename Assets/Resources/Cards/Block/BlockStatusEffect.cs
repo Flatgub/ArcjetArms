@@ -11,6 +11,18 @@ public class BlockStatusEffect : StatusEffect, IStatusReceiveDamageEventHandler
         blockAmount = amount;
     }
 
+    public override string GetName()
+    {
+        return "Blocking";
+    }
+
+    public override string GetDescription()
+    {
+        string amount = Mathf.CeilToInt((1f - blockAmount) * 100).ToString();
+        return string.Format("Resist {0} incoming damage from the next attack.", 
+            (amount+"%").Colored(Color.green));
+    }
+
     public void OnAttacked(Entity subject, Entity attacker)
     {
         subject.RemoveStatusEffect(this);

@@ -22,6 +22,8 @@ public class Entity : MonoBehaviour
 
     private List<StatusEffect> statusEffects;
 
+    public event Action OnStatusEffectsChanged;
+
     public void Initialize()
     {
         statusEffects = new List<StatusEffect>();
@@ -126,17 +128,20 @@ public class Entity : MonoBehaviour
                     applyResponder.OnApply(this);
                 }
             }
-        }   
+        }
+        OnStatusEffectsChanged?.Invoke();
+        Debug.Log("entity now has " + statusEffects.Count + " status effects");
     }
 
     public void RemoveStatusEffect(StatusEffect effect)
     {
         statusEffects.Remove(effect);
+        OnStatusEffectsChanged?.Invoke();
     }
 
-    public IEnumerator<StatusEffect> GetStatusEffects()
+    public List<StatusEffect> GetStatusEffects()
     {
-        return statusEffects.GetEnumerator();
+        return new List<StatusEffect>(statusEffects);
     }
 
     public void StartTurn()

@@ -18,6 +18,17 @@ public class IgniteStatusEffect : StatusEffect, IStatusAttackEventHandler,
         percentageIncrease += o.percentageIncrease;
     }
 
+    public override string GetName()
+    {
+        return "Igniting";
+    }
+
+    public override string GetDescription()
+    {
+        string percent = (percentageIncrease.ToString() + "%").Colored(Color.yellow);
+        return string.Format("The next attack will deal {0} more damage", percent);
+    }
+
     public void OnAttack(Entity subject, Entity target)
     {
         subject.RemoveStatusEffect(this);

@@ -19,6 +19,25 @@ public class OverdriveStatusEffect : StatusEffect, IStatusCalculateDamageEventHa
         remainingTurns += o.remainingTurns;
     }
 
+    public override string GetName()
+    {
+        return "In Overdrive";
+    }
+
+    public override string GetDescription()
+    {
+        string phrase = "";
+        if (remainingTurns == 1)
+        {
+            phrase = "Till the end of turn ";
+        }
+        else
+        {
+            phrase = "For the next " + remainingTurns.Colored(Color.yellow) + " turns ";
+        }
+        return phrase + "all attacks deal "+"+5".Colored(Color.yellow)+" damage";
+    }
+
     public int OnCalculateDamageAdditive(int damage)
     {
         return damage + 5;

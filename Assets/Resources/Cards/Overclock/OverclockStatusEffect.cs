@@ -15,6 +15,17 @@ public class OverclockStatusEffect : StatusEffect, IStatusCalculateDamageEventHa
         damageMultiplier = multiplier;
     }
 
+    public override string GetName()
+    {
+        return "Overclocked";
+    }
+
+    public override string GetDescription()
+    {
+        return string.Format("Till the end of the turn, all attacks deal {0}x more damage",
+            Mathf.RoundToInt(damageMultiplier).Colored(Color.yellow));
+    }    
+
     public void OnApply(Entity subject)
     {
         int damage = Mathf.CeilToInt(subject.Health.MaxHealth * healthPenalty);
