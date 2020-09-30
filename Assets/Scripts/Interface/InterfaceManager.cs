@@ -24,6 +24,9 @@ public class InterfaceManager : MonoBehaviour
 
     public DamageNumber damageNumberPrefab;
 
+    public AudioGroup cardDrawNoises;
+    public AudioGroup cardTouchNoises;
+    public AudioSource audioPlayer;
     enum InterfaceState
     {
         Idle,
@@ -132,6 +135,7 @@ public class InterfaceManager : MonoBehaviour
         LeanTween.move(cr.gameObject, activeCardLocation.position, 0.2f);
         hand.HoldCardsDown = true;
         activeCardRenderer = cr;
+        //PlaySoundGroup(cardTouchNoises); TODO: fix me
     }
 
     /// <summary>
@@ -185,5 +189,11 @@ public class InterfaceManager : MonoBehaviour
 
         DamageNumber num = Instantiate(damageNumberPrefab, canvas);
         num.Show(position, amount, Color.red);
+    }
+
+    private void PlaySoundGroup(AudioGroup group)
+    {
+        audioPlayer.clip = group.RandomClip();
+        audioPlayer.Play();
     }
 }

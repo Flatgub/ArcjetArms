@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc0456813a8d6fe41b3f5d261702efd0, type: 3}
+  m_Name: CardShoves
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: c8a9abe464fb97b4ab7411235263fbaf, type: 3}
+  - {fileID: 8300000, guid: d985d1ce465829f40b64979870ce9945, type: 3}
+  - {fileID: 8300000, guid: f4d4ed6f8c0597d48aa3a83a7172fddd, type: 3}
+  - {fileID: 8300000, guid: a16ca3e328d78fb44884a67992a67d90, type: 3}
+  - {fileID: 8300000, guid: 9f88f232e10758e4b877bb61cad892f6, type: 3}
+  - {fileID: 8300000, guid: 8116921f407e7e941be1c90c9304c79d, type: 3}
+  - {fileID: 8300000, guid: eeb8048c87e286f4f9f7aa2feafdc679, type: 3}
+  - {fileID: 8300000, guid: 9f1b631f3706ec342948de91c546f542, type: 3}

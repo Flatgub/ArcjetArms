@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
     private Deck drawPile;
     private Deck discardPile;
 
+    private int cardsLeftToDraw = 0;
+    private float cardDrawTimer = 0f;
+    private float cardDrawPause = 0.1f;
+
     public int HandSize = 1;
     private int energy;
 
@@ -35,6 +39,8 @@ public class GameManager : MonoBehaviour
     private List<Card> allExistingCards = null; //TODO: REMOVE
 
     public InfoPanelStack playerStatusEffectPanel;
+
+    public Button endTurnButton;
 
     /// <summary>
     /// The event triggered when a card is added from the draw pile into the hand
@@ -60,7 +66,7 @@ public class GameManager : MonoBehaviour
         PlayerCardPending,
         EnemyTurn,
 
-        ResettingDrawPile
+        DrawingCards,
     }
 
     private Stack<GameState> stateStack;
@@ -128,7 +134,7 @@ public class GameManager : MonoBehaviour
 
         energy = 5;
 
-        Invoke("StartNewTurn", 0.25f);
+        Invoke("StartNewTurn", 0.2f);
     }
 
     // Update is called once per frame
@@ -138,15 +144,13 @@ public class GameManager : MonoBehaviour
         {
             case GameState.PlayerIdle:
             {
-                if (Input.GetButtonDown("Jump"))
-                {
-                    EndPlayerTurn();
-                }
+                endTurnButton.interactable = true;
             }
             ;break;
 
             case GameState.PlayerCardPending:
             {
+                endTurnButton.interactable = false;
                 if (currentCardAction.IsReadyOrCancelled())
                 {
                     if (currentCardAction.WasCancelled())
@@ -185,8 +189,27 @@ public class GameManager : MonoBehaviour
                 StartNewTurn();
             };break;
 
-            case GameState.ResettingDrawPile:
+            case GameState.DrawingCards:
             {
+                endTurnButton.interactable = false;
+                if (cardDrawTimer <= 0)
+                {
+                    DrawCard();
+                    cardsLeftToDraw--;
+                    cardDrawTimer = cardDrawPause;
+                    Debug.Log("Drew 1, " + cardsLeftToDraw + "cards remain");
+                }
+                else
+                {
+                    cardDrawTimer -= Time.deltaTime;
+                }
+
+                //stop drawing cards if empty or finished
+                if ((drawPile.Count == 0 && discardPile.Count == 0) || cardsLeftToDraw == 0)
+                {
+                    cardDrawTimer = 0;
+                    stateStack.Pop();
+                }
             };break;
         }
 
@@ -217,9 +240,9 @@ public class GameManager : MonoBehaviour
         energy = 5;
         DiscardHand();
         player.StartTurn();
-        DrawHand();
         stateStack.Pop();
         stateStack.Push(GameState.PlayerIdle);
+        DrawHand();
     }
 
     public void EndPlayerTurn()
@@ -284,7 +307,7 @@ public class GameManager : MonoBehaviour
         //TODO: force the drawing of a step and a punch, then randomly fill the rest
         //NOTE: this requires a way to ensure certain cards are deleted instead of discarded
         //      otherwise the deck will get bigger every turn as we add cards
-        DrawCards(HandSize);
+        AttemptDrawCard(HandSize);
     }
 
     /// <summary>
@@ -329,7 +352,9 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        DrawCards(n);
+        cardsLeftToDraw = n;
+        stateStack.Push(GameState.DrawingCards);
+        //DrawCards(n);
     }
 
     ///<summary>Sweep and remove any entities from the entities list that are no longer alive.</summary>
