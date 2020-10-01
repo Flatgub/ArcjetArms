@@ -36,7 +36,8 @@ public class EquipmentScreenManager : MonoBehaviour
     {
         CardDatabase.LoadAllCards();
         GearDatabase.LoadAllGear();
-        /* THIS ISN'T WORKING RIGHT NOW, BUT IT NEEDS TO BE FIXED
+
+        /*   THIS ISN'T WORKING RIGHT NOW, BUT IT NEEDS TO BE FIXED
         Debug.Log("Current loadout: " + GameplayContext.CurrentLoadout);
         if (GameplayContext.CurrentLoadout != null)
         {
@@ -52,9 +53,9 @@ public class EquipmentScreenManager : MonoBehaviour
         }*/
 
         activeLoadout = new GearLoadout();
-        GearLoadout template = new GearLoadout();
-        template.EquipIntoSlot(GearDatabase.GetGearDataByID(2), LoadoutSlots.Body);
-        CopyFromLoadout(template);
+        //GearLoadout template = new GearLoadout();
+        //template.EquipIntoSlot(GearDatabase.GetGearDataByID(2), LoadoutSlots.Body);
+        //CopyFromLoadout(template);
 
         SlotTitleText.enabled = false;
         GearTitleText.enabled = false;        

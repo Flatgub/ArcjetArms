@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     public Button endTurnButton;
 
     public Transform GameoverPanel;
+    public Transform VictoryPanel;
 
     /// <summary>
     /// The event triggered when a card is added from the draw pile into the hand
@@ -95,7 +96,7 @@ public class GameManager : MonoBehaviour
         entFactory = EntityFactory.GetFactory;
 
         player = entFactory.CreateEntity(40);
-        player.AddToGrid(worldGrid, new Hex(1, 0));
+        player.AddToGrid(worldGrid, new Hex(1, -2));
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
         player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
@@ -104,10 +105,12 @@ public class GameManager : MonoBehaviour
 
         allEnemies = new List<Entity>();
 
+        Hex[] positions = {new Hex(3, 0), new Hex(-3, 3), new Hex(0, 3), new Hex(-3, 0) };
+
         for (int i = 0; i <= 3; i++)
         {
             Entity e = entFactory.CreateEntity(10);
-            e.AddToGrid(worldGrid, new Hex(3-i, i));
+            e.AddToGrid(worldGrid, positions[i]);
             e.entityName = "enemy " + i;
             //e.ApplyStatusEffect(new DebugStatusEffect());
             entFactory.AddAIController(e);
@@ -152,6 +155,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Debug.Log(worldGrid.GetHexUnderMouse());
         switch (stateStack.Peek())
         {
             case GameState.PlayerIdle:
@@ -254,6 +259,14 @@ public class GameManager : MonoBehaviour
         {
             drawPile.PrintContents("draw pile");
             discardPile.PrintContents("discard pile");
+        }
+
+        if (stateStack.Peek() != GameState.GameOver && allEnemies.Count == 0)
+        {
+            stateStack.Pop();
+            stateStack.Push(GameState.GameOver);
+            DiscardHand();
+            VictoryPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
         }
     }
 

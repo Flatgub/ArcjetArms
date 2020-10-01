@@ -1535,6 +1535,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightArmSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
       propertyPath: m_Enabled
@@ -2267,6 +2272,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightHandSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
       propertyPath: m_Enabled
@@ -2682,6 +2692,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LeftShoulderSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
@@ -3111,6 +3126,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RightShoulderSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
@@ -3784,6 +3804,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LeftHandSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
       propertyPath: m_Enabled
@@ -4194,6 +4219,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LeftArmSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
