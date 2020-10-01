@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour
     private float turnTimer = 0;
     public float timeBetweenTurns = 0.25f;
     private List<Entity> enemiesWhoNeedTurns;
+    private Entity enemyTakingTurn;
+    private bool enemyTurnFinished;
 
     public int HandSize = 1;
     private int energy;
@@ -45,6 +48,8 @@ public class GameManager : MonoBehaviour
     public InfoPanelStack playerStatusEffectPanel;
 
     public Button endTurnButton;
+
+    public Transform GameoverPanel;
 
     /// <summary>
     /// The event triggered when a card is added from the draw pile into the hand
@@ -69,6 +74,7 @@ public class GameManager : MonoBehaviour
         PlayerIdle,
         PlayerCardPending,
         EnemyTurn,
+        GameOver,
 
         DrawingCards,
     }
@@ -191,19 +197,16 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    //Do a turn with one enemy
-                    Entity enemy = enemiesWhoNeedTurns[0];
-                    enemiesWhoNeedTurns.RemoveAt(0);
-                    enemy.StartTurn();
-                    enemy.AIController.DoRandomAction();
-                    enemy.EndTurn();
-                    turnTimer = timeBetweenTurns;
-                }
+                    if (enemyTakingTurn is null)
+                    {
+                        StartNextEnemyTurn();
+                    }
+                    else if (enemyTurnFinished)
+                    {
+                        turnTimer = timeBetweenTurns;
+                    }
 
-                if (enemiesWhoNeedTurns.Count == 0)
-                {
-                    StartNewTurn();
-                }                
+                }
             };break;
 
             case GameState.DrawingCards:
@@ -256,11 +259,22 @@ public class GameManager : MonoBehaviour
 
     public void StartNewTurn()
     {
-        energy = 5;
-        player.StartTurn();
-        stateStack.Pop();
-        stateStack.Push(GameState.PlayerIdle);
-        DrawHand();
+        if (!player.Health.IsDead)
+        {
+            energy = 5;
+            player.StartTurn();
+            stateStack.Pop();
+            stateStack.Push(GameState.PlayerIdle);
+            DrawHand();
+        }
+        else
+        {
+            player.appearance.enabled = false;
+            stateStack.Pop();
+            stateStack.Push(GameState.GameOver);
+            GameoverPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
+        }
+        
     }
 
     public void EndPlayerTurn()
@@ -269,7 +283,6 @@ public class GameManager : MonoBehaviour
         DiscardHand();
 
         stateStack.Pop();
-
         //each entity takes a turn
         foreach (Entity enemy in allEnemies)
         {
@@ -277,6 +290,27 @@ public class GameManager : MonoBehaviour
         }
         turnTimer = timeBetweenTurns;
         stateStack.Push(GameState.EnemyTurn);
+    }
+
+    public void StartNextEnemyTurn()
+    {
+        //Do a turn with one enemy
+        enemyTurnFinished = false;
+        enemyTakingTurn = enemiesWhoNeedTurns[0];
+        enemiesWhoNeedTurns.RemoveAt(0);
+        enemyTakingTurn.StartTurn();
+        enemyTakingTurn.AIController.DoRandomAction(EndEnemyTurn);
+    }
+
+    public void EndEnemyTurn()
+    {
+        enemyTakingTurn.EndTurn();
+        enemyTurnFinished = true;
+        enemyTakingTurn = null;
+        if (enemiesWhoNeedTurns.Count == 0)
+        {
+            StartNewTurn();
+        }
     }
 
     public void DeselectActiveCard()
@@ -408,4 +442,10 @@ public class GameManager : MonoBehaviour
         
     }
 
+
+    public void ReturnToLoadoutScreen()
+    {
+        GameplayContext.Clear();
+        SceneManager.LoadScene("InventoryMenu");
+    }
 }

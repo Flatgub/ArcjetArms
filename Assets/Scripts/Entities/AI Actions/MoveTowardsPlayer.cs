@@ -1,15 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleStep : IAIAction
+public class MoveTowardsPlayer : IAIAction
 {
+    public int speed;
+    public event Action OnActionFinish;
+
+    public MoveTowardsPlayer(int speed)
+    {
+        this.speed = speed;
+    }
+
     public void Do(Entity with)
     {
         List<Hex> path = GridHelper.GetPathToHex(GameplayContext.Grid, with.Position,
             GameplayContext.Player.Position);
 
-        with.MoveTo(path[0]);
+        path.Remove(GameplayContext.Player.Position);
+
+        with.MoveAlong(path, maxSteps: speed, callback: () => {
+            OnActionFinish?.Invoke();
+            OnActionFinish = null;
+            });
     }
 
     public bool IsDoable(Entity with)

@@ -27,6 +27,9 @@ public static class GameplayContext
         Player = null;
         Grid = null;
         Ui = null;
+        EntityUnderMouse = null;
+        ActiveEntity = null;
+        ActiveCard = null;
     }
 
     public static Coroutine StartCoroutineOnManager(IEnumerator coroutine)

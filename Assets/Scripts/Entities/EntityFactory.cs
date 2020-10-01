@@ -64,7 +64,7 @@ public class EntityFactory : MonoBehaviour
     public EntityAIController AddAIController(Entity ent)
     {
         EntityAIController ai = ent.gameObject.AddComponent<EntityAIController>();
-        ai.AddAction(new SingleStep());
+        ai.AddAction(new MoveTowardsPlayer(2));
         //twice as likely to attack, don't do this in future, make this weighted
         ai.AddAction(new BasicMelee());
         ai.AddAction(new BasicMelee());

@@ -14,6 +14,7 @@ public static class CardDatabase
     private static readonly Dictionary<string, CardData> cardsByName;
     private static readonly string cardsDirectory;
     public static readonly Sprite[] EnergyCostFrames;
+    private static bool loaded = false;
 
     static CardDatabase()
     {
@@ -28,7 +29,11 @@ public static class CardDatabase
     /// </summary>
     public static void LoadAllCards()
     {
-        LoadAllCardsInFolder(cardsDirectory);
+        if (!loaded)
+        {
+            LoadAllCardsInFolder(cardsDirectory);
+            loaded = true;
+        }
     }
 
     /// <summary>

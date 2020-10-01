@@ -56,6 +56,28 @@ public class Entity : MonoBehaviour
         LeanTween.moveLocal(gameObject, Grid.GetWorldPosition(pos), 0.1f);
     }
 
+    public void MoveAlong(List<Hex> path, int maxSteps = int.MaxValue,
+        Action callback = null)
+    {
+        int step = 0;
+        maxSteps = Math.Min(maxSteps, path.Count);
+        LTSeq stepSequence = LeanTween.sequence();
+        Hex pos = Position;
+
+        while (step < maxSteps)
+        {
+            pos = path[step];
+            stepSequence.append(LeanTween.moveLocal(gameObject, Grid.GetWorldPosition(pos), 0.25f).setEaseInOutQuart());
+            step++;
+        }
+        Position = pos;
+
+        if (callback != null)
+        {
+            stepSequence.append(callback);
+        }
+    }
+
     public void ReceiveDamage(Entity attacker, int damage)
     {
         int result = CalculateReceivedDamage(damage);
@@ -213,7 +235,7 @@ public class Entity : MonoBehaviour
 
         //always round up
         result = Mathf.CeilToInt(floatResult);
-        Debug.Log("input: " + baseDamage + ", output: " + result);
+        //Debug.Log("input: " + baseDamage + ", output: " + result);
         return result;
     }
 

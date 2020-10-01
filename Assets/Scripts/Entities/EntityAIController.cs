@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,13 +24,19 @@ public class EntityAIController : MonoBehaviour
         }
     }
 
-    public void DoRandomAction()
+    public void DoRandomAction(Action callback)
     {
         List<IAIAction> candidates = GetPossibleActions();
         if (candidates.Count != 0)
         {
             IAIAction action = candidates.GetRandom();
+            action.OnActionFinish += callback;
             action.Do(controlling);
+        }
+        else
+        {
+            Debug.LogWarning(controlling.entityName + " had no valid actions this turn");
+            callback?.Invoke();
         }
     }
 
