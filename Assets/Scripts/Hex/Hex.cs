@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using Unity.Jobs.LowLevel.Unsafe;
-using UnityEditor.UIElements;
-using UnityEngine.EventSystems;
+
+
 
 /// <summary>
 /// Hex represents a point in 3 axis hexagonal cube coordinate space.

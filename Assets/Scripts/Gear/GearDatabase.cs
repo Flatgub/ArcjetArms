@@ -94,21 +94,10 @@ public static class GearDatabase
     /// <param name="folder">The folder to load files from</param>
     private static void LoadAllGearInFolder(string folder)
     {
-        DirectoryInfo dirInfo = new DirectoryInfo(folder);
-
-        //collect all gear at this directory
-        foreach (FileInfo card in dirInfo.GetFiles("*.asset"))
+        GearData[] gearloaded = Resources.LoadAll<GearData>("Gear");
+        foreach (GearData gearasset in gearloaded)
         {
-            //TODO: referencing carddatabase here is bad, this function should just be a helper
-            string gearpath = CardDatabase.ConvertRealDirToResourceDir(card.FullName);
-            gearpath = gearpath.Substring(0, gearpath.Length - 6); //remove .asset from the path
-            LoadGearAsset(Resources.Load<GearData>(gearpath));
-        }
-
-        //recursively load cards in subdirectories
-        foreach (DirectoryInfo d in dirInfo.GetDirectories())
-        {
-            LoadAllGearInFolder(d.FullName);
+            LoadGearAsset(gearasset);
         }
     }
 

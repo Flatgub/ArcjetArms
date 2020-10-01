@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 /// <summary>
@@ -12,7 +11,6 @@ public static class CardDatabase
 {
     private static readonly SortedList<int, CardData> allCards;
     private static readonly Dictionary<string, CardData> cardsByName;
-    private static readonly string cardsDirectory;
     public static readonly Sprite[] EnergyCostFrames;
     private static bool loaded = false;
 
@@ -20,7 +18,6 @@ public static class CardDatabase
     {
         allCards = new SortedList<int, CardData>();
         cardsByName = new Dictionary<string, CardData>();
-        cardsDirectory = Application.dataPath + "/Resources/Cards";
         EnergyCostFrames = Resources.LoadAll<Sprite>("Cards/CardPriceSprites");
     }
 
@@ -31,7 +28,7 @@ public static class CardDatabase
     {
         if (!loaded)
         {
-            LoadAllCardsInFolder(cardsDirectory);
+            LoadAllCardsInFolder("Cards");
             loaded = true;
         }
     }
@@ -110,22 +107,11 @@ public static class CardDatabase
     /// <param name="folder">The folder to load files from</param>
     private static void LoadAllCardsInFolder(string folder)
     {
-        DirectoryInfo dirInfo = new DirectoryInfo(folder);
-
-        //collect all cards at this directory
-        foreach (FileInfo card in dirInfo.GetFiles("*.asset"))
+        CardData[] cardsLoaded = Resources.LoadAll<CardData>(folder);
+        foreach (CardData cardasset in cardsLoaded)
         {
-            string cardpath = ConvertRealDirToResourceDir(card.FullName);
-            cardpath = cardpath.Substring(0, cardpath.Length - 6); //remove .asset from the path
-            CardData cardasset = Resources.Load<CardData>(cardpath);
             allCards.Add(cardasset.cardID, cardasset);
             cardsByName.Add(cardasset.title, cardasset);
-        }
-        
-        //recursively load cards in subdirectories
-        foreach (DirectoryInfo d in dirInfo.GetDirectories())
-        {
-            LoadAllCardsInFolder(d.FullName);
         }
     }
 
