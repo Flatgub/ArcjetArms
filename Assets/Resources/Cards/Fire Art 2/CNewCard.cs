@@ -6,11 +6,11 @@ using UnityEngine;
 public class CFireArt2: CardData
 {
     //put any numbers relevant to the card here
-    public int 6
+    public int baseDamage(6); 
     //generate the "basic" description, without doing any calculations.
     public override string GenerateStaticDescription()
     {
-        return string.Format(descriptionTemplate); // <- put stat variables in here
+        return string.Format(descriptionTemplate, baseDamage); // <- put stat variables in here
     }
 
     public override string GenerateCurrentDescription()
