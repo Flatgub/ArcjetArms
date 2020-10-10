@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     private bool enemyTurnFinished;
 
     public int HandSize = 1;
-    private int energy;
+    public int energy;
 
     private List<Card> playerHand;
     private Card activeCard;

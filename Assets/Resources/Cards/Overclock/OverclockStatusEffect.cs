@@ -45,6 +45,5 @@ public class OverclockStatusEffect : StatusEffect, IStatusCalculateDamageEventHa
     public void OnTurnEnd(Entity subject)
     {
         subject.RemoveStatusEffect(this);
-        Debug.Log("Overclock wore off");
     }
 }
