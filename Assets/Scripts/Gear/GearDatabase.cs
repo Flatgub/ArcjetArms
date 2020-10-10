@@ -103,6 +103,12 @@ public static class GearDatabase
 
     private static void LoadGearAsset(GearData gear)
     {
+        if (allGear.ContainsKey(gear.gearID))
+        {
+            Debug.LogWarning("Ignoring duplicate key gear id:" + gear.gearName);
+            return;
+        }
+
         allGear.Add(gear.gearID, gear);
         gearByName.Add(gear.gearName, gear);
         //see if the list for this catagory already exists

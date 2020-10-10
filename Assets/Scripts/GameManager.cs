@@ -287,7 +287,9 @@ public class GameManager : MonoBehaviour
             stateStack.Push(GameState.GameOver);
             GameoverPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
         }
-        
+        UpdatePlayerStatusEventPanel();
+
+
     }
 
     public void EndPlayerTurn()
@@ -303,6 +305,7 @@ public class GameManager : MonoBehaviour
         }
         turnTimer = timeBetweenTurns;
         stateStack.Push(GameState.EnemyTurn);
+        UpdatePlayerStatusEventPanel();
     }
 
     public void StartNextEnemyTurn()
