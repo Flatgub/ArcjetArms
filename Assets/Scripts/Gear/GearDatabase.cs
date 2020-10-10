@@ -105,7 +105,7 @@ public static class GearDatabase
     {
         if (allGear.ContainsKey(gear.gearID))
         {
-            Debug.LogWarning("Ignoring duplicate key gear id:" + gear.gearName);
+            Debug.LogWarning("Ignoring duplicate key gear id:" + gear.gearID);
             return;
         }
 
