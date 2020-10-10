@@ -53,7 +53,6 @@ public class OverdriveStatusEffect : StatusEffect, IStatusCalculateDamageEventHa
         remainingTurns--;
         if (remainingTurns == 0)
         {
-            Debug.Log("overdrive wore off");
             subject.RemoveStatusEffect(this);
         }
     }

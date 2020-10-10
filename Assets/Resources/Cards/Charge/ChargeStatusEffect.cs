@@ -30,12 +30,11 @@ public class ChargeStatusEffect : StatusEffect, IStatusAttackEventHandler,
 
     public void OnAttack(Entity subject, Entity target)
     {
-        if (GameplayContext.ActiveCard?.cardData.cardID == 1)
+        if (GameplayContext.ActiveCard?.cardData.cardID == 1) //Card ID 1 is "punch"
         {
             remainingCharges--;
             if (remainingCharges == 0)
             {
-                Debug.Log("charge wore off");
                 subject.RemoveStatusEffect(this);
             }
         }
