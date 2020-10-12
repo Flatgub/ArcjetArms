@@ -32,6 +32,8 @@ public class CRamjetDash : CardData
             movementCandidates.AddRange(line);
         }
 
+        
+
         // Show the locations to the player and let them pick one
         SingleHexResult moveLocation 
             = GameplayContext.Ui.OfferSingleHexSelection(movementCandidates);
