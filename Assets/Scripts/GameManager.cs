@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private EntityFactory entFactory;
     
     private Entity player;
-    private List<Entity> allEnemies;
+    private List<Entity> allEntities;
     public InterfaceManager interfaceManager;
 
     private CardActionResult currentCardAction;
@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
 
     public Transform GameoverPanel;
     public Transform VictoryPanel;
+
+    public TerrainType rockTerrain;
 
     /// <summary>
     /// The event triggered when a card is added from the draw pile into the hand
@@ -97,13 +99,14 @@ public class GameManager : MonoBehaviour
 
         player = entFactory.CreateEntity(40);
         player.AddToGrid(worldGrid, new Hex(1, -2));
+        player.EnableStatusEffects(true);
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
         player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
 
         GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
 
-        allEnemies = new List<Entity>();
+        allEntities = new List<Entity>();
 
         Hex[] positions = {new Hex(3, 0), new Hex(-3, 3), new Hex(0, 3), new Hex(-3, 0) };
 
@@ -112,10 +115,15 @@ public class GameManager : MonoBehaviour
             Entity e = entFactory.CreateEntity(10);
             e.AddToGrid(worldGrid, positions[i]);
             e.entityName = "enemy " + i;
+            e.EnableStatusEffects(true);
             //e.ApplyStatusEffect(new DebugStatusEffect());
             entFactory.AddAIController(e);
-            allEnemies.Add(e);
+            allEntities.Add(e);
         }
+
+        Entity rock = entFactory.CreateTerrain(rockTerrain);
+        rock.AddToGrid(worldGrid, new Hex(0, 0, 0));
+        allEntities.Add(rock);
 
         enemiesWhoNeedTurns = new List<Entity>();
 
@@ -261,7 +269,7 @@ public class GameManager : MonoBehaviour
             discardPile.PrintContents("discard pile");
         }
 
-        if (stateStack.Peek() != GameState.GameOver && allEnemies.Count == 0)
+        if (stateStack.Peek() != GameState.GameOver && allEntities.Count == 0)
         {
             stateStack.Pop();
             stateStack.Push(GameState.GameOver);
@@ -299,9 +307,12 @@ public class GameManager : MonoBehaviour
 
         stateStack.Pop();
         //each entity takes a turn
-        foreach (Entity enemy in allEnemies)
+        foreach (Entity enemy in allEntities)
         {
-            enemiesWhoNeedTurns.Add(enemy);
+            if (enemy.AIController != null)
+            {
+                enemiesWhoNeedTurns.Add(enemy);
+            }
         }
         turnTimer = timeBetweenTurns;
         stateStack.Push(GameState.EnemyTurn);
@@ -437,12 +448,12 @@ public class GameManager : MonoBehaviour
     ///<summary>Sweep and remove any entities from the entities list that are no longer alive.</summary>
     private void CleanDeadEnemies()
     {
-        for (int i = allEnemies.Count - 1; i >= 0; i--)
+        for (int i = allEntities.Count - 1; i >= 0; i--)
         {
-            Entity ent = allEnemies[i];
+            Entity ent = allEntities[i];
             if (ent.Health.IsDead)
             {
-                allEnemies.RemoveAt(i);
+                allEntities.RemoveAt(i);
                 Destroy(ent.gameObject);
             }
         }

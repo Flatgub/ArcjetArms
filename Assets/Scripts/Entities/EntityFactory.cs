@@ -70,5 +70,14 @@ public class EntityFactory : MonoBehaviour
         ai.AddAction(new BasicMelee());
         return ai;
     }
+
+    public Entity CreateTerrain(TerrainType type)
+    {
+        Entity obstruction = CreateEntity(type.health);
+        obstruction.entityName = type.name;
+        obstruction.gameObject.name = type.name;
+        obstruction.appearance.sprite = type.images.GetRandom();
+        return obstruction;
+    }
 }
 
