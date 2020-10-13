@@ -6,5 +6,6 @@ using UnityEngine;
 public class TerrainType : ScriptableObject
 {
     public string title;
+    public int health;
     public Sprite[] images;
 }

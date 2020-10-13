@@ -11,6 +11,12 @@ public static class Extensions
         return list[index];
     }
 
+    public static T GetRandom<T>(this T[] array)
+    {
+        int index = UnityEngine.Random.Range(0, array.Length);
+        return array[index];
+    }
+
     public static string GetShort(this Guid guid)
     {
         String str = guid.ToString();

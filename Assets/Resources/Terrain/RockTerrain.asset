@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b59573ff2c64c41879cd67413d5345, type: 3}
   m_Name: RockTerrain
   m_EditorClassIdentifier: 
-  title: 
-  images: []
+  title: Rock
+  health: 20
+  images:
+  - {fileID: 21300000, guid: 56be61562866bff48a00b0adfd6cb3d7, type: 3}
+  - {fileID: 21300000, guid: 12c14d183fcdef84c9a1833db997fdee, type: 3}
+  - {fileID: 21300000, guid: cf50b5ffccd65024e9a72d5ccee358f1, type: 3}
+  - {fileID: 21300000, guid: 0fa51dd2693f2654580c361cf9e7d5b3, type: 3}
