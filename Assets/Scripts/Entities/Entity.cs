@@ -20,16 +20,32 @@ public class Entity : MonoBehaviour
     public HealthComponent Health { get; private set;}
     public EntityAIController AIController { get; private set;}
 
+    public bool AcceptsStatusEffects { get; private set; }
     private List<StatusEffect> statusEffects;
 
     public event Action OnStatusEffectsChanged;
 
     public void Initialize()
     {
-        statusEffects = new List<StatusEffect>();
+        AcceptsStatusEffects = false;
         appearance = GetComponent<SpriteRenderer>();
         Health = GetComponent<HealthComponent>();
         Health.OnDeath += Die;
+    }
+
+    public void EnableStatusEffects(bool enabled)
+    {
+        if (enabled && !AcceptsStatusEffects)
+        {
+            AcceptsStatusEffects = true;
+            statusEffects = new List<StatusEffect>();
+        }
+        else if (!enabled && AcceptsStatusEffects)
+        {
+            AcceptsStatusEffects = false;
+            statusEffects.Clear();
+            statusEffects = null;
+        }
     }
 
     public void SetAIController(EntityAIController controller)
@@ -108,6 +124,11 @@ public class Entity : MonoBehaviour
 
     public void ApplyStatusEffect(StatusEffect effect)
     {
+        if (!AcceptsStatusEffects)
+        {
+            return;
+        };
+
         //find if we already have a status of this type
         StatusEffect existingCopy = null;
         foreach (StatusEffect e in statusEffects)
@@ -150,69 +171,96 @@ public class Entity : MonoBehaviour
 
     public void RemoveStatusEffect(StatusEffect effect)
     {
+        if (!AcceptsStatusEffects)
+        {
+            return;
+        };
+
         statusEffects.Remove(effect);
         OnStatusEffectsChanged?.Invoke();
     }
 
     public List<StatusEffect> GetStatusEffects()
     {
+        if (!AcceptsStatusEffects)
+        {
+            return new List<StatusEffect>();
+        };
+
         return new List<StatusEffect>(statusEffects);
     }
 
     public void StartTurn()
     {
-        //we iterate the loop backwards because statuses might destroy themselves during the loop
-        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        if (AcceptsStatusEffects)
         {
-            StatusEffect effect = statusEffects[i];
-            if (effect is IStatusTurnStartEventHandler startResponder)
+            //we iterate the loop backwards because statuses might destroy themselves during the loop
+            for (int i = statusEffects.Count - 1; i >= 0; i--)
             {
-                startResponder.OnTurnStart(this);
+                StatusEffect effect = statusEffects[i];
+                if (effect is IStatusTurnStartEventHandler startResponder)
+                {
+                    startResponder.OnTurnStart(this);
+                }
             }
         }
     }
 
     public void EndTurn()
     {
-        //we iterate the loop backwards because statuses might destroy themselves during the loop
-        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        if (AcceptsStatusEffects)
         {
-            StatusEffect effect = statusEffects[i];
-            if (effect is IStatusTurnEndEventHandler endResponder)
+            //we iterate the loop backwards because statuses might destroy themselves during the loop
+            for (int i = statusEffects.Count - 1; i >= 0; i--)
             {
-                endResponder.OnTurnEnd(this);
+                StatusEffect effect = statusEffects[i];
+                if (effect is IStatusTurnEndEventHandler endResponder)
+                {
+                    endResponder.OnTurnEnd(this);
+                }
             }
         }
     }
 
     public void TriggerAttackEvent(Entity target)
     {
-        //we iterate the loop backwards because statuses might destroy themselves during the loop
-        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        if (AcceptsStatusEffects)
         {
-            StatusEffect effect = statusEffects[i];
-            if (effect is IStatusAttackEventHandler attackResponder)
+            //we iterate the loop backwards because statuses might destroy themselves during the loop
+            for (int i = statusEffects.Count - 1; i >= 0; i--)
             {
-                attackResponder.OnAttack(this, target);
+                StatusEffect effect = statusEffects[i];
+                if (effect is IStatusAttackEventHandler attackResponder)
+                {
+                    attackResponder.OnAttack(this, target);
+                }
             }
         }
     }
 
     public void TriggerAttackedEvent(Entity attacker)
     {
-        //we iterate the loop backwards because statuses might destroy themselves during the loop
-        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        if (AcceptsStatusEffects)
         {
-            StatusEffect effect = statusEffects[i];
-            if (effect is IStatusReceiveDamageEventHandler attackResponder)
+            //we iterate the loop backwards because statuses might destroy themselves during the loop
+            for (int i = statusEffects.Count - 1; i >= 0; i--)
             {
-                attackResponder.OnAttacked(this, attacker);
+                StatusEffect effect = statusEffects[i];
+                if (effect is IStatusReceiveDamageEventHandler attackResponder)
+                {
+                    attackResponder.OnAttacked(this, attacker);
+                }
             }
         }
     }
 
     public int CalculateDamage(int baseDamage)
     {
+        if (!AcceptsStatusEffects)
+        {
+            return baseDamage;
+        }
+
         int result = baseDamage;
         //Additive pass, only + and - operations are used here
         foreach (StatusEffect e in statusEffects)
@@ -241,6 +289,11 @@ public class Entity : MonoBehaviour
 
     public int CalculateReceivedDamage(int baseDamage)
     {
+        if (!AcceptsStatusEffects)
+        {
+            return baseDamage;
+        }
+
         int result = baseDamage;
 
         //this is lazy but it should be fine for now

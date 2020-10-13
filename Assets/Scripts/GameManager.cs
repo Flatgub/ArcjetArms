@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour
 
         player = entFactory.CreateEntity(40);
         player.AddToGrid(worldGrid, new Hex(1, -2));
+        player.EnableStatusEffects(true);
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
         player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
@@ -112,6 +113,7 @@ public class GameManager : MonoBehaviour
             Entity e = entFactory.CreateEntity(10);
             e.AddToGrid(worldGrid, positions[i]);
             e.entityName = "enemy " + i;
+            e.EnableStatusEffects(true);
             //e.ApplyStatusEffect(new DebugStatusEffect());
             entFactory.AddAIController(e);
             allEnemies.Add(e);
