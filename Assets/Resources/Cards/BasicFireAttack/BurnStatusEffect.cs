@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class BurnStatusEffect : StatusEffect, IStatusTurnStartEventHandler
 {
+    public int baseDamage;
     public int turnsRemaining;
     public int damagePerTurn;
 
-    public BurnStatusEffect(int turns, int damage)
+    public BurnStatusEffect(int normalDamage, int turns, int damage)
     {
+        baseDamage = normalDamage;
         turnsRemaining = turns;
         damagePerTurn = damage;
     }
@@ -20,8 +22,8 @@ public class BurnStatusEffect : StatusEffect, IStatusTurnStartEventHandler
 
     public override string GetDescription()
     {
-        string body = "Burning for {0} turns, for {1} damage per turn";
-        return string.Format(body, turnsRemaining, damagePerTurn);
+        string body = "Deal {0} damage and Burning for {1} turns, for {2} damage per turn";
+        return string.Format(body, baseDamage, turnsRemaining, damagePerTurn);
     }
 
     public void OnTurnStart(Entity subject)
