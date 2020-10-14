@@ -16,8 +16,8 @@ MonoBehaviour:
   title: BuckShot
   cardArt: {fileID: 21300000, guid: 7ff59c07fe84ec445a546952e1933494, type: 3}
   cardFrame: {fileID: 21300000, guid: 99a77cbfbb1f7fc4ab0a6d77796fc396, type: 3}
-  descriptionTemplate: Deals 10 damage to enemy 1 space away. 5 damage to enemy 2
-    spaces away. Range 2.
+  descriptionTemplate: Deal {0} DMG to adjacent enemies or {1} DMG to enemy {2} spaces
+    away
   energyCost: 2
   upgradesTo: {fileID: 0}
   range: 2
