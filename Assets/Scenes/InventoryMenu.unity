@@ -526,6 +526,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightLegSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
       propertyPath: m_Enabled
@@ -1739,6 +1744,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Core Slot
       objectReference: {fileID: 0}
+    - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
       propertyPath: m_Enabled
@@ -1950,6 +1960,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HeadSlot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
@@ -2479,7 +2494,7 @@ PrefabInstance:
     - target: {fileID: 2989624697525790166, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2989624698790569152, guid: 0bc99c7ff6e31a34c9821c5204f9f5b6,
         type: 3}
@@ -3845,6 +3860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74c66ce1e29192c4baae75cdb0b645df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootSlot: {fileID: 422304863}
   slots:
   - {fileID: 1699103224}
   - {fileID: 74904195}

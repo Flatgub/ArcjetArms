@@ -41,7 +41,7 @@ public class EquipmentSlot : MonoBehaviour
     public void Start()
     {
         icon.enabled = false;
-        UpdateDependants(false, null);
+        //UpdateDependants(false, null);
     }
 
     /// <summary>
@@ -70,11 +70,47 @@ public class EquipmentSlot : MonoBehaviour
         }
     }
 
-    private void UpdateDependants(bool enabled, InventoryCollection inventory)
+    public void Refresh()
     {
+        if (equippedGear != null)
+        {
+            icon.enabled = true;
+            icon.sprite = equippedGear.art;
+        }
+        else
+        {
+            icon.enabled = false;
+        }
+
         foreach (EquipmentSlot slot in dependants)
         {
-            if (enabled )
+            if (equippedGear != null)
+            {
+                //check if the slot is of a type that the equipped gear doesn't provide
+                if (Array.IndexOf(equippedGear.DoesntProvide, GearLoadout.GetSlotType(slot.SlotID)) > -1)
+                {
+                    slot.gameObject.SetActive(false);
+                }
+                else
+                {
+                    slot.gameObject.SetActive(gameObject.activeSelf);
+                }
+            }
+            else
+            {
+                slot.gameObject.SetActive(false);
+            }
+            slot.Refresh();
+        }
+    }
+
+    private void UpdateDependants(bool enabled, InventoryCollection inventory)
+    {
+        Debug.Log("updating " + SlotID.ToString());
+        foreach (EquipmentSlot slot in dependants)
+        {
+            bool setgear = false;
+            if (enabled)
             {
                 if (equippedGear != null)
                 {
@@ -82,30 +118,52 @@ public class EquipmentSlot : MonoBehaviour
                     if (Array.IndexOf(equippedGear.DoesntProvide, GearLoadout.GetSlotType(slot.SlotID)) > -1)
                     {
                         slot.SetEquippedGear(null, inventory);
+                        setgear = true;
                         slot.gameObject.SetActive(false);
                     }
                 }
                 else
                 {
                     slot.SetEquippedGear(null, inventory);
+                    setgear = true;
                 }
             }
             else
             {
                 slot.SetEquippedGear(null, inventory);
+                setgear = true;
             }
             slot.gameObject.SetActive(enabled);
+            if (!setgear)
+            {
+                slot.UpdateDependants(enabled, inventory);
+            }
         }
     }
 
+    public void ForceSetGear(GearData gear)
+    {
+        equippedGear = gear;
+        if (gear != null)
+        {
+            icon.enabled = true;
+            icon.sprite = gear.art;
+        }
+        else
+        {
+            icon.enabled = false;
+        }
+    }
+
+
     private void OnEnable()
     {
-        UpdateDependants(equippedGear != null, null);
+        Refresh();
     }
 
     private void OnDisable()
     {
-        UpdateDependants(false, null);
+        Refresh();
     }
 
 }
