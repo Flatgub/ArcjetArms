@@ -31,11 +31,27 @@ public class EquipmentScreenManager : MonoBehaviour
     private AudioSource audioPlayer = null;
 
     private EquipmentSlot pendingSlot = null;
-    
+
+    private InventoryCollection playerInventory = null;
+
+
     void Start()
     {
         CardDatabase.LoadAllCards();
         GearDatabase.LoadAllGear();
+
+        playerInventory = new InventoryCollection();
+        //body
+        playerInventory.AddItem(GearDatabase.GetGearDataByID(2));
+        //two legs
+        playerInventory.AddItem(GearDatabase.GetGearDataByID(0));
+        playerInventory.AddItem(GearDatabase.GetGearDataByID(0));
+        //one melee arm
+        playerInventory.AddItem(GearDatabase.GetGearDataByID(1));
+        //one rifle arm
+        playerInventory.AddItem(GearDatabase.GetGearDataByID(3));
+        //two one gauntlet
+        playerInventory.AddItem(GearDatabase.GetGearDataByID(5));
 
         /*   THIS ISN'T WORKING RIGHT NOW, BUT IT NEEDS TO BE FIXED
         Debug.Log("Current loadout: " + GameplayContext.CurrentLoadout);
@@ -109,7 +125,7 @@ public class EquipmentScreenManager : MonoBehaviour
         foreach (EquipmentSlot slot in slots)
         {
             LoadoutSlots slotid = slot.SlotID;
-            slot.SetEquippedGear(loadout.slots[slotid].contains);
+            slot.SetEquippedGear(loadout.slots[slotid].contains, playerInventory);
         }
 
         UpdateLoadout();
@@ -145,9 +161,9 @@ public class EquipmentScreenManager : MonoBehaviour
 
     public void OnSlotClicked(EquipmentSlot slot)
     {
-
         GearSlotTypes type = GearLoadout.GetSlotType(slot.SlotID);
-        selectionMenu.PresentMenu(GearDatabase.GetAllGearBySlotType(type), showUnequip: !slot.Empty);
+        List<GearData> availableGear = playerInventory.GetAllGearTypesOfSlot(type);
+        selectionMenu.PresentMenu(availableGear, showUnequip: !slot.Empty);
         //EmitSound(menuOpenNoise);
         pendingSlot = slot;
 
@@ -166,7 +182,12 @@ public class EquipmentScreenManager : MonoBehaviour
             {
                 EmitSound(partChangeRemoveNoise);
             }
-            pendingSlot.SetEquippedGear(gear);
+            pendingSlot.SetEquippedGear(gear, playerInventory);
+            if (gear != null)
+            {
+                playerInventory.RemoveItem(gear);
+            }
+            
         }
         pendingSlot = null;
         UpdateHeaderText(null);

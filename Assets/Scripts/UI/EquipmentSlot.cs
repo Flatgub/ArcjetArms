@@ -41,37 +41,58 @@ public class EquipmentSlot : MonoBehaviour
     public void Start()
     {
         icon.enabled = false;
-        UpdateDependants(false);
+        UpdateDependants(false, null);
     }
 
-    public void SetEquippedGear(GearData gear)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="gear">the gear to equip</param>
+    /// <param name="inventory">the inventory to return unequipped items into</param>
+    public void SetEquippedGear(GearData gear, InventoryCollection inventory)
     {
+        if (equippedGear != null && inventory != null)
+        {
+            inventory.AddItem(equippedGear);
+        }
+
         equippedGear = gear;
         if (gear != null)
         {
             icon.enabled = true;
             icon.sprite = gear.art;
-            UpdateDependants(true);
+            UpdateDependants(true, inventory);
         }
         else
         {
             icon.enabled = false;
-            UpdateDependants(false);
+            UpdateDependants(false, inventory);
         }
     }
 
-    private void UpdateDependants(bool enabled)
+    private void UpdateDependants(bool enabled, InventoryCollection inventory)
     {
         foreach (EquipmentSlot slot in dependants)
         {
-            if (enabled && equippedGear != null)
+            if (enabled )
             {
-                //check if the slot is of a type that the equipped gear doesn't provide
-                if (Array.IndexOf(equippedGear.DoesntProvide, GearLoadout.GetSlotType(slot.SlotID)) > -1)
+                if (equippedGear != null)
                 {
-                    slot.gameObject.SetActive(false);
-                    continue;
+                    //check if the slot is of a type that the equipped gear doesn't provide
+                    if (Array.IndexOf(equippedGear.DoesntProvide, GearLoadout.GetSlotType(slot.SlotID)) > -1)
+                    {
+                        slot.SetEquippedGear(null, inventory);
+                        slot.gameObject.SetActive(false);
+                    }
                 }
+                else
+                {
+                    slot.SetEquippedGear(null, inventory);
+                }
+            }
+            else
+            {
+                slot.SetEquippedGear(null, inventory);
             }
             slot.gameObject.SetActive(enabled);
         }
@@ -79,12 +100,12 @@ public class EquipmentSlot : MonoBehaviour
 
     private void OnEnable()
     {
-        UpdateDependants(equippedGear != null);
+        UpdateDependants(equippedGear != null, null);
     }
 
     private void OnDisable()
     {
-        UpdateDependants(false);
+        UpdateDependants(false, null);
     }
 
 }
