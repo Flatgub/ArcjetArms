@@ -17,7 +17,7 @@ public class CSteadyAim: CardData
 
     public override IEnumerator CardBehaviour(CardActionResult outcome)
     {
-        GameplayContext.Player.ApplyStatusEffect(new SteadyAimEffect());
+        GameplayContext.Player.ApplyStatusEffect(new SteadyAimStatusEffect());
         outcome.Complete();
         yield break;
     }
