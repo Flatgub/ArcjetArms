@@ -182,7 +182,6 @@ public class EquipmentScreenManager : MonoBehaviour
 
     public void OnSlotClicked(EquipmentSlot slot)
     {
-        Debug.Log("click!");
         GearSlotTypes type = GearLoadout.GetSlotType(slot.SlotID);
         List<GearData> availableGear = playerInventory.GetAllGearTypesOfSlot(type);
         selectionMenu.PresentMenu(availableGear, showUnequip: !slot.Empty);
@@ -238,5 +237,16 @@ public class EquipmentScreenManager : MonoBehaviour
         audioPlayer.clip = sound;
         audioPlayer.pitch = Random.Range(0.9f, 1.1f);
         audioPlayer.Play();
+    }
+
+    public void SandboxCheat()
+    {
+        playerInventory = new InventoryCollection();
+        GameplayContext.CurrentInventory = playerInventory;
+
+        foreach (GearData gear in GearDatabase.GetAllGearData())
+        {
+            playerInventory.AddItem(gear, n: 3);
+        }
     }
 }

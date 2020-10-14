@@ -12,17 +12,17 @@ public class InventoryCollection
         contents = new Dictionary<int, int>();
     }
 
-    public void AddItem(GearData gear)
+    public void AddItem(GearData gear, int n = 1)
     {
         int gearID = gear.gearID;
         if (contents.TryGetValue(gearID, out int existingQuantity))
         {
             
-            contents[gearID] = existingQuantity + 1;
+            contents[gearID] = existingQuantity + n;
         }
         else
         {
-            contents.Add(gearID, 1);
+            contents.Add(gearID, n);
         }
     }
 

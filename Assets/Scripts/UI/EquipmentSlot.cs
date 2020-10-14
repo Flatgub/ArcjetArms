@@ -106,7 +106,6 @@ public class EquipmentSlot : MonoBehaviour
 
     private void UpdateDependants(bool enabled, InventoryCollection inventory)
     {
-        Debug.Log("updating " + SlotID.ToString());
         foreach (EquipmentSlot slot in dependants)
         {
             bool setgear = false;
