@@ -10,7 +10,7 @@ public class CFireBasicAttack : CardData
 
     public override string GenerateStaticDescription()
     {
-        return string.Format(descriptionTemplate, baseDamage);
+        return string.Format(descriptionTemplate, baseDamage, turnsRemaining, damagePerTurn);
     }
 
     public override string GenerateCurrentDescription()
@@ -36,9 +36,7 @@ public class CFireBasicAttack : CardData
 
     public override IEnumerator CardBehaviour(CardActionResult outcome)
     {
-        GameplayContext.Player.ApplyStatusEffect(new BurnStatusEffect(baseDamage, damagePerTurn, turnsRemaining));
-        outcome.Complete();
-        yield break;
+
         //get a list of adjacent entities
         List<Entity> adjacentEnts = GridHelper.GetAdjacentEntities(GameplayContext.Grid,
             GameplayContext.Player.Position);
@@ -56,6 +54,7 @@ public class CFireBasicAttack : CardData
             //hit 'em
             Entity victim = target.GetResult();
             GameplayContext.Player.DealDamageTo(victim, baseDamage);
+            victim.ApplyStatusEffect(new BurnStatusEffect(baseDamage, damagePerTurn, turnsRemaining));
             GameplayContext.Player.TriggerAttackEvent(victim);
             outcome.Complete();
         }

@@ -20,7 +20,7 @@ MonoBehaviour:
   upgradesTo: {fileID: 0}
   art: {fileID: 21300000, guid: 4384a11db9ae4b64790bc180be77c606, type: 3}
   Cards:
-  - card: {fileID: 0}
+  - card: {fileID: 11400000, guid: b7ff10a61000c5b4f9bb3ab9d0bd0cf2, type: 2}
     amount: 0
   - card: {fileID: 0}
     amount: 0
