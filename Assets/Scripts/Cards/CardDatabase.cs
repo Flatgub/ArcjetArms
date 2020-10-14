@@ -110,9 +110,38 @@ public static class CardDatabase
         CardData[] cardsLoaded = Resources.LoadAll<CardData>(folder);
         foreach (CardData cardasset in cardsLoaded)
         {
-            allCards.Add(cardasset.cardID, cardasset);
-            cardsByName.Add(cardasset.title, cardasset);
+            //Debug.Log("loading card " + cardasset.cardID + ", " + cardasset.title);
+            if (!CheckForConflict(cardasset))
+            {
+                allCards.Add(cardasset.cardID, cardasset);
+                cardsByName.Add(cardasset.title, cardasset);
+            }
         }
+    }
+
+    private static bool CheckForConflict(CardData card)
+    {
+        if (allCards.ContainsKey(card.cardID))
+        {
+            CardData conflict = allCards[card.cardID];
+
+            string warning =
+                string.Format("Card {0} has conflicting ID with {1} (id {2}), skipping...",
+                card.title, conflict.title, card.cardID);
+
+            Debug.LogWarning(warning);
+            return true;
+        }
+        else if (cardsByName.ContainsKey(card.title))
+        {
+            string warning =
+                string.Format("Card {0} has conflicting name, {1} is already in use, skipping... ",
+                card.cardID, card.title);
+
+            Debug.LogWarning(warning);
+            return true;
+        }
+        return false;
     }
 
     /// <summary>

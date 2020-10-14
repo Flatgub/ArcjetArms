@@ -105,7 +105,13 @@ public static class GearDatabase
     {
         if (allGear.ContainsKey(gear.gearID))
         {
-            Debug.LogWarning("Ignoring duplicate key gear id:" + gear.gearID);
+            GearData conflict = allGear[gear.gearID];
+
+            string warning =
+                string.Format("Gear '{0}' has conflicting ID with '{1}' (id {2}), skipping...",
+                gear.gearName, conflict.gearName, gear.gearID);
+
+            Debug.LogWarning(warning);
             return;
         }
 
