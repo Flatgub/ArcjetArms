@@ -19,4 +19,18 @@ MonoBehaviour:
   DoesntProvide: 
   upgradesTo: {fileID: 0}
   art: {fileID: 21300000, guid: 4384a11db9ae4b64790bc180be77c606, type: 3}
-  Cards: []
+  Cards:
+  - card: {fileID: 11400000, guid: 57013c27153f29843b8d877e2f6527f2, type: 2}
+    amount: 3
+  - card: {fileID: 11400000, guid: 743ba06301119bf4aba65581cc6e500e, type: 2}
+    amount: 3
+  - card: {fileID: 11400000, guid: bb4d1ce4ed1aee14b901f4c5976974fa, type: 2}
+    amount: 3
+  - card: {fileID: 11400000, guid: 304f8b2be8652784cb6f6577752c9fdc, type: 2}
+    amount: 3
+  - card: {fileID: 11400000, guid: fe932fe95d83c8c458478a353ea3358a, type: 2}
+    amount: 3
+  - card: {fileID: 11400000, guid: 2623a445e3cfc0e488133476a8e5904f, type: 2}
+    amount: 3
+  - card: {fileID: 11400000, guid: 64a4b5f1688f1ba4b8276c55bed4a476, type: 2}
+    amount: 3
