@@ -121,9 +121,9 @@ public class GameManager : MonoBehaviour
             allEntities.Add(e);
         }
 
-        Entity rock = entFactory.CreateTerrain(rockTerrain);
-        rock.AddToGrid(worldGrid, new Hex(0, 0, 0));
-        allEntities.Add(rock);
+        //Entity rock = entFactory.CreateTerrain(rockTerrain);
+        //rock.AddToGrid(worldGrid, new Hex(0, 0, 0));
+        //allEntities.Add(rock);
 
         enemiesWhoNeedTurns = new List<Entity>();
 
@@ -163,8 +163,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        Debug.Log(worldGrid.GetHexUnderMouse());
         switch (stateStack.Peek())
         {
             case GameState.PlayerIdle:

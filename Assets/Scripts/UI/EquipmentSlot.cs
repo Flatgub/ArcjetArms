@@ -41,50 +41,128 @@ public class EquipmentSlot : MonoBehaviour
     public void Start()
     {
         icon.enabled = false;
-        UpdateDependants(false);
+        //UpdateDependants(false, null);
     }
 
-    public void SetEquippedGear(GearData gear)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="gear">the gear to equip</param>
+    /// <param name="inventory">the inventory to return unequipped items into</param>
+    public void SetEquippedGear(GearData gear, InventoryCollection inventory)
+    {
+        if (equippedGear != null && inventory != null)
+        {
+            inventory.AddItem(equippedGear);
+        }
+
+        equippedGear = gear;
+        if (gear != null)
+        {
+            icon.enabled = true;
+            icon.sprite = gear.art;
+            UpdateDependants(true, inventory);
+        }
+        else
+        {
+            icon.enabled = false;
+            UpdateDependants(false, inventory);
+        }
+    }
+
+    public void Refresh()
+    {
+        if (equippedGear != null)
+        {
+            icon.enabled = true;
+            icon.sprite = equippedGear.art;
+        }
+        else
+        {
+            icon.enabled = false;
+        }
+
+        foreach (EquipmentSlot slot in dependants)
+        {
+            if (equippedGear != null)
+            {
+                //check if the slot is of a type that the equipped gear doesn't provide
+                if (Array.IndexOf(equippedGear.DoesntProvide, GearLoadout.GetSlotType(slot.SlotID)) > -1)
+                {
+                    slot.gameObject.SetActive(false);
+                }
+                else
+                {
+                    slot.gameObject.SetActive(gameObject.activeSelf);
+                }
+            }
+            else
+            {
+                slot.gameObject.SetActive(false);
+            }
+            slot.Refresh();
+        }
+    }
+
+    private void UpdateDependants(bool enabled, InventoryCollection inventory)
+    {
+        foreach (EquipmentSlot slot in dependants)
+        {
+            bool setgear = false;
+            if (enabled)
+            {
+                if (equippedGear != null)
+                {
+                    //check if the slot is of a type that the equipped gear doesn't provide
+                    if (Array.IndexOf(equippedGear.DoesntProvide, GearLoadout.GetSlotType(slot.SlotID)) > -1)
+                    {
+                        slot.SetEquippedGear(null, inventory);
+                        setgear = true;
+                        slot.gameObject.SetActive(false);
+                    }
+                }
+                else
+                {
+                    slot.SetEquippedGear(null, inventory);
+                    setgear = true;
+                }
+            }
+            else
+            {
+                slot.SetEquippedGear(null, inventory);
+                setgear = true;
+            }
+            slot.gameObject.SetActive(enabled);
+            if (!setgear)
+            {
+                slot.UpdateDependants(enabled, inventory);
+            }
+        }
+    }
+
+    public void ForceSetGear(GearData gear)
     {
         equippedGear = gear;
         if (gear != null)
         {
             icon.enabled = true;
             icon.sprite = gear.art;
-            UpdateDependants(true);
         }
         else
         {
             icon.enabled = false;
-            UpdateDependants(false);
         }
     }
 
-    private void UpdateDependants(bool enabled)
-    {
-        foreach (EquipmentSlot slot in dependants)
-        {
-            if (enabled && equippedGear != null)
-            {
-                //check if the slot is of a type that the equipped gear doesn't provide
-                if (Array.IndexOf(equippedGear.DoesntProvide, GearLoadout.GetSlotType(slot.SlotID)) > -1)
-                {
-                    slot.gameObject.SetActive(false);
-                    continue;
-                }
-            }
-            slot.gameObject.SetActive(enabled);
-        }
-    }
 
     private void OnEnable()
     {
-        UpdateDependants(equippedGear != null);
+        Refresh();
     }
 
     private void OnDisable()
     {
-        UpdateDependants(false);
+        Refresh();
     }
 
 }

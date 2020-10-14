@@ -12,6 +12,7 @@ public static class GameplayContext
     public static Entity EntityUnderMouse { get; set; }
     public static Card ActiveCard { get; set;}
     public static GearLoadout CurrentLoadout { get; set; }
+    public static InventoryCollection CurrentInventory { get; set; }
 
     public static void InitializeForEncounter(GameManager gm, Entity player, HexGrid grid, InterfaceManager ui)
     {

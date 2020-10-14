@@ -9,6 +9,8 @@ using static GearLoadout;
 public class EquipmentScreenManager : MonoBehaviour
 {
     [SerializeField]
+    private EquipmentSlot rootSlot = null;
+    [SerializeField]
     private List<EquipmentSlot> slots = null;
     private GearLoadout activeLoadout;
 
@@ -31,18 +33,47 @@ public class EquipmentScreenManager : MonoBehaviour
     private AudioSource audioPlayer = null;
 
     private EquipmentSlot pendingSlot = null;
-    
+
+    private InventoryCollection playerInventory = null;
+
+
     void Start()
     {
         CardDatabase.LoadAllCards();
         GearDatabase.LoadAllGear();
 
-        /*   THIS ISN'T WORKING RIGHT NOW, BUT IT NEEDS TO BE FIXED
+        if (GameplayContext.CurrentInventory is null)
+        {
+            playerInventory = new InventoryCollection();
+            //body
+            playerInventory.AddItem(GearDatabase.GetGearDataByID(2));
+            //two legs
+            playerInventory.AddItem(GearDatabase.GetGearDataByID(0));
+            playerInventory.AddItem(GearDatabase.GetGearDataByID(0));
+            //one melee arm
+            playerInventory.AddItem(GearDatabase.GetGearDataByID(1));
+            //one rifle arm
+            playerInventory.AddItem(GearDatabase.GetGearDataByID(3));
+            //two one gauntlet
+            playerInventory.AddItem(GearDatabase.GetGearDataByID(5));
+            GameplayContext.CurrentInventory = playerInventory;
+            Debug.Log("made new inventory");
+        }
+        else
+        {
+            playerInventory = GameplayContext.CurrentInventory;
+            Debug.Log("copied inventory");
+        } 
+        
+        
+        
         Debug.Log("Current loadout: " + GameplayContext.CurrentLoadout);
         if (GameplayContext.CurrentLoadout != null)
         {
             activeLoadout = GameplayContext.CurrentLoadout;
+            
             CopyFromLoadout(activeLoadout);
+            Invoke("RefreshVisuals", 0.01f);
         }
         else
         {
@@ -50,9 +81,9 @@ public class EquipmentScreenManager : MonoBehaviour
             GearLoadout template = new GearLoadout();
             template.EquipIntoSlot(GearDatabase.GetGearDataByID(2), LoadoutSlots.Body);
             CopyFromLoadout(template);
-        }*/
+        }
 
-        activeLoadout = new GearLoadout();
+        //activeLoadout = new GearLoadout();
         //GearLoadout template = new GearLoadout();
         //template.EquipIntoSlot(GearDatabase.GetGearDataByID(2), LoadoutSlots.Body);
         //CopyFromLoadout(template);
@@ -104,12 +135,18 @@ public class EquipmentScreenManager : MonoBehaviour
         deckList.UpdateList(cards);
     }
 
+    private void RefreshVisuals()
+    {
+        rootSlot.Refresh();
+    }
+
     public void CopyFromLoadout(GearLoadout loadout)
     {
         foreach (EquipmentSlot slot in slots)
         {
             LoadoutSlots slotid = slot.SlotID;
-            slot.SetEquippedGear(loadout.slots[slotid].contains);
+            slot.ForceSetGear(loadout.slots[slotid].contains);
+            slot.Refresh();
         }
 
         UpdateLoadout();
@@ -145,9 +182,9 @@ public class EquipmentScreenManager : MonoBehaviour
 
     public void OnSlotClicked(EquipmentSlot slot)
     {
-
         GearSlotTypes type = GearLoadout.GetSlotType(slot.SlotID);
-        selectionMenu.PresentMenu(GearDatabase.GetAllGearBySlotType(type), showUnequip: !slot.Empty);
+        List<GearData> availableGear = playerInventory.GetAllGearTypesOfSlot(type);
+        selectionMenu.PresentMenu(availableGear, showUnequip: !slot.Empty);
         //EmitSound(menuOpenNoise);
         pendingSlot = slot;
 
@@ -166,7 +203,12 @@ public class EquipmentScreenManager : MonoBehaviour
             {
                 EmitSound(partChangeRemoveNoise);
             }
-            pendingSlot.SetEquippedGear(gear);
+            pendingSlot.SetEquippedGear(gear, playerInventory);
+            if (gear != null)
+            {
+                playerInventory.RemoveItem(gear);
+            }
+            
         }
         pendingSlot = null;
         UpdateHeaderText(null);
@@ -195,5 +237,16 @@ public class EquipmentScreenManager : MonoBehaviour
         audioPlayer.clip = sound;
         audioPlayer.pitch = Random.Range(0.9f, 1.1f);
         audioPlayer.Play();
+    }
+
+    public void SandboxCheat()
+    {
+        playerInventory = new InventoryCollection();
+        GameplayContext.CurrentInventory = playerInventory;
+
+        foreach (GearData gear in GearDatabase.GetAllGearData())
+        {
+            playerInventory.AddItem(gear, n: 3);
+        }
     }
 }

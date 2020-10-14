@@ -129,4 +129,17 @@ public static class GearDatabase
             gearBySlotType.Add(gear.requiredSlot, newcatagory);
         }
     }
+
+    public static List<GearData> GetAllGearData()
+    {
+        List<GearData> output = new List<GearData>();
+        foreach (KeyValuePair<int, GearData> pair in allGear)
+        {
+            output.Add(pair.Value);
+        }
+
+        return output;
+        ;
+    }
+
 }
