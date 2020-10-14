@@ -12,13 +12,20 @@ public class CBuckShot: CardData
     //generate the "basic" description, without doing any calculations.
     public override string GenerateStaticDescription()
     {
-        return string.Format(descriptionTemplate); // <- put stat variables in here
+        return string.Format(descriptionTemplate, maxDamage, minDamage, range); 
     }
 
     public override string GenerateCurrentDescription()
     {
-        // replace this if any of the cards numbers are calculated, such as damage.
-        return GenerateStaticDescription(); 
+        if (GameplayContext.Player == null)
+        {
+            return GenerateStaticDescription();
+        }
+
+        int realMinDamage = GameplayContext.Player.CalculateDamage(minDamage);
+        int realMaxDamage = GameplayContext.Player.CalculateDamage(maxDamage);
+        
+        return string.Format(descriptionTemplate, realMaxDamage, realMinDamage, range);
     }
 
     //what should the card do when its played, remember to do outcome.Complete or outcome.Cancel
