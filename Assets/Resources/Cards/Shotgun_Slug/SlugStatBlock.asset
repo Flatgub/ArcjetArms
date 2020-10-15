@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c80d167f52da59d409c7cc7ca1427e23, type: 3}
   m_Name: SlugStatBlock
   m_EditorClassIdentifier: 
-  cardID: 0
-  title: 
-  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
-  cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
-  descriptionTemplate: 
-  energyCost: 0
+  cardID: 17
+  title: Slug
+  cardArt: {fileID: 21300000, guid: 660076ca040a4f8468eae032d382b945, type: 3}
+  cardFrame: {fileID: 21300000, guid: 99a77cbfbb1f7fc4ab0a6d77796fc396, type: 3}
+  descriptionTemplate: Deal {0} damage to target adjacent to player. Range of {1}.
+    Damage drops off with range.
+  energyCost: 2
   upgradesTo: {fileID: 0}
-  range: 0
-  maxDamage: 0
+  range: 5
+  maxDamage: 10
