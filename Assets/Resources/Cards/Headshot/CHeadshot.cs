@@ -37,6 +37,8 @@ public class CHeadshot: CardData
         if (!target.WasCancelled())
         {
             Entity victim = target.GetResult();
+            if (victim.Health.HealthAsFraction() <= 0.5f) ;
+            baseDamage = baseDamage * 2f;
     GameplayContext.Player.DealDamageTo(victim, baseDamage);
             GameplayContext.Player.TriggerAttackEvent(victim);
             outcome.Complete();
