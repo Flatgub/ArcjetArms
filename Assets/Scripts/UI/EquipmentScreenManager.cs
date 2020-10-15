@@ -19,6 +19,8 @@ public class EquipmentScreenManager : MonoBehaviour
     [SerializeField]
     private DeckCardList deckList = null;
     [SerializeField]
+    private InventoryList inventoryList = null;
+    [SerializeField]
     private Text SlotTitleText = null;
     [SerializeField]
     private Text GearTitleText = null;
@@ -89,7 +91,7 @@ public class EquipmentScreenManager : MonoBehaviour
         //CopyFromLoadout(template);
 
         SlotTitleText.enabled = false;
-        GearTitleText.enabled = false;        
+        GearTitleText.enabled = false;
     }
 
     private void Update()
@@ -135,9 +137,23 @@ public class EquipmentScreenManager : MonoBehaviour
         deckList.UpdateList(cards);
     }
 
+    private void UpdateInventoryList()
+    {
+        List<string> items = new List<string>();
+        foreach (GearData gear in playerInventory.GetAllGearTypes())
+        {
+            int count = playerInventory.GetCountOf(gear);
+            string countstr = count <= 1 ? "" : "(x" + count + ")";
+            string line = string.Format("{0} {1}", gear.gearName, countstr);
+            items.Add(line);
+        }
+        inventoryList.UpdateList(items);
+    }
+
     private void RefreshVisuals()
     {
         rootSlot.Refresh();
+        UpdateInventoryList();
     }
 
     public void CopyFromLoadout(GearLoadout loadout)
@@ -213,6 +229,7 @@ public class EquipmentScreenManager : MonoBehaviour
         pendingSlot = null;
         UpdateHeaderText(null);
         UpdateLoadout();
+        UpdateInventoryList();
     }
 
     public void OnSlotMousedOver(EquipmentSlot slot)
@@ -248,5 +265,6 @@ public class EquipmentScreenManager : MonoBehaviour
         {
             playerInventory.AddItem(gear, n: 3);
         }
+        UpdateInventoryList();
     }
 }

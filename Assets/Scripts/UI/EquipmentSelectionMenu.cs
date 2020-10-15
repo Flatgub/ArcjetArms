@@ -62,6 +62,7 @@ public class EquipmentSelectionMenu : MonoBehaviour
         newButton.onClick.AddListener(() => { manager.OnEquipmentSelectionMade(gear); });
         newButton.gameObject.SetActive(true);
         newButton.gameObject.name = label;
+        
         activeButtons.Add(newButton);
     } 
 

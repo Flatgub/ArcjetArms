@@ -62,6 +62,20 @@ public class InventoryCollection
         return count;
     }
 
+    public int GetCountOf(GearData gear )
+    {
+        int gearID = gear.gearID;
+        if (contents.TryGetValue(gearID, out int existingQuantity))
+        {
+
+            return existingQuantity;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     /// <summary>
     /// Get a list of each kind of unique gear piece in the inventory. 
     /// Duplicate pieces aren't shown
