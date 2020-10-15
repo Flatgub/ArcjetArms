@@ -111,6 +111,7 @@ public class EquipmentSlot : MonoBehaviour
             bool setgear = false;
             if (enabled)
             {
+                slot.gameObject.SetActive(true);
                 if (equippedGear != null)
                 {
                     //check if the slot is of a type that the equipped gear doesn't provide
@@ -124,15 +125,17 @@ public class EquipmentSlot : MonoBehaviour
                 else
                 {
                     slot.SetEquippedGear(null, inventory);
+                    slot.gameObject.SetActive(false);
                     setgear = true;
                 }
             }
             else
             {
                 slot.SetEquippedGear(null, inventory);
+                slot.gameObject.SetActive(false);
                 setgear = true;
             }
-            slot.gameObject.SetActive(enabled);
+            
             if (!setgear)
             {
                 slot.UpdateDependants(enabled, inventory);
