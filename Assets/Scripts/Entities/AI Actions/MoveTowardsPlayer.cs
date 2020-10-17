@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MoveTowardsPlayer : IAIAction
 {
+    public string ActionName { get { return "MoveTowardsPlayer";} }
+
     public int speed;
     public event Action OnActionFinish;
 

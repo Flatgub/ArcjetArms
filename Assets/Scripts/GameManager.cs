@@ -228,7 +228,7 @@ public class GameManager : MonoBehaviour
                     DrawCard();
                     cardsLeftToDraw--;
                     cardDrawTimer = cardDrawPause;
-                    Debug.Log("Drew 1, " + cardsLeftToDraw + "cards remain");
+                    //Debug.Log("Drew 1, " + cardsLeftToDraw + "cards remain");
                 }
                 else
                 {
@@ -261,11 +261,14 @@ public class GameManager : MonoBehaviour
             GameplayContext.EntityUnderMouse = null;
         }
 
+        /*
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            drawPile.PrintContents("draw pile");
-            discardPile.PrintContents("discard pile");
-        }
+            Vector3 PlayerPos = worldGrid.GetWorldPosition(player.Position);
+            PlayerPos.z = -1;
+            ProjectileTracer tracer = Instantiate(BulletTracer, PlayerPos, Quaternion.identity);
+            tracer.GoTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }*/
 
         if (stateStack.Peek() != GameState.GameOver && allEntities.Count == 0)
         {
@@ -466,7 +469,6 @@ public class GameManager : MonoBehaviour
         }
         
     }
-
 
     public void ReturnToLoadoutScreen()
     {

@@ -15,8 +15,9 @@ public static class GridHelper
     /// <param name="length">The max length of the line, not including the start location</param>
     /// <param name="stopAtObstructions">whether the line should stop at obstructions</param>
     /// <param name="includeStart">whether the starting location should be included in the list</param>
+    /// <param name="includeHit">Whether the list should include the hit obstruction, if applicable</param>
     public static List<Hex> CastLineInDirection(HexGrid grid, Hex start, Hex direction, int length,
-        bool stopAtObstructions = true, bool includeStart = true)
+        bool stopAtObstructions = true, bool includeStart = true, bool includeHit = false)
     {
         List<Hex> output = new List<Hex>();
 
@@ -35,6 +36,10 @@ public static class GridHelper
             }
             else
             {
+                if (includeHit)
+                {
+                    output.Add(pos);
+                }
                 break;
             }
         }
@@ -188,6 +193,11 @@ public static class GridHelper
         }
     }
 
+    /// <summary>
+    /// Removes all the hexes from a list of hexes that are occupied, leaving only free spaces
+    /// </summary>
+    /// <param name="grid">The grid to work with</param>
+    /// <param name="input">The list to work on</param>
     public static void RemoveOccupiedHexes(HexGrid grid, List<Hex> input)
     {
         for (int i = input.Count - 1; i >= 0; i--)
@@ -216,4 +226,53 @@ public static class GridHelper
 
         return output;
     }
+
+    /// <summary>
+    /// Find the nearest hex to the input position given a list of other hexes
+    /// </summary>
+    /// <param name="list">The list </param>
+    /// <param name="pos"></param>
+    /// <returns>The hex from list that was closest to pos</returns>
+    public static Hex GetNearestHexInList(List<Hex> list, Hex pos)
+    {
+        if (list.Count == 0)
+        {
+            return null;
+        }
+
+        Hex nearest = list[0];
+        int dist = nearest.DistanceTo(pos);
+
+        foreach (Hex h in list)
+        {
+            int newDist = h.DistanceTo(pos);
+            if (newDist < dist)
+            {
+                dist = newDist;
+                nearest = h;
+            }
+        }
+
+        return nearest;
+    }
+
+    /// <summary>
+    /// Get all of the entities that exist in a given set of hexes
+    /// </summary>
+    /// <param name="grid">The grid to work with</param>
+    /// <param name="list">The list of hexes to check for entities</param>
+    /// <returns>A list of the entities that were found in those positions</returns>
+    public static List<Entity> GetEntitiesFromPositions(HexGrid grid, List<Hex> list)
+    {
+        List<Entity> output = new List<Entity>();
+        foreach (Hex h in list)
+        {
+            if (grid.GetEntityAtHex(h) is Entity ent)
+            {
+                output.Add(ent);
+            }
+        }
+        return output;
+    }
+
 }

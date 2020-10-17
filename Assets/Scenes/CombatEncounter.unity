@@ -1618,6 +1618,8 @@ MonoBehaviour:
   cardDrawNoises: {fileID: 11400000, guid: f78abc4e344c990459fda8c6a7a6362b, type: 2}
   cardTouchNoises: {fileID: 11400000, guid: a90fe99ec47214a489cad77f80c316d4, type: 2}
   audioPlayer: {fileID: 1400311332}
+  tracerPrefab: {fileID: 2399892022296533233, guid: 8d9e9262a3c100d418653a7f4fd3842b,
+    type: 3}
 --- !u!4 &1400311331
 Transform:
   m_ObjectHideFlags: 0

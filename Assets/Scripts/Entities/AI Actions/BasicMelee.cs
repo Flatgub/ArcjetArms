@@ -5,8 +5,16 @@ using UnityEngine;
 
 public class BasicMelee : IAIAction
 {
-    public int baseDamage = 5;
+    public string ActionName { get { return "BasicMelee";} }
+
+    public int baseDamage;
     public event Action OnActionFinish;
+
+    public BasicMelee(int damage)
+    {
+        baseDamage = damage;
+    }
+
     public void Do(Entity with)
     {
         with.DealDamageTo(GameplayContext.Player, baseDamage);
