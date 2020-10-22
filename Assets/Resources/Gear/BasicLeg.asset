@@ -22,3 +22,4 @@ MonoBehaviour:
   Cards:
   - card: {fileID: 11400000, guid: 2d60371b3eef77f44bf442644c84114b, type: 2}
     amount: 2
+  rarity: -1
