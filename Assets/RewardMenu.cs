@@ -6,11 +6,19 @@ using static GearData;
 
 public class RewardMenu : MonoBehaviour
 {
+    private bool initialized = false;
+    public float appearSpeed = 0.25f;
+
+    [SerializeField]
+    private CanvasGroup selfGroup = null;
+
     public Transform rewardContainer;
     public Transform previewContainer;
 
-    private RewardScreenItem rewardScreenTemplate;
-    private CardRenderer cardPreviewTemplate;
+    [SerializeField]
+    private RewardScreenItem rewardScreenTemplate = null;
+    [SerializeField]
+    private CardRenderer cardPreviewTemplate = null;
 
     private List<RewardScreenItem> activeOptions;
     private List<CardRenderer> activePreviews;
@@ -22,20 +30,30 @@ public class RewardMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!initialized)
+        {
+            Init();
+        }
+    }
+
+    public void Init()
+    {
         activePreviews = new List<CardRenderer>();
         activeOptions = new List<RewardScreenItem>();
-
-        rewardScreenTemplate = rewardContainer.GetComponentInChildren<RewardScreenItem>();
-        cardPreviewTemplate = previewContainer.GetComponentInChildren<CardRenderer>();
 
         rewardScreenTemplate.gameObject.SetActive(false);
         cardPreviewTemplate.gameObject.SetActive(false);
 
-        GearDatabase.LoadAllGear();
-        AddRewardOption(GearDatabase.GetGearDataByID(7));
-        AddRewardOption(GearDatabase.GetGearDataByID(10));
-        AddRewardOption(GearDatabase.GetGearDataByID(106));
         confirmButton.interactable = false;
+        initialized = true;
+    }
+
+    public void ShowRewardMenu()
+    {
+        gameObject.SetActive(true);
+        selfGroup.interactable = true;
+        selfGroup.blocksRaycasts = true;
+        selfGroup.LeanAlpha(1.0f, appearSpeed);
     }
 
     public void AddRewardOption(GearData newGear)

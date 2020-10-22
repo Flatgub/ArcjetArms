@@ -142,4 +142,30 @@ public static class GearDatabase
         ;
     }
 
+    public static LootPool GenerateMasterLootPool()
+    {
+        LootPool master = new LootPool();
+
+        foreach (KeyValuePair<int, GearData> pair in allGear)
+        {
+            GearData gear = pair.Value;
+            if (gear.rarity != LootPool.LootRarity.DontSpawn)
+            {
+                //only one of each can be equipped at a time, so the lootpool only needs one copy
+                if (gear.requiredSlot == GearSlotTypes.Head
+                    || gear.requiredSlot == GearSlotTypes.Body
+                    || gear.requiredSlot == GearSlotTypes.Core)
+                {
+                    master.AddGear(gear);
+                }
+                else
+                {
+                    master.AddGear(gear, n: 2);
+                }
+            }
+        }
+
+        return master;
+    }
+
 }

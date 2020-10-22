@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
 
     public Transform GameoverPanel;
     public Transform VictoryPanel;
+    public CanvasGroup gameplayElements;
+    public RewardMenu rewardMenu;
 
     public TerrainType rockTerrain;
 
@@ -110,7 +112,7 @@ public class GameManager : MonoBehaviour
 
         Hex[] positions = {new Hex(3, 0), new Hex(-3, 3), new Hex(0, 3), new Hex(-3, 0) };
 
-        for (int i = 0; i <= 3; i++)
+        for (int i = 0; i <= 0; i++)
         {
             Entity e = entFactory.CreateEntity(10);
             e.AddToGrid(worldGrid, positions[i]);
@@ -129,7 +131,7 @@ public class GameManager : MonoBehaviour
 
         if (GameplayContext.CurrentLoadout != null)
         {
-            basicDeck = GameplayContext.CurrentLoadout.LoadoutToDeckTemplate();
+            basicDeck = GameplayContext.CurrentLoadout.ToDeckTemplate();
         }
         else
         {
@@ -468,6 +470,36 @@ public class GameManager : MonoBehaviour
             playerStatusEffectPanel.AddPanel(s.GetName(), s.GetDescription());
         }
         
+    }
+
+    public void ShowRewardMenu()
+    {
+        LootPool masterpool = GearDatabase.GenerateMasterLootPool();
+
+        if (GameplayContext.CurrentLoadout is GearLoadout load)
+        {
+            masterpool.SubtractLoadout(load);
+        }
+
+        if (GameplayContext.CurrentInventory is InventoryCollection inv)
+        {
+            masterpool.SubtractInventory(inv);
+        }
+
+
+        gameplayElements.interactable = false;
+        gameplayElements.blocksRaycasts = false;
+        gameplayElements.LeanAlpha(0, rewardMenu.appearSpeed);
+        rewardMenu.Init();
+        rewardMenu.ShowRewardMenu();
+
+        masterpool.MakeActive();
+        for (int i = 0; i < 3; i++)
+        {
+            rewardMenu.AddRewardOption(masterpool.Pop());
+        }
+        masterpool.Finish();
+
     }
 
     public void ReturnToLoadoutScreen()

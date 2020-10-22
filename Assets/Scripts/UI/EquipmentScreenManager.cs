@@ -52,12 +52,10 @@ public class EquipmentScreenManager : MonoBehaviour
             //two legs
             playerInventory.AddItem(GearDatabase.GetGearDataByID(0));
             playerInventory.AddItem(GearDatabase.GetGearDataByID(0));
-            //one melee arm
-            playerInventory.AddItem(GearDatabase.GetGearDataByID(1));
-            //one rifle arm
-            playerInventory.AddItem(GearDatabase.GetGearDataByID(3));
-            //two one gauntlet
-            playerInventory.AddItem(GearDatabase.GetGearDataByID(5));
+            //two melee arm
+            playerInventory.AddItem(GearDatabase.GetGearDataByID(1), 2);
+            //two rifle arm
+            playerInventory.AddItem(GearDatabase.GetGearDataByID(3), 2);
             GameplayContext.CurrentInventory = playerInventory;
             Debug.Log("made new inventory");
         }
@@ -122,7 +120,7 @@ public class EquipmentScreenManager : MonoBehaviour
 
     private void UpdateDeckList()
     {
-        DeckTemplate template = activeLoadout.LoadoutToDeckTemplate();
+        DeckTemplate template = activeLoadout.ToDeckTemplate();
         Dictionary<string, CardData> cards = new Dictionary<string, CardData>();
         foreach (KeyValuePair<int, int> pair in template)
         {
