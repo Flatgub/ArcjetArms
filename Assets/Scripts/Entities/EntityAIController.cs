@@ -34,6 +34,12 @@ public class EntityAIController : MonoBehaviour
 
     public void DoRandomAction(Action callback)
     {
+        if (controlling.isStunned)
+        {
+            callback.Invoke();
+            return;
+        }
+
         List<ActionChoice> candidates = GetPossibleActions();
 
         candidates.Sort((a, b) => {return Mathf.Clamp(a.priority - b.priority, -1, 1); });

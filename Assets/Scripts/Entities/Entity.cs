@@ -13,6 +13,8 @@ public class Entity : MonoBehaviour
 {
     public string entityName = "Unnamed";
 
+    public bool isStunned = false;
+
     public HexGrid Grid { get; private set; }
     public Hex Position { get; private set; }
     public SpriteRenderer appearance;

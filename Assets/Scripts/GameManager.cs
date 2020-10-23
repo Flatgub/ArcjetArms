@@ -285,11 +285,20 @@ public class GameManager : MonoBehaviour
     {
         if (!player.Health.IsDead)
         {
-            energy = 5;
+            
             player.StartTurn();
             stateStack.Pop();
             stateStack.Push(GameState.PlayerIdle);
-            DrawHand();
+            if (!player.isStunned)
+            {
+                energy = 5;
+                DrawHand();
+            }
+            else
+            {
+                energy = 0;
+            }
+            
         }
         else
         {
