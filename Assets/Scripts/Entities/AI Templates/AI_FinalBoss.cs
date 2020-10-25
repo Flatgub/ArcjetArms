@@ -16,6 +16,7 @@ public class AI_FinalBoss : IAiTemplate
     {
         entity.entityName = "Final Boss";
         entity.Health.SetMaxHealth(MaxHealth, updateHealth: true);
+        entity.EnableStatusEffects(false);
 
         entity.AIController.AddAction(new BasicMelee(hookDamage), 20);
         entity.AIController.AddAction(new ThrowHook(attackRange, moveSpeed), 10);
