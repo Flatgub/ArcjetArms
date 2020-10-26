@@ -38,12 +38,12 @@ public class CFireArt1 : CardData
     {
 
         //get a list of adjacent entities
-        List<Entity> rangedEnts = GridHelper.GetAdjacentEntities(GameplayContext.Grid,
+        List<Entity> GetEntitiesInRange = GridHelper.GetEntitiesInRange(GameplayContext.Grid,
             GameplayContext.Player.Position, 5);
 
         //let the player select one of the adjacent entities
         SingleEntityResult target =
-            GameplayContext.Ui.OfferSingleEntitySelection(adjacentEnts);
+            GameplayContext.Ui.OfferSingleEntitySelection(EntsInRange);
 
         //wait for the player to make a selection
         yield return new WaitUntil(target.IsReadyOrCancelled);
