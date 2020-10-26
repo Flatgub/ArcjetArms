@@ -30,6 +30,9 @@ public class OverworldManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CardDatabase.LoadAllCards();
+        GearDatabase.LoadAllGear();
+
         GameplayContext.InDebugMode = false;
 
         heightOfLevels = MaxNodesPerLevel * paddingWithinLevel;

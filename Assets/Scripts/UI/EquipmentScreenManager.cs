@@ -47,8 +47,6 @@ public class EquipmentScreenManager : MonoBehaviour
         if (GameplayContext.CurrentInventory is null)
         {
             playerInventory = new InventoryCollection();
-            //body
-            playerInventory.AddItem(GearDatabase.GetGearDataByID(2));
             //two legs
             playerInventory.AddItem(GearDatabase.GetGearDataByID(0));
             playerInventory.AddItem(GearDatabase.GetGearDataByID(0));
@@ -73,7 +71,6 @@ public class EquipmentScreenManager : MonoBehaviour
             activeLoadout = GameplayContext.CurrentLoadout;
             
             CopyFromLoadout(activeLoadout);
-            Invoke("RefreshVisuals", 0.01f);
         }
         else
         {
@@ -82,6 +79,8 @@ public class EquipmentScreenManager : MonoBehaviour
             template.EquipIntoSlot(GearDatabase.GetGearDataByID(2), LoadoutSlots.Body);
             CopyFromLoadout(template);
         }
+
+        Invoke("RefreshVisuals", 0.01f);
 
         //activeLoadout = new GearLoadout();
         //GearLoadout template = new GearLoadout();
