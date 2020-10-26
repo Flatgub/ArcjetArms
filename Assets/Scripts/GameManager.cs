@@ -159,6 +159,13 @@ public class GameManager : MonoBehaviour
 
         energy = 5;
 
+        if (!GameplayContext.InDebugMode)
+        {
+            GameObject endbutton = GameObject.Find("EndGameButton");
+            endbutton.SetActive(false);
+        }
+        
+
         Invoke("StartNewTurn", 0.2f);
     }
 

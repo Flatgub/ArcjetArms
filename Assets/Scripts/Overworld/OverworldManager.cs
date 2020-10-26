@@ -30,7 +30,8 @@ public class OverworldManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameplayContext.InDebugMode = false;
+
         heightOfLevels = MaxNodesPerLevel * paddingWithinLevel;
 
         ClearLevel();
@@ -199,7 +200,20 @@ public class OverworldManager : MonoBehaviour
         if (playerAt.outwardLinks.Contains(node))
         {
             SetPlayerAt(node);
+            GoToEncounter();
         }
+    }
+
+    public void GoToEncounter()
+    {
+        GameplayContext.OverworldMap = MapToAbstract();
+        SceneManager.LoadScene("CombatEncounter");
+    }
+
+    public void GoToLoadoutScreen()
+    {
+        GameplayContext.OverworldMap = MapToAbstract();
+        SceneManager.LoadScene("InventoryMenu");
     }
 
     private Tuple<int, int> FindPlayerAt()
@@ -350,27 +364,7 @@ public class OverworldManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
-            ClearLevel();
-            GenerateMap();
-        }
 
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            GameplayContext.OverworldMap = MapToAbstract();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            AbstractToMap(GameplayContext.OverworldMap);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            GameplayContext.OverworldMap = MapToAbstract();
-            SceneManager.LoadScene("InventoryMenu");
-        }
     }
 
     

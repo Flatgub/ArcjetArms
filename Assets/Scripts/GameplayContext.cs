@@ -14,6 +14,8 @@ public static class GameplayContext
     public static GearLoadout CurrentLoadout { get; set; }
     public static InventoryCollection CurrentInventory { get; set; }
 
+    public static bool InDebugMode = true;
+
     public static string OverworldMap { get; set; }
 
     public static void InitializeForEncounter(GameManager gm, Entity player, HexGrid grid, InterfaceManager ui)
