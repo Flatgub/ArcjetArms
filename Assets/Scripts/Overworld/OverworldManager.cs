@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OverworldManager : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class OverworldManager : MonoBehaviour
 
     public OverworldNode playerAt;
 
+    private string StashedMap;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,9 +34,18 @@ public class OverworldManager : MonoBehaviour
         heightOfLevels = MaxNodesPerLevel * paddingWithinLevel;
 
         ClearLevel();
-        GenerateMap();
-        MapToAbstract();
-        
+
+        if (GameplayContext.OverworldMap == null)
+        {
+            GenerateMap();
+            SetPlayerAt(allLevels[0][0]);
+            GameplayContext.OverworldMap = MapToAbstract();
+        }
+        else
+        {
+            AbstractToMap(GameplayContext.OverworldMap);
+        }
+
     }
 
 
@@ -190,6 +202,29 @@ public class OverworldManager : MonoBehaviour
         }
     }
 
+    private Tuple<int, int> FindPlayerAt()
+    {
+        if (playerAt == null)
+        {
+            return null;
+        }
+
+        for (int lvlID = 0; lvlID < NumberOfLevels; lvlID++)
+        {
+            List<OverworldNode> lvl = allLevels[lvlID];
+            for (int nodeID = 0; nodeID < lvl.Count; nodeID++)
+            {
+                OverworldNode node = lvl[nodeID];
+                if (node == playerAt)
+                {
+                    return new Tuple<int, int>(lvlID, nodeID);
+                }
+            }
+        }
+
+        return null;
+    }
+
     [Serializable]
     struct AbstractNode
     {
@@ -208,6 +243,8 @@ public class OverworldManager : MonoBehaviour
     {
         public int numLevels;
         public List<AbstractLevel> levels;
+        public int playerLevel;
+        public int playerNode;
     }
 
     private AbstractLevel LevelToAbstract(List<OverworldNode> level, List<OverworldNode> next)
@@ -236,7 +273,7 @@ public class OverworldManager : MonoBehaviour
         return lvl;
     }
 
-    private void MapToAbstract()
+    private string MapToAbstract()
     {
 
         List<AbstractLevel> levels = new List<AbstractLevel>();
@@ -258,7 +295,55 @@ public class OverworldManager : MonoBehaviour
         AbstractMap map = new AbstractMap();
         map.numLevels = allLevels.Count;
         map.levels = levels;
-        Debug.Log("map:" + JsonUtility.ToJson(map));
+        Tuple<int, int> playerPos = FindPlayerAt();
+        if (playerPos != null)
+        {
+            map.playerLevel = playerPos.Item1;
+            map.playerNode = playerPos.Item2;
+        }
+
+        return JsonUtility.ToJson(map);
+
+    }
+
+    private void AbstractToMap(string abstractMap)
+    {
+        ClearLevel();
+        AbstractMap absMap = JsonUtility.FromJson<AbstractMap>(abstractMap);
+
+        rootPosition = new Vector3((NumberOfLevels - 1) * distanceBetweenLevels * -0.5f, 0, 0);
+        Vector3 pos = rootPosition;
+
+        //generate all levels
+        NumberOfLevels = absMap.numLevels;
+        foreach(AbstractLevel absLevel in absMap.levels)
+        {
+            List<OverworldNode> level = CreateLevel(absLevel.numNodes, pos);
+
+            pos.x += distanceBetweenLevels;
+            allLevels.Add(level);
+        }
+
+        //link all nodes
+        for (int i = 0; i < NumberOfLevels-1; i++)
+        {
+            AbstractLevel absLevel = absMap.levels[i];
+            List<OverworldNode> leftLevel = allLevels[i];
+            List<OverworldNode> rightLevel = allLevels[i + 1];
+
+            for (int nodeId = 0; nodeId < absLevel.numNodes; nodeId++)
+            {
+                AbstractNode absNode = absLevel.nodes[nodeId];
+                OverworldNode leftNode = leftLevel[nodeId];
+                foreach (int link in absNode.links)
+                {
+                    OverworldNode rightNode = rightLevel[link];
+                    LinkNodes(leftNode, rightNode);
+                }
+            }
+        }
+
+        SetPlayerAt(allLevels[absMap.playerLevel][absMap.playerNode]);
 
     }
 
@@ -269,9 +354,22 @@ public class OverworldManager : MonoBehaviour
         {
             ClearLevel();
             GenerateMap();
-            MapToAbstract();
+        }
 
-            SetPlayerAt(allLevels[0][0]);
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            GameplayContext.OverworldMap = MapToAbstract();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            AbstractToMap(GameplayContext.OverworldMap);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            GameplayContext.OverworldMap = MapToAbstract();
+            SceneManager.LoadScene("InventoryMenu");
         }
     }
 

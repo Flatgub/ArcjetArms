@@ -244,7 +244,7 @@ public class EquipmentScreenManager : MonoBehaviour
     {
         UpdateLoadout();
         GameplayContext.CurrentLoadout = activeLoadout;
-        SceneManager.LoadScene("CombatEncounter");
+        SceneManager.LoadScene("OverworldScreen");
     }
 
     private void EmitSound(AudioClip sound)
