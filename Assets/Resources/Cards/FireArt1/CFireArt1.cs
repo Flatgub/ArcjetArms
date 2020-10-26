@@ -38,8 +38,8 @@ public class CFireArt1 : CardData
     {
 
         //get a list of adjacent entities
-        List<Entity> rangedEnts = GridHelper.GetAdjacentEntities(GameplayContext.Grid,
-            GameplayContext.Player.Position, 5);
+        List<Entity> adjacentEnts = GridHelper.GetAdjacentEntities(GameplayContext.Grid, GameplayContext.Player.Position);
+
 
         //let the player select one of the adjacent entities
         SingleEntityResult target =
@@ -53,9 +53,25 @@ public class CFireArt1 : CardData
         {
             //hit 'em
             Entity victim = target.GetResult();
-            GameplayContext.Player.DealDamageTo(victim, baseDamage);
-            victim.ApplyStatusEffect(new BurnStatusEffect(baseDamage, damagePerTurn, turnsRemaining));
-            GameplayContext.Player.TriggerAttackEvent(victim);
+
+            //get all 6 spots around the player
+            Hex diffVector = GameplayContext.Player.Position - victim.Position;
+            List<Hex> spotsToBurn =
+                GridHelper.GetHexesInRange(GameplayContext.Grid, GameplayContext.Player.Position, 1, false);
+
+            spotsToBurn.Remove(diffVector + GameplayContext.Player.Position); //remove the spot behind the target
+            spotsToBurn.Remove(GameplayContext.Player.Position); //don't hit the player
+
+            foreach (Hex h in spotsToBurn)
+            {
+                if (GameplayContext.Grid.GetEntityAtHex(h) is Entity toHit)
+                {
+                    GameplayContext.Player.DealDamageTo(toHit, baseDamage);
+                    toHit.ApplyStatusEffect(new BurnStatusEffect(baseDamage, damagePerTurn, turnsRemaining));
+                    GameplayContext.Player.TriggerAttackEvent(toHit);
+                }
+            }
+
             outcome.Complete();
         }
         else

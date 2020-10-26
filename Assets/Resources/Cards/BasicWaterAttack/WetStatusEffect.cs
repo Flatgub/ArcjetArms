@@ -8,7 +8,7 @@ public class WetStatusEffect : StatusEffect, IStatusTurnStartEventHandler
     public int turnsRemaining;
 
 
-    public BurnStatusEffect(int normalDamage, int turns)
+    public WetStatusEffect(int normalDamage, int turns)
     {
         baseDamage = normalDamage;
         turnsRemaining = turns;

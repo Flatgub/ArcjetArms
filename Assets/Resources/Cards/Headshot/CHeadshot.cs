@@ -32,14 +32,16 @@ public class CHeadshot: CardData
 
         SingleEntityResult target = GameplayContext.Ui.OfferSingleEntitySelection(targets);
 
-    yield return new WaitUntil(target.IsReadyOrCancelled);
+        yield return new WaitUntil(target.IsReadyOrCancelled);
 
         if (!target.WasCancelled())
         {
             Entity victim = target.GetResult();
-            if (victim.Health.HealthAsFraction() <= 0.5f) ;
-            baseDamage = baseDamage * 2f;
-    GameplayContext.Player.DealDamageTo(victim, baseDamage);
+            if (victim.Health.HealthAsFraction() <= 0.5f)
+            {
+                baseDamage = baseDamage * 2;
+            }
+            GameplayContext.Player.DealDamageTo(victim, baseDamage);
             GameplayContext.Player.TriggerAttackEvent(victim);
             outcome.Complete();
         }
