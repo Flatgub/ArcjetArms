@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     
     private Entity player;
     private List<Entity> allEntities;
+    public List<Entity> allEnemies;
     public InterfaceManager interfaceManager;
 
     private CardActionResult currentCardAction;
@@ -121,6 +122,7 @@ public class GameManager : MonoBehaviour
             //e.ApplyStatusEffect(new DebugStatusEffect());
             entFactory.AddAIController(e);
             allEntities.Add(e);
+            allEnemies.Add(e);
         }
 
         //Entity rock = entFactory.CreateTerrain(rockTerrain);
@@ -467,6 +469,10 @@ public class GameManager : MonoBehaviour
             {
                 allEntities.RemoveAt(i);
                 Destroy(ent.gameObject);
+                if (allEnemies.Contains(ent))
+                {
+                    allEnemies.Remove(ent);
+                }
             }
         }
     }
