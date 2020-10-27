@@ -11,6 +11,7 @@ public class AI_Mechanic : IAiTemplate
     public void ApplyTo(Entity entity)
     {
         entity.entityName = "Mechanic";
+        entity.appearance.sprite = EntityFactory.GetEnemySprite("Mechanic");
         entity.Health.SetMaxHealth(MaxHealth, updateHealth: true);
         entity.AIController.AddAction(new MoveTowardsEnemy(moveSpeed),1);
         entity.AIController.AddAction(new ApplyHealing(healAmount), 1);

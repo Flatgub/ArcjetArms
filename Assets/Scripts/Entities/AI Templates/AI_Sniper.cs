@@ -12,6 +12,7 @@ public class AI_Sniper : IAiTemplate
     public void ApplyTo(Entity entity)
     {
         entity.entityName = "Sniper";
+        entity.appearance.sprite = EntityFactory.GetEnemySprite("Sniper");
         entity.Health.SetMaxHealth(MaxHealth, updateHealth: true);
         entity.AIController.AddAction(new MoveWithinRangeOfPlayer(moveSpeed, attackRange), 1);
         entity.AIController.AddAction(new BasicRanged(attackDamage, attackRange), 10);

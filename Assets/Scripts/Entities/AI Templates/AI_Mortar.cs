@@ -12,6 +12,7 @@ public class AI_Mortar : IAiTemplate
     public void ApplyTo(Entity entity)
     {
         entity.entityName = "Mortar";
+        entity.appearance.sprite = EntityFactory.GetEnemySprite("Mortar");
         entity.Health.SetMaxHealth(MaxHealth, updateHealth: true);
         entity.AIController.AddAction(new MoveWithinRangeOfPlayer(moveSpeed, attackRange), 1);
         entity.AIController.AddAction(new BasicRanged(attackDamage, attackRange), 10);

@@ -11,6 +11,7 @@ public class AI_ArmoredEnemy : IAiTemplate
 	public void ApplyTo(Entity entity)
 	{
 		entity.entityName = "ArmoredEnemy";
+		entity.appearance.sprite = EntityFactory.GetEnemySprite("Armoured");
 		entity.Health.SetMaxHealth(MaxHealth, updateHealth: true);
 		entity.AIController.AddAction(new MoveTowardsPlayer(moveSpeed), 1);
 		entity.AIController.AddAction(new ApproachMelee(moveSpeed - 1, attackDamage), 10);

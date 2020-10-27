@@ -9,8 +9,9 @@ public class EntityFactory : MonoBehaviour
 {
     private static EntityFactory factoryInstance;
     private GameObject entityPrefab;
-    private Sprite defaultEntitySprite;
+    private static Sprite defaultEntitySprite;
     private Dictionary<string, IAiTemplate> allAITemplates;
+    private static Dictionary<string, Sprite> enemySprites;
 
     /// <summary>
     /// Get the singleton instance of the entityFactory, or make one if it doesn't yet exist
@@ -42,6 +43,7 @@ public class EntityFactory : MonoBehaviour
             ["Mortar"] = new AI_Mortar(),
             ["Mechanic"] = new AI_Mechanic()
         };
+        enemySprites = new Dictionary<string, Sprite>();
     }
 
     //TODO: make this method more modular to accept unique constructors for unique entities
@@ -97,5 +99,29 @@ public class EntityFactory : MonoBehaviour
         obstruction.appearance.sprite = type.images.GetRandom();
         return obstruction;
     }
+
+    public static Sprite GetEnemySprite(string spritename)
+    {
+        if (enemySprites.TryGetValue(spritename, out Sprite spr))
+        {
+            return spr;
+        }
+        else
+        {
+            Sprite newspr = Resources.Load<Sprite>("Sprites/" + spritename);
+            if (newspr is Sprite)
+            {
+                enemySprites.Add(spritename, newspr);
+                return newspr;
+            }
+            else
+            {
+                Debug.LogWarning("Cannot find enemy sprite with name '" + spritename + "'");
+                return defaultEntitySprite;
+            }
+        }
+    }
+
+
 }
 

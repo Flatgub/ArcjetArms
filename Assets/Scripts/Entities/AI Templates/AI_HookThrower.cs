@@ -13,6 +13,7 @@ public class AI_HookThrower : IAiTemplate
     public void ApplyTo(Entity entity)
     {
         entity.entityName = "Hook Thrower";
+        entity.appearance.sprite = EntityFactory.GetEnemySprite("HookThrower");
         entity.Health.SetMaxHealth(MaxHealth, updateHealth: true);
 
         entity.AIController.AddAction(new BasicMelee(hookDamage), 20); 
