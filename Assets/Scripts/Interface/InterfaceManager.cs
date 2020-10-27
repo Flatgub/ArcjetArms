@@ -35,6 +35,8 @@ public class InterfaceManager : MonoBehaviour
 
     private InterfaceState state;
 
+    public ProjectileTracer tracerPrefab;
+
     public void Awake()
     {
         state = InterfaceState.Idle;
@@ -202,4 +204,15 @@ public class InterfaceManager : MonoBehaviour
         audioPlayer.clip = group.RandomClip();
         audioPlayer.Play();
     }
+
+    public void FireTracerBetween(Entity from, Entity to)
+    {
+        Vector3 fromPos = grid.GetWorldPosition(from.Position);
+        Vector3 toPos = grid.GetWorldPosition(to.Position);
+        toPos.z = -1;
+
+        ProjectileTracer tracer = Instantiate(tracerPrefab, fromPos, Quaternion.identity);
+        tracer.GoTo(toPos);
+
+    } 
 }

@@ -20,4 +20,4 @@ MonoBehaviour:
   energyCost: 1
   upgradesTo: {fileID: 0}
   range: 3
-  baseDamage: 4
+  baseDamage: 5

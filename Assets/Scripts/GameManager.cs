@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     
     private Entity player;
     private List<Entity> allEntities;
+    public List<Entity> allEnemies;
     public InterfaceManager interfaceManager;
 
     private CardActionResult currentCardAction;
@@ -51,6 +52,8 @@ public class GameManager : MonoBehaviour
 
     public Transform GameoverPanel;
     public Transform VictoryPanel;
+    public CanvasGroup gameplayElements;
+    public RewardMenu rewardMenu;
 
     public TerrainType rockTerrain;
 
@@ -107,10 +110,11 @@ public class GameManager : MonoBehaviour
         GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
 
         allEntities = new List<Entity>();
+        allEnemies = new List<Entity>();
 
         Hex[] positions = {new Hex(3, 0), new Hex(-3, 3), new Hex(0, 3), new Hex(-3, 0) };
 
-        for (int i = 0; i <= 3; i++)
+        for (int i = 0; i <= 0; i++)
         {
             Entity e = entFactory.CreateEntity(10);
             e.AddToGrid(worldGrid, positions[i]);
@@ -119,17 +123,18 @@ public class GameManager : MonoBehaviour
             //e.ApplyStatusEffect(new DebugStatusEffect());
             entFactory.AddAIController(e);
             allEntities.Add(e);
+            allEnemies.Add(e);
         }
 
-        Entity rock = entFactory.CreateTerrain(rockTerrain);
-        rock.AddToGrid(worldGrid, new Hex(0, 0, 0));
-        allEntities.Add(rock);
+        //Entity rock = entFactory.CreateTerrain(rockTerrain);
+        //rock.AddToGrid(worldGrid, new Hex(0, 0, 0));
+        //allEntities.Add(rock);
 
         enemiesWhoNeedTurns = new List<Entity>();
 
         if (GameplayContext.CurrentLoadout != null)
         {
-            basicDeck = GameplayContext.CurrentLoadout.LoadoutToDeckTemplate();
+            basicDeck = GameplayContext.CurrentLoadout.ToDeckTemplate();
         }
         else
         {
@@ -163,8 +168,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        Debug.Log(worldGrid.GetHexUnderMouse());
         switch (stateStack.Peek())
         {
             case GameState.PlayerIdle:
@@ -230,7 +233,7 @@ public class GameManager : MonoBehaviour
                     DrawCard();
                     cardsLeftToDraw--;
                     cardDrawTimer = cardDrawPause;
-                    Debug.Log("Drew 1, " + cardsLeftToDraw + "cards remain");
+                    //Debug.Log("Drew 1, " + cardsLeftToDraw + "cards remain");
                 }
                 else
                 {
@@ -263,11 +266,14 @@ public class GameManager : MonoBehaviour
             GameplayContext.EntityUnderMouse = null;
         }
 
+        /*
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            drawPile.PrintContents("draw pile");
-            discardPile.PrintContents("discard pile");
-        }
+            Vector3 PlayerPos = worldGrid.GetWorldPosition(player.Position);
+            PlayerPos.z = -1;
+            ProjectileTracer tracer = Instantiate(BulletTracer, PlayerPos, Quaternion.identity);
+            tracer.GoTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }*/
 
         if (stateStack.Peek() != GameState.GameOver && allEntities.Count == 0)
         {
@@ -282,11 +288,20 @@ public class GameManager : MonoBehaviour
     {
         if (!player.Health.IsDead)
         {
-            energy = 5;
+            
             player.StartTurn();
             stateStack.Pop();
             stateStack.Push(GameState.PlayerIdle);
-            DrawHand();
+            if (!player.isStunned)
+            {
+                energy = 5;
+                DrawHand();
+            }
+            else
+            {
+                energy = 0;
+            }
+            
         }
         else
         {
@@ -455,6 +470,10 @@ public class GameManager : MonoBehaviour
             {
                 allEntities.RemoveAt(i);
                 Destroy(ent.gameObject);
+                if (allEnemies.Contains(ent))
+                {
+                    allEnemies.Remove(ent);
+                }
             }
         }
     }
@@ -469,6 +488,35 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void ShowRewardMenu()
+    {
+        LootPool masterpool = GearDatabase.GenerateMasterLootPool();
+
+        if (GameplayContext.CurrentLoadout is GearLoadout load)
+        {
+            masterpool.SubtractLoadout(load);
+        }
+
+        if (GameplayContext.CurrentInventory is InventoryCollection inv)
+        {
+            masterpool.SubtractInventory(inv);
+        }
+
+
+        gameplayElements.interactable = false;
+        gameplayElements.blocksRaycasts = false;
+        gameplayElements.LeanAlpha(0, rewardMenu.appearSpeed);
+        rewardMenu.Init();
+        rewardMenu.ShowRewardMenu();
+
+        masterpool.MakeActive();
+        for (int i = 0; i < 3; i++)
+        {
+            rewardMenu.AddRewardOption(masterpool.Pop());
+        }
+        masterpool.Finish();
+
+    }
 
     public void ReturnToLoadoutScreen()
     {

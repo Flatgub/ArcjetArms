@@ -109,7 +109,7 @@ public class GearLoadout
         slotcontainer.contains = null;
     }
 
-    public DeckTemplate LoadoutToDeckTemplate()
+    public DeckTemplate ToDeckTemplate()
     {
         DeckTemplate deck = new DeckTemplate();
 
@@ -125,6 +125,21 @@ public class GearLoadout
         }
 
         return deck;
+    }
+
+    public List<GearData> ToList()
+    {
+        List<GearData> list = new List<GearData>();
+
+        foreach (LoadoutSlot slot in slots.Values)
+        {
+            if (slot.contains is GearData data)
+            {
+                list.Add(data);
+            }
+        }
+
+        return list;
     }
 
     public static GearSlotTypes GetSlotType(LoadoutSlots slot)

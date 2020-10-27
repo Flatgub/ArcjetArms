@@ -5,6 +5,8 @@ using UnityEngine;
 
 public interface IAIAction
 {
+    string ActionName { get; }
+
     bool IsDoable(Entity with);
 
     void Do(Entity with);

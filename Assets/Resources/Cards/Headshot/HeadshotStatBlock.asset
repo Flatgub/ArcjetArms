@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: HeadshotStatBlock
   m_EditorClassIdentifier: 
   cardID: 38
-  title: 
-  cardArt: {fileID: 0}
-  cardFrame: {fileID: 0}
-  descriptionTemplate: Deal {0} damage. If enemy health is lower than 50%, deal crit
+  title: Headshot
+  cardArt: {fileID: 21300000, guid: 83eea0e5e43929949885383f6d526c5a, type: 3}
+  cardFrame: {fileID: 21300000, guid: 99a77cbfbb1f7fc4ab0a6d77796fc396, type: 3}
+  descriptionTemplate: Deal {1} DMG . If enemy hp is < 50%, deal 2x DMG. Range {0}
   energyCost: 3
   upgradesTo: {fileID: 0}
   range: 5

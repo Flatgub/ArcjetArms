@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +15,24 @@ public static class Extensions
     {
         int index = UnityEngine.Random.Range(0, array.Length);
         return array[index];
+    }
+
+    //Fisher-Yates Shuffle
+    public static List<T> Shuffle<T>(this List<T> list)
+    {
+        List<T> output = new List<T>(list);
+
+        int n = output.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = UnityEngine.Random.Range(0, n + 1);
+            T swap = output[k];
+            output[k] = output[n];
+            output[n] = swap;
+        }
+
+        return output;
     }
 
     public static string GetShort(this Guid guid)

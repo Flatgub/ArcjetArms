@@ -53,6 +53,7 @@ public class CBasicShot: CardData
             Entity victim = target.GetResult();
             GameplayContext.Player.DealDamageTo(victim, baseDamage);
             GameplayContext.Player.TriggerAttackEvent(victim);
+            GameplayContext.Ui.FireTracerBetween(GameplayContext.Player, victim);
             outcome.Complete();
         }
         else

@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using static GearLoadout;
+using static LootPool;
 
 [CreateAssetMenu(fileName = "NewGear", menuName = "Gear/Generic", order = 1)]
 public class GearData : ScriptableObject
@@ -23,4 +24,6 @@ public class GearData : ScriptableObject
 
     [SerializeField]
     public CardBundle[] Cards;
+
+    public LootRarity rarity = LootRarity.Common;
 }

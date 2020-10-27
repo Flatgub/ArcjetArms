@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 334fbc0c98e407240adbae4c8279fd10, type: 3}
+  m_Name: RYTECStandardIssueRifle
+  m_EditorClassIdentifier: 
+  gearID: 106
+  gearName: RYTEC Standard Issue Rifle
+  faction: RYTEC
+  requiredSlot: 3
+  DoesntProvide: 
+  upgradesTo: {fileID: 0}
+  art: {fileID: 21300000, guid: c9b862ad8e8046440bc0ad691bfc881a, type: 3}
+  Cards:
+  - card: {fileID: 11400000, guid: 6f82c6de51119584f85fe768186d765f, type: 2}
+    amount: 2
+  - card: {fileID: 11400000, guid: 743ba06301119bf4aba65581cc6e500e, type: 2}
+    amount: 2
+  - card: {fileID: 11400000, guid: bb4d1ce4ed1aee14b901f4c5976974fa, type: 2}
+    amount: 2
+  - card: {fileID: 11400000, guid: 304f8b2be8652784cb6f6577752c9fdc, type: 2}
+    amount: 1
+  - card: {fileID: 11400000, guid: fe932fe95d83c8c458478a353ea3358a, type: 2}
+    amount: 1
+  - card: {fileID: 11400000, guid: 2623a445e3cfc0e488133476a8e5904f, type: 2}
+    amount: 2
+  - card: {fileID: 11400000, guid: 64a4b5f1688f1ba4b8276c55bed4a476, type: 2}
+    amount: 1

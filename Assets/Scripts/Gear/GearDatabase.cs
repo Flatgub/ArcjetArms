@@ -105,7 +105,13 @@ public static class GearDatabase
     {
         if (allGear.ContainsKey(gear.gearID))
         {
-            Debug.LogWarning("Ignoring duplicate key gear id:" + gear.gearID);
+            GearData conflict = allGear[gear.gearID];
+
+            string warning =
+                string.Format("Gear '{0}' has conflicting ID with '{1}' (id {2}), skipping...",
+                gear.gearName, conflict.gearName, gear.gearID);
+
+            Debug.LogWarning(warning);
             return;
         }
 
@@ -123,4 +129,43 @@ public static class GearDatabase
             gearBySlotType.Add(gear.requiredSlot, newcatagory);
         }
     }
+
+    public static List<GearData> GetAllGearData()
+    {
+        List<GearData> output = new List<GearData>();
+        foreach (KeyValuePair<int, GearData> pair in allGear)
+        {
+            output.Add(pair.Value);
+        }
+
+        return output;
+        ;
+    }
+
+    public static LootPool GenerateMasterLootPool()
+    {
+        LootPool master = new LootPool();
+
+        foreach (KeyValuePair<int, GearData> pair in allGear)
+        {
+            GearData gear = pair.Value;
+            if (gear.rarity != LootPool.LootRarity.DontSpawn)
+            {
+                //only one of each can be equipped at a time, so the lootpool only needs one copy
+                if (gear.requiredSlot == GearSlotTypes.Head
+                    || gear.requiredSlot == GearSlotTypes.Body
+                    || gear.requiredSlot == GearSlotTypes.Core)
+                {
+                    master.AddGear(gear);
+                }
+                else
+                {
+                    master.AddGear(gear, n: 2);
+                }
+            }
+        }
+
+        return master;
+    }
+
 }

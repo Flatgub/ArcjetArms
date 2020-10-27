@@ -11,8 +11,7 @@ public class SteadyAimStatusEffect : StatusEffect, IStatusTurnEndEventHandler
     }
     public override string GetDescription()
     {
-       
-     
+
         return string.Format("For one turn all your attacks will deal crit {0}x damage", 2f);
            
     }

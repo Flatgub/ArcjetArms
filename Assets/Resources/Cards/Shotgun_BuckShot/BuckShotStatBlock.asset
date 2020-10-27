@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b937cf0be59596438bc55d10cfb6770, type: 3}
+  m_Name: BuckShotStatBlock
+  m_EditorClassIdentifier: 
+  cardID: 15
+  title: BuckShot
+  cardArt: {fileID: 21300000, guid: 7ff59c07fe84ec445a546952e1933494, type: 3}
+  cardFrame: {fileID: 21300000, guid: 99a77cbfbb1f7fc4ab0a6d77796fc396, type: 3}
+  descriptionTemplate: Deal {0} DMG to adjacent enemies or {1} DMG to enemy {2} spaces
+    away
+  energyCost: 2
+  upgradesTo: {fileID: 0}
+  range: 2
+  maxDamage: 10
+  minDamage: 5
