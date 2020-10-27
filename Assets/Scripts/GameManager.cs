@@ -110,6 +110,7 @@ public class GameManager : MonoBehaviour
         GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
 
         allEntities = new List<Entity>();
+        allEnemies = new List<Entity>();
 
         Hex[] positions = {new Hex(3, 0), new Hex(-3, 3), new Hex(0, 3), new Hex(-3, 0) };
 
