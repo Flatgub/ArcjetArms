@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class AI_LightAttacker : IAiTemplate
 {
-    public int MaxHealth = 30;
+    public int MaxHealth = 20;
     public int moveSpeed = 3;
     public int attackDamage = 5;
+    public int DifficultyScore { get { return 1;} }
 
     public void ApplyTo(Entity entity)
     {

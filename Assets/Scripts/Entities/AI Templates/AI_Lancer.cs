@@ -10,6 +10,7 @@ public class AI_Lancer : IAiTemplate
 	public int attackRange = 3;
 	public int RangeDamage = 3;
 	public int attackDamage = 7;
+	public int DifficultyScore { get { return 2;} }
 
 	public void ApplyTo(Entity entity)
 	{

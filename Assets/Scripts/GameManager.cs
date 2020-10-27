@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
 
         //spawn enemies
         List<PODHex> enemySpots = new List<PODHex>(template.enemySpawnPoints);
-        EnemyGroup enemyGroup = entFactory.GetEnemyGroup(template.minEnemies, template.maxEnemies);
+        EnemyGroup enemyGroup = entFactory.GetEnemyGroup(template.minEnemies, template.maxEnemies, maxDifficulty:3);
         foreach (string enemyType in enemyGroup.enemies)
         {
             Hex spawnpoint = enemySpots.PopRandom();

@@ -7,7 +7,8 @@ public class AI_Mortar : IAiTemplate
     public int MaxHealth = 15;
     public int moveSpeed = 2;
     public int attackDamage = 8;
-    public int attackRange = 17;
+    public int attackRange = 17; //this is way too high
+    public int DifficultyScore { get { return 3;} }
 
     public void ApplyTo(Entity entity)
     {

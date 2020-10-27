@@ -7,6 +7,7 @@ public class AI_ArmoredEnemy : IAiTemplate
 	public int MaxHealth = 60;
 	public int moveSpeed = 3;
 	public int attackDamage = 5;
+	public int DifficultyScore { get { return 3;} }
 
 	public void ApplyTo(Entity entity)
 	{

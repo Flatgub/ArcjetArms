@@ -13,6 +13,7 @@ public class EntityFactory : MonoBehaviour
     private Dictionary<string, IAiTemplate> allAITemplates;
     private static Dictionary<string, Sprite> enemySprites;
     private static List<EnemyGroup> allEnemyGroups;
+    private static Dictionary<EnemyGroup, int> enemyGroupDifficulties;
 
     /// <summary>
     /// Get the singleton instance of the entityFactory, or make one if it doesn't yet exist
@@ -46,7 +47,18 @@ public class EntityFactory : MonoBehaviour
         };
         enemySprites = new Dictionary<string, Sprite>();
         allEnemyGroups = new List<EnemyGroup>(Resources.LoadAll<EnemyGroup>("EnemyGroups"));
-        Debug.Log("found " + allEnemyGroups.Count + " enemy groups");
+
+        enemyGroupDifficulties = new Dictionary<EnemyGroup, int>();
+        foreach (EnemyGroup group in allEnemyGroups)
+        {
+            int score = 0;
+            foreach (string enemy in group.enemies)
+            {
+                score += allAITemplates[enemy].DifficultyScore;
+            }
+            enemyGroupDifficulties.Add(group, score);
+        }
+        
     }
 
     //TODO: make this method more modular to accept unique constructors for unique entities
@@ -125,12 +137,15 @@ public class EntityFactory : MonoBehaviour
         }
     }
 
-    public EnemyGroup GetEnemyGroup(int minEnemies, int maxEnemies)
+    public EnemyGroup GetEnemyGroup(int minEnemies, int maxEnemies,
+        int minDifficulty = 1, int maxDifficulty = 10)
     {
         List<EnemyGroup> candidates = new List<EnemyGroup>();
         foreach (EnemyGroup group in allEnemyGroups)
         {
-            if (group.enemies.Count >= minEnemies && group.enemies.Count <= maxEnemies)
+            int difficulty = enemyGroupDifficulties[group];
+            if (group.enemies.Count >= minEnemies && group.enemies.Count <= maxEnemies
+                && difficulty >= minDifficulty && difficulty <= maxDifficulty)
             {
                 candidates.Add(group);
             }
@@ -138,8 +153,9 @@ public class EntityFactory : MonoBehaviour
         if (candidates.Count == 0)
         {
             Debug.LogWarning(
-                String.Format("Could not find enemy group within restrictions min:{0}, max{1}",
-                minEnemies, maxEnemies));
+                String.Format("Could not find enemy group within restrictions, " +
+                              "enemies: [{0}-{1}], difficulty: [{2}-{3}]",
+                minEnemies, maxEnemies, minDifficulty, maxDifficulty));
             return allEnemyGroups[0];
         }
         else

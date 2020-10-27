@@ -9,6 +9,7 @@ public class AI_HookThrower : IAiTemplate
     public int moveSpeed = 3;
     public int attackRange = 5;
     public int hookDamage = 7;
+    public int DifficultyScore { get { return 2;} }
 
     public void ApplyTo(Entity entity)
     {

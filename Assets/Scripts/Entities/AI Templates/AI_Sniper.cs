@@ -8,6 +8,7 @@ public class AI_Sniper : IAiTemplate
     public int moveSpeed = 2;
     public int attackDamage = 5;
     public int attackRange = 3;
+    public int DifficultyScore { get { return 1;} }
 
     public void ApplyTo(Entity entity)
     {
