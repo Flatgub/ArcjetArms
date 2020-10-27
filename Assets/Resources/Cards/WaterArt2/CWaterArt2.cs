@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CBasicWaterAttack : CardData
+public class CWaterArt2 : CardData
 {
     public int baseDamage;
     public int turnsRemaining;
