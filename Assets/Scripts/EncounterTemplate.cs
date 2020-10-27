@@ -10,9 +10,9 @@ public class EncounterTemplate : ScriptableObject
 
     public void Awake()
     {
-        terrainPieces = new List<PODHex>();
-        playerSpawnPoints = new List<PODHex>();
-        enemySpawnPoints = new List<PODHex>();
+        terrainPieces = terrainPieces ?? new List<PODHex>();
+        playerSpawnPoints = playerSpawnPoints ?? new List<PODHex>();
+        enemySpawnPoints = enemySpawnPoints ?? new List<PODHex>();
     }
 
     public void AddTerrain(Hex pos)

@@ -152,6 +152,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapRadius: 3
   worldGrid: {fileID: 274503773}
+  defaultEncounterTemplate: {fileID: 11400000, guid: 7116a4ca349e6a44e82904180640bcaa,
+    type: 2}
+  allEnemies: []
   interfaceManager: {fileID: 1400311330}
   playerText: {fileID: 1943432066}
   playerEnergyText: {fileID: 1334624355}

@@ -12,9 +12,11 @@ public class GameManager : MonoBehaviour
 
     public HexGrid worldGrid;
     private EntityFactory entFactory;
+    public EncounterTemplate defaultEncounterTemplate;
     
     private Entity player;
     private List<Entity> allEntities;
+    [HideInInspector]
     public List<Entity> allEnemies;
     public InterfaceManager interfaceManager;
 
@@ -106,8 +108,11 @@ public class GameManager : MonoBehaviour
 
         if (GameplayContext.ChosenTemplate != null)
         {
-            Debug.Log("we poggin");
             GenerateEncounter(GameplayContext.ChosenTemplate);
+        }
+        else
+        {
+            GenerateEncounter(defaultEncounterTemplate);
         }
 
         GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
@@ -185,6 +190,7 @@ public class GameManager : MonoBehaviour
             e.EnableStatusEffects(true);
             entFactory.AddAIController(e);
             allEntities.Add(e);
+            allEnemies.Add(e);
         }
     }
 

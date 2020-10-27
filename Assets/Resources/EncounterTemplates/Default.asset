@@ -10,19 +10,43 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87301ab2d7f640c48a5651af0d37e30e, type: 3}
-  m_Name: Example
+  m_Name: Default
   m_EditorClassIdentifier: 
   terrainPieces:
-  - Q: -1
-    R: -1
+  - Q: -3
+    R: 0
+    S: 3
+  - Q: -2
+    R: 0
     S: 2
+  - Q: 3
+    R: 0
+    S: -3
+  - Q: 2
+    R: 0
+    S: -2
+  - Q: 0
+    R: 0
+    S: 0
+  playerSpawnPoints:
+  - Q: 1
+    R: -2
+    S: 1
+  - Q: 0
+    R: -2
+    S: 2
+  - Q: 2
+    R: -2
+    S: 0
+  enemySpawnPoints:
+  - Q: -2
+    R: 2
+    S: 0
   - Q: -1
     R: 2
     S: -1
-  - Q: 2
-    R: -1
-    S: -1
-  playerSpawnPoints: []
-  enemySpawnPoints: []
-  minEnemies: 0
-  maxEnemies: 0
+  - Q: 0
+    R: 2
+    S: -2
+  minEnemies: 3
+  maxEnemies: 3
