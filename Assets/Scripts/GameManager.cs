@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     public RewardMenu rewardMenu;
 
     public TerrainType rockTerrain;
+    public int difficultyThreshold = 3; //how much easier than the current difficulty is allowed
 
     /// <summary>
     /// The event triggered when a card is added from the draw pile into the hand
@@ -91,7 +92,7 @@ public class GameManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {   
         stateStack = new Stack<GameState>();
         stateStack.Push(GameState.PlayerIdle);
         
@@ -181,9 +182,23 @@ public class GameManager : MonoBehaviour
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
         player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
 
-        //spawn enemies
+        
+        //select enemygroup, ignoring difficulty when in debug mode
+        EnemyGroup enemyGroup;
+        if (GameplayContext.InDebugMode)
+        {
+            enemyGroup = entFactory.GetEnemyGroup(template.minEnemies, template.maxEnemies);
+        }
+        else
+        {
+            int maxDif = GameplayContext.CurrentDifficulty;
+            int minDif = Math.Max(1, maxDif - difficultyThreshold);
+            enemyGroup = entFactory.GetEnemyGroup(template.minEnemies, template.maxEnemies, minDif, maxDif);
+            Debug.Log("making encounter using " + GameplayContext.CurrentDifficulty);
+        }
+        
         List<PODHex> enemySpots = new List<PODHex>(template.enemySpawnPoints);
-        EnemyGroup enemyGroup = entFactory.GetEnemyGroup(template.minEnemies, template.maxEnemies, maxDifficulty:3);
+        //spawn enemies
         foreach (string enemyType in enemyGroup.enemies)
         {
             if (enemySpots.Count == 0)
@@ -307,10 +322,7 @@ public class GameManager : MonoBehaviour
 
         if (stateStack.Peek() != GameState.GameOver && allEnemies.Count == 0)
         {
-            stateStack.Pop();
-            stateStack.Push(GameState.GameOver);
-            DiscardHand();
-            VictoryPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
+            WinEncounter();
         }
     }
 
@@ -335,10 +347,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            player.appearance.enabled = false;
-            stateStack.Pop();
-            stateStack.Push(GameState.GameOver);
-            GameoverPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
+            LoseEncounter();
         }
         UpdatePlayerStatusEventPanel();
 
@@ -545,7 +554,23 @@ public class GameManager : MonoBehaviour
             rewardMenu.AddRewardOption(masterpool.Pop());
         }
         masterpool.Finish();
+    }
 
+    public void WinEncounter()
+    {
+        stateStack.Pop();
+        stateStack.Push(GameState.GameOver);
+        DiscardHand();
+        VictoryPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
+        GameplayContext.CurrentDifficulty += 2;
+    }
+
+    public void LoseEncounter()
+    {
+        player.appearance.enabled = false;
+        stateStack.Pop();
+        stateStack.Push(GameState.GameOver);
+        GameoverPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
     }
 
     public void ReturnToLoadoutScreen()

@@ -44,6 +44,7 @@ public class OverworldManager : MonoBehaviour
             GenerateMap();
             SetPlayerAt(allLevels[0][0]);
             GameplayContext.OverworldMap = MapToAbstract();
+            GameplayContext.CurrentDifficulty = 2; //only set the first time
         }
         else
         {

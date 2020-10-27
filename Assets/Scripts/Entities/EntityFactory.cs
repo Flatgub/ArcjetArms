@@ -49,6 +49,8 @@ public class EntityFactory : MonoBehaviour
         allEnemyGroups = new List<EnemyGroup>(Resources.LoadAll<EnemyGroup>("EnemyGroups"));
 
         enemyGroupDifficulties = new Dictionary<EnemyGroup, int>();
+        EnemyGroup smallest = allEnemyGroups[0];
+        EnemyGroup largest = allEnemyGroups[0];
         foreach (EnemyGroup group in allEnemyGroups)
         {
             int score = 0;
@@ -57,7 +59,18 @@ public class EntityFactory : MonoBehaviour
                 score += allAITemplates[enemy].DifficultyScore;
             }
             enemyGroupDifficulties.Add(group, score);
+
+            if (score < enemyGroupDifficulties[smallest])
+            {
+                smallest = group;
+            }
+            if (score > enemyGroupDifficulties[largest])
+            {
+                largest = group;
+            }
         }
+        Debug.Log("Found " + allEnemyGroups.Count + " enemy groups");
+        Debug.Log("Total difficulty range: " + enemyGroupDifficulties[smallest] + " to " + enemyGroupDifficulties[largest]);
         
     }
 
