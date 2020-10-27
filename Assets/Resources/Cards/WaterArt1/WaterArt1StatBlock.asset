@@ -9,15 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c62df7cbd126f534abaa2c530c3af4be, type: 3}
-  m_Name: WaterArt2StatBlock
+  m_Script: {fileID: 11500000, guid: 54a8b13670532f441b0232d19261465b, type: 3}
+  m_Name: WaterArt1StatBlock
   m_EditorClassIdentifier: 
-  cardID: 59
-  title: 'Water art 2: Burst flux'
+  cardID: 58
+  title: 'Water art 1: Whirlpool'
   cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
-  descriptionTemplate: Deal {0} damage to enemy with enemy being wet for {1} turn
-  energyCost: 3
+  descriptionTemplate: Deal {0} damage to enemies around and place them at random
+    location. Enemies are also wet for {1} turns
+  energyCost: 2
   upgradesTo: {fileID: 0}
-  baseDamage: 13
-  turnsRemaining: 5
+  baseDamage: 3
+  turnsRemaining: 2

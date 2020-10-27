@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c62df7cbd126f534abaa2c530c3af4be, type: 3}
-  m_Name: WaterArt2StatBlock
+  m_Script: {fileID: 11500000, guid: c45445309a0ec9845861071e0a874fef, type: 3}
+  m_Name: WaterArt3StatBlock
   m_EditorClassIdentifier: 
-  cardID: 59
-  title: 'Water art 2: Burst flux'
+  cardID: 60
+  title: 'Water art 3: water wall'
   cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
-  descriptionTemplate: Deal {0} damage to enemy with enemy being wet for {1} turn
-  energyCost: 3
+  descriptionTemplate: Blocks all damage for a turn
+  energyCost: 2
   upgradesTo: {fileID: 0}
-  baseDamage: 13
-  turnsRemaining: 5
+  blockPercentage: 100
+  turns: 1
