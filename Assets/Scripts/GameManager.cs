@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     public RewardMenu rewardMenu;
 
     public TerrainType rockTerrain;
+    public EnemyGroup enemyGroup;
 
     /// <summary>
     /// The event triggered when a card is added from the draw pile into the hand
@@ -159,6 +160,7 @@ public class GameManager : MonoBehaviour
 
     private void GenerateEncounter(EncounterTemplate template)
     {
+        //spawn terrain
         foreach (Hex rockpos in template.terrainPieces)
         {
             Entity rock = entFactory.CreateTerrain(rockTerrain);
@@ -177,21 +179,20 @@ public class GameManager : MonoBehaviour
         player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
 
         //spawn enemies
-        int numEnemies = UnityEngine.Random.Range(template.minEnemies, template.maxEnemies + 1);
         List<PODHex> enemySpots = new List<PODHex>(template.enemySpawnPoints);
-        for (int i = 0; i < numEnemies; i++)
+        foreach (string enemyType in enemyGroup.enemies)
         {
             Hex spawnpoint = enemySpots.PopRandom();
-
             Entity e = entFactory.CreateEntity(10);
 
             e.AddToGrid(worldGrid, spawnpoint);
             e.EnableStatusEffects(true);
-            entFactory.AddAIController(e,"random");
+            entFactory.AddAIController(e, enemyType);
             Debug.Log("spawned: " + e.entityName);
             allEntities.Add(e);
             allEnemies.Add(e);
         }
+        //int numEnemies = UnityEngine.Random.Range(template.minEnemies, template.maxEnemies + 1);        
     }
 
     // Update is called once per frame

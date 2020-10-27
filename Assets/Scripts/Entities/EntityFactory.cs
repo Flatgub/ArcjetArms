@@ -35,7 +35,7 @@ public class EntityFactory : MonoBehaviour
         defaultEntitySprite = Resources.Load<Sprite>("Sprites/NoArtEntity");
         allAITemplates = new Dictionary<string, IAiTemplate>
         {
-            ["LightMelee"] = new AI_LightAttacker(),
+            ["LightAttacker"] = new AI_LightAttacker(),
             ["Sniper"] = new AI_Sniper(),
             ["HookThrower"] = new AI_HookThrower(),
             ["Lancer"] = new AI_Lancer(),
