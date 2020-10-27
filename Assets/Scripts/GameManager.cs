@@ -99,35 +99,16 @@ public class GameManager : MonoBehaviour
         worldGrid.GenerateMap(mapRadius);
         entFactory = EntityFactory.GetFactory;
 
-        player = entFactory.CreateEntity(40);
-        player.AddToGrid(worldGrid, new Hex(1, -2));
-        player.EnableStatusEffects(true);
-        player.entityName = "Player";
-        player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
-        player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
-
-        GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
-
         allEntities = new List<Entity>();
+        enemiesWhoNeedTurns = new List<Entity>();
 
-        Hex[] positions = {new Hex(3, 0), new Hex(-3, 3), new Hex(0, 3), new Hex(-3, 0) };
-
-        for (int i = 0; i <= 0; i++)
+        if (GameplayContext.ChosenTemplate != null)
         {
-            Entity e = entFactory.CreateEntity(10);
-            e.AddToGrid(worldGrid, positions[i]);
-            e.entityName = "enemy " + i;
-            e.EnableStatusEffects(true);
-            //e.ApplyStatusEffect(new DebugStatusEffect());
-            entFactory.AddAIController(e);
-            allEntities.Add(e);
+            Debug.Log("we poggin");
+            GenerateEncounter(GameplayContext.ChosenTemplate);
         }
 
-        //Entity rock = entFactory.CreateTerrain(rockTerrain);
-        //rock.AddToGrid(worldGrid, new Hex(0, 0, 0));
-        //allEntities.Add(rock);
-
-        enemiesWhoNeedTurns = new List<Entity>();
+        GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
 
         if (GameplayContext.CurrentLoadout != null)
         {
@@ -167,6 +148,42 @@ public class GameManager : MonoBehaviour
         
 
         Invoke("StartNewTurn", 0.2f);
+    }
+
+    private void GenerateEncounter(EncounterTemplate template)
+    {
+        foreach (Hex rockpos in template.terrainPieces)
+        {
+            Entity rock = entFactory.CreateTerrain(rockTerrain);
+            rock.AddToGrid(worldGrid, rockpos);
+            allEntities.Add(rock);
+        }
+
+        //spawn player
+        Hex playerspawn = template.playerSpawnPoints.GetRandom();
+
+        player = entFactory.CreateEntity(40);
+        player.AddToGrid(worldGrid, playerspawn);
+        player.EnableStatusEffects(true);
+        player.entityName = "Player";
+        player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
+        player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
+
+        //spawn enemies
+        int numEnemies = UnityEngine.Random.Range(template.minEnemies, template.maxEnemies + 1);
+        List<PODHex> enemySpots = new List<PODHex>(template.enemySpawnPoints);
+        for (int i = 0; i < numEnemies; i++)
+        {
+            Hex spawnpoint = enemySpots.PopRandom();
+
+            Entity e = entFactory.CreateEntity(10);
+
+            e.AddToGrid(worldGrid, spawnpoint);
+            e.entityName = "enemy " + i;
+            e.EnableStatusEffects(true);
+            entFactory.AddAIController(e);
+            allEntities.Add(e);
+        }
     }
 
     // Update is called once per frame

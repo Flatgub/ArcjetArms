@@ -17,6 +17,14 @@ public static class Extensions
         return array[index];
     }
 
+    public static T PopRandom<T>(this List<T> list)
+    {
+        int index = UnityEngine.Random.Range(0, list.Count);
+        T element = list[index];
+        list.RemoveAt(index);
+        return element;
+    }
+
     //Fisher-Yates Shuffle
     public static List<T> Shuffle<T>(this List<T> list)
     {

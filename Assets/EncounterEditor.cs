@@ -117,6 +117,18 @@ public class EncounterEditor : MonoBehaviour
 
     public void SaveEncounter()
     {
+        EncounterTemplate template = GenerateWithoutSaving();
+
+        AssetDatabase.CreateAsset(template, "Assets/Resources/EncounterTemplates/"+templateName+".asset");
+
+        AssetDatabase.SaveAssets();
+
+        currentTemplate = template;
+        
+    }
+
+    public EncounterTemplate GenerateWithoutSaving()
+    {
         EncounterTemplate template = ScriptableObject.CreateInstance<EncounterTemplate>();
 
         //terrain
@@ -134,18 +146,11 @@ public class EncounterEditor : MonoBehaviour
         }
 
         //playerspawns
-        //terrain
         foreach (KeyValuePair<Hex, GameObject> pair in playerSpawns)
         {
             template.AddPlayerSpawn(pair.Key);
         }
-
-        AssetDatabase.CreateAsset(template, "Assets/Resources/EncounterTemplates/"+templateName+".asset");
-
-        AssetDatabase.SaveAssets();
-
-        currentTemplate = template;
-        
+        return template;
     }
 
     public void ClearMap()
@@ -201,9 +206,7 @@ public class EncounterEditor : MonoBehaviour
 
     public void TestMap()
     {
-        SaveEncounter();
-        EncounterTemplate template = currentTemplate;
-        GameplayContext.ChosenTemplate = template;
+        GameplayContext.ChosenTemplate = GenerateWithoutSaving();
         SceneManager.LoadScene("CombatEncounter");
     }
 

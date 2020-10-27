@@ -13,49 +13,34 @@ MonoBehaviour:
   m_Name: Example
   m_EditorClassIdentifier: 
   terrainPieces:
-  - Q: -1
-    R: -1
-    S: 2
-  - Q: 0
-    R: -2
-    S: 2
-  - Q: 2
-    R: -2
-    S: 0
-  - Q: 2
-    R: -1
-    S: -1
-  - Q: 0
-    R: 2
+  - Q: 1
+    R: 1
     S: -2
+  - Q: 0
+    R: 0
+    S: 0
+  - Q: -1
+    R: -1
+    S: 2
+  playerSpawnPoints:
+  - Q: 2
+    R: 0
+    S: -2
+  - Q: -2
+    R: -1
+    S: 3
   - Q: -1
     R: 2
     S: -1
-  - Q: -2
-    R: 2
-    S: 0
-  playerSpawnPoints:
-  - Q: 1
-    R: -2
-    S: 1
-  - Q: 1
-    R: -3
-    S: 2
-  - Q: 2
-    R: -3
-    S: 1
   enemySpawnPoints:
   - Q: -2
     R: 1
     S: 1
   - Q: 1
-    R: 1
-    S: -2
-  - Q: 0
-    R: 1
-    S: -1
-  - Q: -1
-    R: 1
-    S: 0
-  minEnemies: 4
-  maxEnemies: 4
+    R: 2
+    S: -3
+  - Q: 1
+    R: -2
+    S: 1
+  minEnemies: 3
+  maxEnemies: 3
