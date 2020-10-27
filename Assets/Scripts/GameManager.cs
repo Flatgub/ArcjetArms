@@ -186,6 +186,11 @@ public class GameManager : MonoBehaviour
         EnemyGroup enemyGroup = entFactory.GetEnemyGroup(template.minEnemies, template.maxEnemies, maxDifficulty:3);
         foreach (string enemyType in enemyGroup.enemies)
         {
+            if (enemySpots.Count == 0)
+            {
+                break;
+            }
+
             Hex spawnpoint = enemySpots.PopRandom();
             Entity e = entFactory.CreateEntity(10);
 
