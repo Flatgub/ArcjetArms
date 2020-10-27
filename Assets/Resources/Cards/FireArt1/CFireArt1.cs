@@ -43,7 +43,7 @@ public class CFireArt1 : CardData
 
         //let the player select one of the adjacent entities
         SingleEntityResult target =
-            GameplayContext.Ui.OfferSingleEntitySelection(EntsInRange);
+            GameplayContext.Ui.OfferSingleEntitySelection(adjacentEnts);
 
         //wait for the player to make a selection
         yield return new WaitUntil(target.IsReadyOrCancelled);
