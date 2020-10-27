@@ -58,11 +58,11 @@ public class Entity : MonoBehaviour
     public void AddToGrid(HexGrid grid, Hex pos)
     {
         this.Grid = grid;
-        MoveTo(pos);
+        MoveTo(pos, 0f);
         grid.AddEntityToGrid(this);
     }
 
-    public void MoveTo(Hex pos)
+    public void MoveTo(Hex pos, float speed = 0.1f)
     {
         if (pos == null)
         {
@@ -71,7 +71,7 @@ public class Entity : MonoBehaviour
         Position = pos;
         //transform.position = grid.GetWorldPosition(pos);
         //TODO: Calculate travel time using speed somehow?
-        LeanTween.moveLocal(gameObject, Grid.GetWorldPosition(pos), 0.1f);
+        LeanTween.moveLocal(gameObject, Grid.GetWorldPosition(pos), speed);
     }
 
     public void MoveAlong(List<Hex> path, int maxSteps = int.MaxValue,
