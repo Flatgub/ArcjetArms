@@ -8,17 +8,25 @@ public class EncounterEditor : MonoBehaviour
 {
     public HexGrid grid;
     public GameObject terrainMarkerPrefab;
+    public GameObject enemyMarkerPrefab;
+    public GameObject playerMarkerPrefab;
     public int mapRadius;
 
     public Dictionary<Hex, GameObject> terrainPositions;
+    public Dictionary<Hex, GameObject> enemySpawns;
+    public Dictionary<Hex, GameObject> playerSpawns;
 
     public InputField templateNameField;
     public string templateName;
+
+    public int brushMode;
 
     // Start is called before the first frame update
     void Start()
     {
         terrainPositions = new Dictionary<Hex, GameObject>();
+        enemySpawns = new Dictionary<Hex, GameObject>();
+        playerSpawns = new Dictionary<Hex, GameObject>();
         grid.GenerateMap(mapRadius);
     }
 
@@ -29,6 +37,22 @@ public class EncounterEditor : MonoBehaviour
         marker.transform.position = grid.GetWorldPosition(pos);
         terrainPositions.Add(pos, marker);
     }
+    
+    private void MakeEnemySpawn(Hex pos)
+    {
+        GameObject marker = Instantiate(enemyMarkerPrefab, transform);
+        marker.SetActive(true);
+        marker.transform.position = grid.GetWorldPosition(pos);
+        enemySpawns.Add(pos, marker);
+    }
+
+    private void MakePlayerSpawn(Hex pos)
+    {
+        GameObject marker = Instantiate(playerMarkerPrefab, transform);
+        marker.SetActive(true);
+        marker.transform.position = grid.GetWorldPosition(pos);
+        playerSpawns.Add(pos, marker);
+    }
 
     // Update is called once per frame
     void Update()
@@ -37,15 +61,49 @@ public class EncounterEditor : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (terrainPositions.TryGetValue(mousehex, out GameObject marker))
+                switch (brushMode)
                 {
-                    Destroy(marker);
-                    terrainPositions.Remove(mousehex);
+                    case 0: //Terrain brush
+                    {
+                        if (terrainPositions.TryGetValue(mousehex, out GameObject marker))
+                        {
+                            Destroy(marker);
+                            terrainPositions.Remove(mousehex);
+                        }
+                        else
+                        {
+                            MakeTerrainMarker(mousehex);
+                        }
+                    };break;
+
+                    case 1: //enemy brush
+                    {
+                        if (enemySpawns.TryGetValue(mousehex, out GameObject marker))
+                        {
+                            Destroy(marker);
+                            enemySpawns.Remove(mousehex);
+                        }
+                        else
+                        {
+                            MakeEnemySpawn(mousehex);
+                        }
+                    };break;
+
+                    case 2:
+                    {//playerbrush 
+                        if (playerSpawns.TryGetValue(mousehex, out GameObject marker))
+                        {
+                            Destroy(marker);
+                            playerSpawns.Remove(mousehex);
+                        }
+                        else
+                        {
+                            MakePlayerSpawn(mousehex);
+                        }
+                    };break;
                 }
-                else
-                {
-                    MakeTerrainMarker(mousehex);
-                }
+
+                
             }
 
             //enemyText.enabled = true;
@@ -58,9 +116,25 @@ public class EncounterEditor : MonoBehaviour
     {
         EncounterTemplate template = ScriptableObject.CreateInstance<EncounterTemplate>();
 
+        //terrain
         foreach (KeyValuePair<Hex, GameObject> pair in terrainPositions)
         {
             template.AddTerrain(pair.Key);
+        }
+
+        //enemies
+        template.minEnemies = enemySpawns.Count;
+        template.maxEnemies = enemySpawns.Count;
+        foreach (KeyValuePair<Hex, GameObject> pair in enemySpawns)
+        {
+            template.AddEnemySpawn(pair.Key);
+        }
+
+        //playerspawns
+        //terrain
+        foreach (KeyValuePair<Hex, GameObject> pair in playerSpawns)
+        {
+            template.AddPlayerSpawn(pair.Key);
         }
 
         AssetDatabase.CreateAsset(template, "Assets/Resources/EncounterTemplates/"+templateName+".asset");
@@ -69,21 +143,47 @@ public class EncounterEditor : MonoBehaviour
         
     }
 
+    public void ClearMap()
+    {
+        foreach (KeyValuePair<Hex, GameObject> pair in terrainPositions)
+        {
+            Destroy(pair.Value);
+        }
+        terrainPositions.Clear();
+
+        foreach (KeyValuePair<Hex, GameObject> pair in enemySpawns)
+        {
+            Destroy(pair.Value);
+        }
+        enemySpawns.Clear();
+
+        foreach (KeyValuePair<Hex, GameObject> pair in playerSpawns)
+        {
+            Destroy(pair.Value);
+        }
+        playerSpawns.Clear();
+    }
+
     public void LoadEncounter()
     {
         EncounterTemplate template = Resources.Load<EncounterTemplate>("EncounterTemplates/" + templateName);
         if (template is EncounterTemplate)
         {
-            foreach (KeyValuePair<Hex, GameObject> pair in terrainPositions)
-            {
-                Destroy(pair.Value);
-            }
-
-            terrainPositions.Clear();
+            ClearMap();
 
             foreach (Hex pos in template.terrainPieces)
             {
                 MakeTerrainMarker(pos);
+            }
+
+            foreach (Hex pos in template.enemySpawnPoints)
+            {
+                MakeEnemySpawn(pos);
+            }
+
+            foreach (Hex pos in template.playerSpawnPoints)
+            {
+                MakePlayerSpawn(pos);
             }
         }
         else
@@ -95,6 +195,11 @@ public class EncounterEditor : MonoBehaviour
     public void UpdateTemplateName(string name)
     {
         templateName = templateNameField.text;
+    }
+
+    public void ChangeBrush(int brush)
+    {
+        brushMode = brush;
     }
 }
 
