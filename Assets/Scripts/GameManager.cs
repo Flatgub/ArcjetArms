@@ -186,9 +186,9 @@ public class GameManager : MonoBehaviour
             Entity e = entFactory.CreateEntity(10);
 
             e.AddToGrid(worldGrid, spawnpoint);
-            e.entityName = "enemy " + i;
             e.EnableStatusEffects(true);
-            entFactory.AddAIController(e);
+            entFactory.AddAIController(e,"random");
+            Debug.Log("spawned: " + e.entityName);
             allEntities.Add(e);
             allEnemies.Add(e);
         }
@@ -295,16 +295,7 @@ public class GameManager : MonoBehaviour
             GameplayContext.EntityUnderMouse = null;
         }
 
-        /*
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            Vector3 PlayerPos = worldGrid.GetWorldPosition(player.Position);
-            PlayerPos.z = -1;
-            ProjectileTracer tracer = Instantiate(BulletTracer, PlayerPos, Quaternion.identity);
-            tracer.GoTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        }*/
-
-        if (stateStack.Peek() != GameState.GameOver && allEntities.Count == 0)
+        if (stateStack.Peek() != GameState.GameOver && allEnemies.Count == 0)
         {
             stateStack.Pop();
             stateStack.Push(GameState.GameOver);

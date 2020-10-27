@@ -22,7 +22,7 @@ public class ApplyHealing : IAIAction
         Action healAction = () =>
         {
             healTarget.Health.ApplyHealing(healAmount);
-            LeanTween.moveLocal(with.gameObject, GameplayContext.ActiveEntity.transform.position,
+            LeanTween.moveLocal(with.gameObject, healTarget.transform.position,
                 0.1f).setEaseInCubic().setLoopPingPong(1);
 
             LeanTween.delayedCall(0.2f, () =>

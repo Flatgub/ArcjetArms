@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +10,7 @@ public class EntityFactory : MonoBehaviour
     private static EntityFactory factoryInstance;
     private GameObject entityPrefab;
     private Sprite defaultEntitySprite;
+    private Dictionary<string, IAiTemplate> allAITemplates;
 
     /// <summary>
     /// Get the singleton instance of the entityFactory, or make one if it doesn't yet exist
@@ -29,9 +30,18 @@ public class EntityFactory : MonoBehaviour
 
     public void Awake()
     {
-        //FIXME: perhaps don't hardcode these
         entityPrefab = Resources.Load<GameObject>("Prefabs/BasicEntity");
         defaultEntitySprite = Resources.Load<Sprite>("Sprites/NoArtEntity");
+        allAITemplates = new Dictionary<string, IAiTemplate>
+        {
+            ["LightMelee"] = new AI_LightAttacker(),
+            ["Sniper"] = new AI_Sniper(),
+            ["HookThrower"] = new AI_HookThrower(),
+            ["Lancer"] = new AI_Lancer(),
+            ["Armoured"] = new AI_ArmoredEnemy(),
+            ["Mortar"] = new AI_Mortar(),
+            ["Mechanic"] = new AI_Mechanic()
+        };
     }
 
     //TODO: make this method more modular to accept unique constructors for unique entities
@@ -61,11 +71,21 @@ public class EntityFactory : MonoBehaviour
         return sr;
     }
 
-    public EntityAIController AddAIController(Entity ent)
+    public EntityAIController AddAIController(Entity ent, string templateName)
     {
         EntityAIController ai = ent.gameObject.AddComponent<EntityAIController>();
-        IAiTemplate template = new AI_HookThrower();
-        template.ApplyTo(ent);
+        if (templateName != "random" && !allAITemplates.ContainsKey(templateName))
+        {
+            throw new ArgumentException("No such AI template '" + templateName + "'");
+        }
+        else if (templateName == "random")
+        {
+            allAITemplates.GetRandomValue().ApplyTo(ent);
+        }
+        else
+        {
+            allAITemplates[templateName].ApplyTo(ent);
+        }
         return ai;
     }
 

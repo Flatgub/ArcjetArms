@@ -59,6 +59,18 @@ public static class Extensions
         return num.ToString().Colored(color);
     }
 
+    public static TKey GetRandomKey<TKey, TValue>(this Dictionary<TKey, TValue> dict)
+    {
+        List<TKey> keys = new List<TKey>(dict.Keys);
+        return keys.GetRandom();
+    }
+
+    public static TValue GetRandomValue<TKey, TValue>(this Dictionary<TKey, TValue> dict)
+    {
+        List<TValue> values = new List<TValue>(dict.Values);
+        return values.GetRandom();
+    }
+
     public static Vector2 IntoRect(this Vector2 v, RectTransform rect)
     {
         float x = (v.x * rect.sizeDelta.x) - (rect.sizeDelta.x * 0.5f);
