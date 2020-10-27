@@ -182,6 +182,26 @@ public class Entity : MonoBehaviour
         OnStatusEffectsChanged?.Invoke();
     }
 
+    public void RemoveStatusEffect(Type type)
+    {
+        if (!AcceptsStatusEffects)
+        {
+            return;
+        };
+
+        for (int i = statusEffects.Count - 1; i >= 0; i--)
+        {
+            StatusEffect effect = statusEffects[i];
+            if (effect.GetType() == type)
+            {
+                statusEffects.RemoveAt(i);
+            }
+        }
+
+        OnStatusEffectsChanged?.Invoke();
+    }
+
+
     public List<StatusEffect> GetStatusEffects()
     {
         if (!AcceptsStatusEffects)
@@ -190,6 +210,24 @@ public class Entity : MonoBehaviour
         };
 
         return new List<StatusEffect>(statusEffects);
+    }
+
+    public bool HasStatusEffect(Type type)
+    {
+        if (!AcceptsStatusEffects)
+        {
+            return false;
+        }
+
+        foreach (StatusEffect effect in statusEffects)
+        {
+            if (effect.GetType() == type)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void StartTurn()
