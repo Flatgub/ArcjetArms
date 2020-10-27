@@ -130,7 +130,11 @@ public class GameManager : MonoBehaviour
             basicDeck.AddCardID(CardDatabase.GetCardDataByName("Shoot").cardID, 6);
             basicDeck.AddCardID(CardDatabase.GetCardDataByName("Step").cardID, 4);
         }
-        
+
+        if (!GearDatabase.IsLoaded)
+        {
+            GearDatabase.LoadAllGear();
+        }
 
         drawPile = basicDeck.ConvertToDeck();
         drawPile.PrintContents("drawpile");
