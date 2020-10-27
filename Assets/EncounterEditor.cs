@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class EncounterEditor : MonoBehaviour
@@ -20,6 +21,8 @@ public class EncounterEditor : MonoBehaviour
     public string templateName;
 
     public int brushMode;
+
+    private EncounterTemplate currentTemplate = null;
 
     // Start is called before the first frame update
     void Start()
@@ -140,6 +143,8 @@ public class EncounterEditor : MonoBehaviour
         AssetDatabase.CreateAsset(template, "Assets/Resources/EncounterTemplates/"+templateName+".asset");
 
         AssetDatabase.SaveAssets();
+
+        currentTemplate = template;
         
     }
 
@@ -185,11 +190,21 @@ public class EncounterEditor : MonoBehaviour
             {
                 MakePlayerSpawn(pos);
             }
+
+            currentTemplate = template;
         }
         else
         {
             Debug.LogWarning("unable to load template '" + templateName + "'");
         }
+    }
+
+    public void TestMap()
+    {
+        SaveEncounter();
+        EncounterTemplate template = currentTemplate;
+        GameplayContext.ChosenTemplate = template;
+        SceneManager.LoadScene("CombatEncounter");
     }
 
     public void UpdateTemplateName(string name)

@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-class EncounterTemplate : ScriptableObject
+public class EncounterTemplate : ScriptableObject
 {
-    public List<Hex> terrainPieces;
-    public List<Hex> playerSpawnPoints;
-    public List<Hex> enemySpawnPoints;
+    public List<PODHex> terrainPieces;
+    public List<PODHex> playerSpawnPoints;
+    public List<PODHex> enemySpawnPoints;
     public int minEnemies;
     public int maxEnemies;
 
     public void Awake()
     {
-        terrainPieces = new List<Hex>();
-        playerSpawnPoints = new List<Hex>();
-        enemySpawnPoints = new List<Hex>();
+        terrainPieces = new List<PODHex>();
+        playerSpawnPoints = new List<PODHex>();
+        enemySpawnPoints = new List<PODHex>();
     }
 
     public void AddTerrain(Hex pos)

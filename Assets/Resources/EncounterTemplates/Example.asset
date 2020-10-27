@@ -12,5 +12,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87301ab2d7f640c48a5651af0d37e30e, type: 3}
   m_Name: Example
   m_EditorClassIdentifier: 
-  minEnemies: 1
+  terrainPieces:
+  - Q: -1
+    R: -1
+    S: 2
+  - Q: 0
+    R: -2
+    S: 2
+  - Q: 2
+    R: -2
+    S: 0
+  - Q: 2
+    R: -1
+    S: -1
+  - Q: 0
+    R: 2
+    S: -2
+  - Q: -1
+    R: 2
+    S: -1
+  - Q: -2
+    R: 2
+    S: 0
+  playerSpawnPoints:
+  - Q: 1
+    R: -2
+    S: 1
+  - Q: 1
+    R: -3
+    S: 2
+  - Q: 2
+    R: -3
+    S: 1
+  enemySpawnPoints:
+  - Q: -2
+    R: 1
+    S: 1
+  - Q: 1
+    R: 1
+    S: -2
+  - Q: 0
+    R: 1
+    S: -1
+  - Q: -1
+    R: 1
+    S: 0
+  minEnemies: 4
   maxEnemies: 4
