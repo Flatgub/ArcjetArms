@@ -48,5 +48,5 @@ MonoBehaviour:
   - Q: 0
     R: 2
     S: -2
-  minEnemies: 3
+  minEnemies: 1
   maxEnemies: 3

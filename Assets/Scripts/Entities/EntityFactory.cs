@@ -12,6 +12,7 @@ public class EntityFactory : MonoBehaviour
     private static Sprite defaultEntitySprite;
     private Dictionary<string, IAiTemplate> allAITemplates;
     private static Dictionary<string, Sprite> enemySprites;
+    private static List<EnemyGroup> allEnemyGroups;
 
     /// <summary>
     /// Get the singleton instance of the entityFactory, or make one if it doesn't yet exist
@@ -44,6 +45,8 @@ public class EntityFactory : MonoBehaviour
             ["Mechanic"] = new AI_Mechanic()
         };
         enemySprites = new Dictionary<string, Sprite>();
+        allEnemyGroups = new List<EnemyGroup>(Resources.LoadAll<EnemyGroup>("EnemyGroups"));
+        Debug.Log("found " + allEnemyGroups.Count + " enemy groups");
     }
 
     //TODO: make this method more modular to accept unique constructors for unique entities
@@ -122,6 +125,28 @@ public class EntityFactory : MonoBehaviour
         }
     }
 
+    public EnemyGroup GetEnemyGroup(int minEnemies, int maxEnemies)
+    {
+        List<EnemyGroup> candidates = new List<EnemyGroup>();
+        foreach (EnemyGroup group in allEnemyGroups)
+        {
+            if (group.enemies.Count >= minEnemies && group.enemies.Count <= maxEnemies)
+            {
+                candidates.Add(group);
+            }
+        }
+        if (candidates.Count == 0)
+        {
+            Debug.LogWarning(
+                String.Format("Could not find enemy group within restrictions min:{0}, max{1}",
+                minEnemies, maxEnemies));
+            return allEnemyGroups[0];
+        }
+        else
+        {
+            return candidates.GetRandom();
+        }
+    }
 
 }
 
