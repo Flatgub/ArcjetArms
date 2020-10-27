@@ -21,7 +21,7 @@ public class MoveTowardsEnemy : IAIAction
         List<Hex> path = GridHelper.GetPathToHex(GameplayContext.Grid, with.Position,
             navTarget.Position);
 
-        path.Remove(GameplayContext.Player.Position);
+        path.Remove(navTarget.Position);
 
         with.MoveAlong(path, maxSteps: speed, callback: () => {
             OnActionFinish?.Invoke();
