@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
         entFactory = EntityFactory.GetFactory;
 
         allEntities = new List<Entity>();
+        allEnemies = new List<Entity>();
         enemiesWhoNeedTurns = new List<Entity>();
 
         if (GameplayContext.ChosenTemplate != null)
