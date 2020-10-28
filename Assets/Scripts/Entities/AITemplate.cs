@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface IAiTemplate
 {
+    int DifficultyScore { get; }
     void ApplyTo(Entity entity);
+
 }

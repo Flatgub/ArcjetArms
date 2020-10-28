@@ -13,6 +13,8 @@ public static class GearDatabase
     private static readonly string gearDirectory;
     private static bool loaded = false;
 
+    public static bool IsLoaded { get { return loaded; } }
+
     static GearDatabase()
     {
         allGear = new SortedList<int, GearData>();
@@ -144,6 +146,11 @@ public static class GearDatabase
 
     public static LootPool GenerateMasterLootPool()
     {
+        if (!loaded)
+        {
+            Debug.LogError("Made lootpool when lootpool wasn't loaded!");
+        }
+
         LootPool master = new LootPool();
 
         foreach (KeyValuePair<int, GearData> pair in allGear)
@@ -164,7 +171,6 @@ public static class GearDatabase
                 }
             }
         }
-
         return master;
     }
 

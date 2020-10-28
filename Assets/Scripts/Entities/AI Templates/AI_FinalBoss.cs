@@ -10,12 +10,14 @@ public class AI_FinalBoss : IAiTemplate
     public int attackRange = 5;
     public int hookDamage = 10;
     public int attackDamage = 10;
+    public int DifficultyScore { get { return 5;} }
 
 
     public void ApplyTo(Entity entity)
     {
         entity.entityName = "Final Boss";
         entity.Health.SetMaxHealth(MaxHealth, updateHealth: true);
+        entity.EnableStatusEffects(false);
 
         entity.AIController.AddAction(new BasicMelee(hookDamage), 20);
         entity.AIController.AddAction(new ThrowHook(attackRange, moveSpeed), 10);

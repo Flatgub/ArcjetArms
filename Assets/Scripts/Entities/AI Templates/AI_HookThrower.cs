@@ -9,10 +9,12 @@ public class AI_HookThrower : IAiTemplate
     public int moveSpeed = 3;
     public int attackRange = 5;
     public int hookDamage = 7;
+    public int DifficultyScore { get { return 2;} }
 
     public void ApplyTo(Entity entity)
     {
         entity.entityName = "Hook Thrower";
+        entity.appearance.sprite = EntityFactory.GetEnemySprite("HookThrower");
         entity.Health.SetMaxHealth(MaxHealth, updateHealth: true);
 
         entity.AIController.AddAction(new BasicMelee(hookDamage), 20); 

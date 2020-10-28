@@ -17,6 +17,14 @@ public static class Extensions
         return array[index];
     }
 
+    public static T PopRandom<T>(this List<T> list)
+    {
+        int index = UnityEngine.Random.Range(0, list.Count);
+        T element = list[index];
+        list.RemoveAt(index);
+        return element;
+    }
+
     //Fisher-Yates Shuffle
     public static List<T> Shuffle<T>(this List<T> list)
     {
@@ -49,6 +57,18 @@ public static class Extensions
     public static string Colored(this int num, Color color)
     {
         return num.ToString().Colored(color);
+    }
+
+    public static TKey GetRandomKey<TKey, TValue>(this Dictionary<TKey, TValue> dict)
+    {
+        List<TKey> keys = new List<TKey>(dict.Keys);
+        return keys.GetRandom();
+    }
+
+    public static TValue GetRandomValue<TKey, TValue>(this Dictionary<TKey, TValue> dict)
+    {
+        List<TValue> values = new List<TValue>(dict.Values);
+        return values.GetRandom();
     }
 
     public static Vector2 IntoRect(this Vector2 v, RectTransform rect)
