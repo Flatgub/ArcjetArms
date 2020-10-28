@@ -31,6 +31,8 @@ public class ApproachMelee : IAIAction
             LeanTween.moveLocal(with.gameObject, GameplayContext.Player.transform.position, 0.1f)
                 .setEaseInCubic().setLoopPingPong(1);
 
+            FXHelper.PlaySound("MetalHit");
+
             LeanTween.delayedCall(0.2f, () =>
             {
                 OnActionFinish?.Invoke();

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc0456813a8d6fe41b3f5d261702efd0, type: 3}
+  m_Name: MechStep
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: faa72a67b8bbf564f8accf8d1112f7d2, type: 3}
+  - {fileID: 8300000, guid: 972a4e592f3578c4f918507884c9f7c5, type: 3}
+  - {fileID: 8300000, guid: 6e30cb8369b2c754ab622178f8277ecd, type: 3}
+  - {fileID: 8300000, guid: 097b1b5507fd41744b5a232bc28e8222, type: 3}

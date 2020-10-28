@@ -9,10 +9,12 @@ public class BasicMelee : IAIAction
 
     public int baseDamage;
     public event Action OnActionFinish;
+    public string attackSound;
 
-    public BasicMelee(int damage)
+    public BasicMelee(int damage, string attackSound = "MetalHit")
     {
         baseDamage = damage;
+        this.attackSound = attackSound;
     }
 
     public void Do(Entity with)
@@ -21,6 +23,8 @@ public class BasicMelee : IAIAction
         with.TriggerAttackEvent(GameplayContext.Player);
         LeanTween.moveLocal(with.gameObject, GameplayContext.Player.transform.position, 0.1f)
             .setEaseInCubic().setLoopPingPong(1);
+
+        FXHelper.PlaySound(attackSound);
 
         LeanTween.delayedCall(0.2f, () =>
         {
