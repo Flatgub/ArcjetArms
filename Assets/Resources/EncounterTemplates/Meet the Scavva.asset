@@ -97,4 +97,4 @@ MonoBehaviour:
     R: 1
     S: -2
   minEnemies: 3
-  maxEnemies: 3
+  maxEnemies: 5
