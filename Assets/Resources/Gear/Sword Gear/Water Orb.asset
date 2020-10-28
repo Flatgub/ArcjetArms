@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 334fbc0c98e407240adbae4c8279fd10, type: 3}
   m_Name: Water Orb
   m_EditorClassIdentifier: 
-  gearID: 0
-  gearName: 
-  faction: 
+  gearID: 35
+  gearName: Water Orb
+  faction: Sword
   requiredSlot: 6
   DoesntProvide: 
   upgradesTo: {fileID: 0}
   art: {fileID: 21300000, guid: 4384a11db9ae4b64790bc180be77c606, type: 3}
   Cards:
-  - card: {fileID: 0}
+  - card: {fileID: 11400000, guid: d94e1c41849ea394a81dc502e6eb5293, type: 2}
     amount: 3
-  - card: {fileID: 0}
+  - card: {fileID: 11400000, guid: c8eae98eab97a7149a67153f00c0a401, type: 2}
     amount: 3
-  - card: {fileID: 0}
+  - card: {fileID: 11400000, guid: e3993c9405c70184c88b1363ae3fd38a, type: 2}
     amount: 2
-  - card: {fileID: 0}
+  - card: {fileID: 11400000, guid: 4a9aaea5c54d40e428aa7d95e88b8eed, type: 2}
     amount: 2
   rarity: 10

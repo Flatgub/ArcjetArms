@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CLightningArt1 : CardData
+public class CBasicLightningAttack : CardData
 {
     public int baseDamage;
+
 
     public override string GenerateStaticDescription()
     {
@@ -34,9 +35,12 @@ public class CLightningArt1 : CardData
 
     public override IEnumerator CardBehaviour(CardActionResult outcome)
     {
+
         //get a list of adjacent entities
         List<Entity> adjacentEnts = GridHelper.GetAdjacentEntities(GameplayContext.Grid,
             GameplayContext.Player.Position);
+
+
 
         //let the player select one of the adjacent entities
         SingleEntityResult target =
@@ -48,41 +52,32 @@ public class CLightningArt1 : CardData
         // If the player didn't cancel the selection
         if (!target.WasCancelled())
         {
-            Entity victim = target.GetResult();
-            if (victim.Health.HealthAsFraction() <= 0.5f)
-            {
-                baseDamage = baseDamage * 2;
-            }
-            GameplayContext.Player.DealDamageTo(victim, baseDamage);
-            GameplayContext.Player.TriggerAttackEvent(victim);
+            //hit 'em
+            Entity victim = target.GetResult();      
             if (adjacentEnts.Contains(GameplayContext.Player))
-            {
-                adjacentEnts.Remove(GameplayContext.Player);
+        {
+            adjacentEnts.Remove(GameplayContext.Player);
 
-            }
-            foreach (Entity toZap in adjacentEnts)
+        }
+        foreach (Entity toZap in adjacentEnts)
+        {
+            if (toZap.HasStatusEffect(typeof(WetStatusEffect)))
             {
-                //hit 'em
-                Entity victims = target.GetResult();
-                if (toZap.HasStatusEffect(typeof(WetStatusEffect)))
-                {
-                    GameplayContext.Player.DealDamageTo(victims, baseDamage * 2);
-                    toZap.ApplyStatusEffect(new StunStatusEffect());
-                }
-                else
-                {
-                    GameplayContext.Player.DealDamageTo(victims, baseDamage);
-                }
-
-               
-                outcome.Complete();
+                GameplayContext.Player.DealDamageTo(victim, baseDamage * 2);
+                toZap.ApplyStatusEffect(new StunStatusEffect());
             }
+            else
+            {
+                GameplayContext.Player.DealDamageTo(victim, baseDamage);
+            }
+        }
+            GameplayContext.Player.TriggerAttackEvent(victim);
+            outcome.Complete();
         }
         else
         {
             outcome.Cancel();
         }
-        
-
     }
+
 }

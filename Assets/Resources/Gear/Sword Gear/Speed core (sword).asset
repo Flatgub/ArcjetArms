@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 334fbc0c98e407240adbae4c8279fd10, type: 3}
   m_Name: Speed core (sword)
   m_EditorClassIdentifier: 
-  gearID: 0
-  gearName: 
-  faction: 
+  gearID: 24
+  gearName: Speed core
+  faction: Sword
   requiredSlot: 6
   DoesntProvide: 
   upgradesTo: {fileID: 0}
@@ -24,3 +24,4 @@ MonoBehaviour:
     amount: 2
   - card: {fileID: 0}
     amount: 0
+  rarity: 10

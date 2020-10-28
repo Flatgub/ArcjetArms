@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 334fbc0c98e407240adbae4c8279fd10, type: 3}
   m_Name: Ice Orb
   m_EditorClassIdentifier: 
-  gearID: 0
-  gearName: 
-  faction: 
+  gearID: 37
+  gearName: Ice Orb
+  faction: Sword
   requiredSlot: 6
   DoesntProvide: 
   upgradesTo: {fileID: 0}
   art: {fileID: 21300000, guid: 4384a11db9ae4b64790bc180be77c606, type: 3}
   Cards:
-  - card: {fileID: 0}
-    amount: 0
+  - card: {fileID: 11400000, guid: 13d0e9ef4f7aba245b3986682ecd5c08, type: 2}
+    amount: 3
   - card: {fileID: 0}
     amount: 0
   - card: {fileID: 0}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 334fbc0c98e407240adbae4c8279fd10, type: 3}
   m_Name: Fire Orb
   m_EditorClassIdentifier: 
-  gearID: 0
+  gearID: 34
   gearName: 
   faction: 
   requiredSlot: 6
@@ -22,7 +22,10 @@ MonoBehaviour:
   Cards:
   - card: {fileID: 11400000, guid: b7ff10a61000c5b4f9bb3ab9d0bd0cf2, type: 2}
     amount: 0
+  - card: {fileID: 11400000, guid: 615c69e8b2f04c0419bf767d5a397aee, type: 2}
+    amount: 3
   - card: {fileID: 0}
     amount: 0
   - card: {fileID: 0}
     amount: 0
+  rarity: 10
