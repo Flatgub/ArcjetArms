@@ -31,31 +31,20 @@ class Scavange : IAIAction
 
     void IAIAction.Do(Entity with)
     {
-        if (!with.IsDead)
-        {
-            GameplayContext.Manager.HandSize == 4;
-            //GameplayContext.Player.ApplyStatusEffect(asdg)
+            GameplayContext.Player.ApplyStatusEffect(new ReducedDrawStatusEffect());
 
             LeanTween.delayedCall(0.2f, () =>
             {
                 OnActionFinish?.Invoke();
                 OnActionFinish = null;
             });
-        }
+        
 
     }
 
     bool IAIAction.IsDoable(Entity with)
     {
-        if (with.IsDead)
-        {
-            return false;
-        }
-
-        else
-        {
-            return true;
-        }
+        return true;
     }
 }
 

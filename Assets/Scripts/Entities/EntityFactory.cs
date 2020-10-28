@@ -43,7 +43,8 @@ public class EntityFactory : MonoBehaviour
             ["Lancer"] = new AI_Lancer(),
             ["Armoured"] = new AI_ArmoredEnemy(),
             ["Mortar"] = new AI_Mortar(),
-            ["Mechanic"] = new AI_Mechanic()
+            ["Mechanic"] = new AI_Mechanic(),
+            ["Scavva"] = new AI_Scavva()
         };
         enemySprites = new Dictionary<string, Sprite>();
         allEnemyGroups = new List<EnemyGroup>(Resources.LoadAll<EnemyGroup>("EnemyGroups"));
