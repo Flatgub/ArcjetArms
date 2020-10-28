@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,11 @@ public class EntityFactory : MonoBehaviour
 {
     private static EntityFactory factoryInstance;
     private GameObject entityPrefab;
-    private Sprite defaultEntitySprite;
+    private static Sprite defaultEntitySprite;
+    private Dictionary<string, IAiTemplate> allAITemplates;
+    private static Dictionary<string, Sprite> enemySprites;
+    private static List<EnemyGroup> allEnemyGroups;
+    private static Dictionary<EnemyGroup, int> enemyGroupDifficulties;
 
     /// <summary>
     /// Get the singleton instance of the entityFactory, or make one if it doesn't yet exist
@@ -29,9 +33,45 @@ public class EntityFactory : MonoBehaviour
 
     public void Awake()
     {
-        //FIXME: perhaps don't hardcode these
         entityPrefab = Resources.Load<GameObject>("Prefabs/BasicEntity");
         defaultEntitySprite = Resources.Load<Sprite>("Sprites/NoArtEntity");
+        allAITemplates = new Dictionary<string, IAiTemplate>
+        {
+            ["LightAttacker"] = new AI_LightAttacker(),
+            ["Sniper"] = new AI_Sniper(),
+            ["HookThrower"] = new AI_HookThrower(),
+            ["Lancer"] = new AI_Lancer(),
+            ["Armoured"] = new AI_ArmoredEnemy(),
+            ["Mortar"] = new AI_Mortar(),
+            ["Mechanic"] = new AI_Mechanic()
+        };
+        enemySprites = new Dictionary<string, Sprite>();
+        allEnemyGroups = new List<EnemyGroup>(Resources.LoadAll<EnemyGroup>("EnemyGroups"));
+
+        enemyGroupDifficulties = new Dictionary<EnemyGroup, int>();
+        EnemyGroup smallest = allEnemyGroups[0];
+        EnemyGroup largest = allEnemyGroups[0];
+        foreach (EnemyGroup group in allEnemyGroups)
+        {
+            int score = 0;
+            foreach (string enemy in group.enemies)
+            {
+                score += allAITemplates[enemy].DifficultyScore;
+            }
+            enemyGroupDifficulties.Add(group, score);
+
+            if (score < enemyGroupDifficulties[smallest])
+            {
+                smallest = group;
+            }
+            if (score > enemyGroupDifficulties[largest])
+            {
+                largest = group;
+            }
+        }
+        Debug.Log("Found " + allEnemyGroups.Count + " enemy groups");
+        Debug.Log("Total difficulty range: " + enemyGroupDifficulties[smallest] + " to " + enemyGroupDifficulties[largest]);
+        
     }
 
     //TODO: make this method more modular to accept unique constructors for unique entities
@@ -61,11 +101,21 @@ public class EntityFactory : MonoBehaviour
         return sr;
     }
 
-    public EntityAIController AddAIController(Entity ent)
+    public EntityAIController AddAIController(Entity ent, string templateName)
     {
         EntityAIController ai = ent.gameObject.AddComponent<EntityAIController>();
-        IAiTemplate template = new AI_HookThrower();
-        template.ApplyTo(ent);
+        if (templateName != "random" && !allAITemplates.ContainsKey(templateName))
+        {
+            throw new ArgumentException("No such AI template '" + templateName + "'");
+        }
+        else if (templateName == "random")
+        {
+            allAITemplates.GetRandomValue().ApplyTo(ent);
+        }
+        else
+        {
+            allAITemplates[templateName].ApplyTo(ent);
+        }
         return ai;
     }
 
@@ -77,5 +127,55 @@ public class EntityFactory : MonoBehaviour
         obstruction.appearance.sprite = type.images.GetRandom();
         return obstruction;
     }
+
+    public static Sprite GetEnemySprite(string spritename)
+    {
+        if (enemySprites.TryGetValue(spritename, out Sprite spr))
+        {
+            return spr;
+        }
+        else
+        {
+            Sprite newspr = Resources.Load<Sprite>("Sprites/" + spritename);
+            if (newspr is Sprite)
+            {
+                enemySprites.Add(spritename, newspr);
+                return newspr;
+            }
+            else
+            {
+                Debug.LogWarning("Cannot find enemy sprite with name '" + spritename + "'");
+                return defaultEntitySprite;
+            }
+        }
+    }
+
+    public EnemyGroup GetEnemyGroup(int minEnemies, int maxEnemies,
+        int minDifficulty = 1, int maxDifficulty = 10)
+    {
+        List<EnemyGroup> candidates = new List<EnemyGroup>();
+        foreach (EnemyGroup group in allEnemyGroups)
+        {
+            int difficulty = enemyGroupDifficulties[group];
+            if (group.enemies.Count >= minEnemies && group.enemies.Count <= maxEnemies
+                && difficulty >= minDifficulty && difficulty <= maxDifficulty)
+            {
+                candidates.Add(group);
+            }
+        }
+        if (candidates.Count == 0)
+        {
+            Debug.LogWarning(
+                String.Format("Could not find enemy group within restrictions, " +
+                              "enemies: [{0}-{1}], difficulty: [{2}-{3}]",
+                minEnemies, maxEnemies, minDifficulty, maxDifficulty));
+            return allEnemyGroups[0];
+        }
+        else
+        {
+            return candidates.GetRandom();
+        }
+    }
+
 }
 

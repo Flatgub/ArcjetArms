@@ -144,6 +144,7 @@ public class Hex
     public static bool operator ==(Hex a, Hex b) => !(a is null) && !(b is null) && a.Q == b.Q &&
                                                      a.R == b.R && a.S == b.S;
     public static bool operator !=(Hex a, Hex b) => !(a == b);
+    public static implicit operator PODHex(Hex h) => new PODHex(h.Q, h.R, h.S);
 }
 
 /// <summary>
@@ -189,4 +190,23 @@ public class FractionalHex
         }
         return new Hex(roundQ, roundR, roundS);
     }
+}
+/// <summary>
+/// A small, serializeable hex alternative.
+/// </summary>
+[Serializable]
+public class PODHex
+{
+    public int Q;
+    public int R;
+    public int S;
+
+    public PODHex(int Q, int R, int S)
+    {
+        this.Q = Q;
+        this.R = R;
+        this.S = S;
+    }
+
+    public static implicit operator Hex(PODHex h) => new Hex(h.Q, h.R, h.S);
 }
