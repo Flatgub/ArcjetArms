@@ -21,8 +21,11 @@ MonoBehaviour:
   art: {fileID: 21300000, guid: 4384a11db9ae4b64790bc180be77c606, type: 3}
   Cards:
   - card: {fileID: 0}
-    amount: 0
+    amount: 3
   - card: {fileID: 0}
-    amount: 0
+    amount: 3
   - card: {fileID: 0}
-    amount: 0
+    amount: 2
+  - card: {fileID: 0}
+    amount: 2
+  rarity: 10

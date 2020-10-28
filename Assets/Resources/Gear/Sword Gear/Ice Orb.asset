@@ -26,3 +26,6 @@ MonoBehaviour:
     amount: 0
   - card: {fileID: 0}
     amount: 0
+  - card: {fileID: 0}
+    amount: 0
+  rarity: 10
