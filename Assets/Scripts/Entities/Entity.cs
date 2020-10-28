@@ -26,6 +26,8 @@ public class Entity : MonoBehaviour
     private List<StatusEffect> statusEffects;
 
     public event Action OnStatusEffectsChanged;
+    public string rangedHitSoundName = "MetalShot";
+
 
     public void Initialize()
     {

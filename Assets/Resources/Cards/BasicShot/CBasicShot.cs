@@ -53,7 +53,9 @@ public class CBasicShot: CardData
             Entity victim = target.GetResult();
             GameplayContext.Player.DealDamageTo(victim, baseDamage);
             GameplayContext.Player.TriggerAttackEvent(victim);
-            GameplayContext.Ui.FireTracerBetween(GameplayContext.Player, victim);
+            FXHelper.FireTracerBetween(GameplayContext.Player, victim);
+            FXHelper.PlaySound("rifleShot");
+            FXHelper.PlaySound(victim.rangedHitSoundName, 0.1f);
             outcome.Complete();
         }
         else

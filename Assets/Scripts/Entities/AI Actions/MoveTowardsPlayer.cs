@@ -9,6 +9,7 @@ public class MoveTowardsPlayer : IAIAction
 
     public int speed;
     public event Action OnActionFinish;
+    public TerrainType rockTerrain;
 
     public MoveTowardsPlayer(int speed)
     {

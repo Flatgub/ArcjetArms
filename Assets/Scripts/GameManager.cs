@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public EncounterTemplate defaultEncounterTemplate;
     
     private Entity player;
-    private List<Entity> allEntities;
+    public List<Entity> allEntities;
     [HideInInspector]
     public List<Entity> allEnemies;
     public InterfaceManager interfaceManager;
@@ -92,7 +92,9 @@ public class GameManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {   
+    {
+        FXHelper.Initialize();
+
         stateStack = new Stack<GameState>();
         stateStack.Push(GameState.PlayerIdle);
         

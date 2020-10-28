@@ -22,10 +22,12 @@ public class BasicRanged : IAIAction
         with.DealDamageTo(GameplayContext.Player, baseDamage);
         with.TriggerAttackEvent(GameplayContext.Player);
 
-        GameplayContext.Ui.FireTracerBetween(with, GameplayContext.Player);
+        FXHelper.FireTracerBetween(with, GameplayContext.Player);
+        FXHelper.PlaySound("rifleShot");
+        FXHelper.PlaySound(GameplayContext.Player.rangedHitSoundName, 0.1f);
 
         //LeanTween.moveLocal(with.gameObject, GameplayContext.Player.transform.position, 0.1f)
-            //.setEaseInCubic().setLoopPingPong(1);
+        //.setEaseInCubic().setLoopPingPong(1);
 
         LeanTween.delayedCall(0.2f, () =>
         {
