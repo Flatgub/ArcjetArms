@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CLightningArt3 : CardData
+public class CIceArt1 : CardData
 {
     public int range;
     public int baseDamage;
-
+ 
 
 
     public override string GenerateStaticDescription()
@@ -46,6 +46,7 @@ public class CLightningArt3 : CardData
                 GameplayContext.Player.Position, dir, range, includeStart: false);
 
             movementCandidates.AddRange(line);
+            movementCandidates.Remove(GameplayContext.Player.Position);
         }
 
 
@@ -68,25 +69,21 @@ public class CLightningArt3 : CardData
 
             //add the point we clicked to that list, so we now have all 7 hexes
             pointsAroundTarget.Add(targetpoint);
-            pointsAroundTarget.Remove(GameplayContext.Player.Position);
 
             //for each hex
             foreach (Hex spot in pointsAroundTarget)
             {
                 //find who's standing there
                 Entity victim = GameplayContext.Grid.GetEntityAtHex(spot);
-                if (victim.HasStatusEffect(typeof(WetStatusEffect)))
+                if (victim != null)
                 {
                     //hurt them
                     GameplayContext.Player.DealDamageTo(victim, 2);
                     victim.ApplyStatusEffect(new StunStatusEffect());
                     GameplayContext.Player.TriggerAttackEvent(victim);
                 }
-                else
-                {
-                    GameplayContext.Player.DealDamageTo(victim, baseDamage);
-                }
             }
+
             outcome.Complete();
         }
         else

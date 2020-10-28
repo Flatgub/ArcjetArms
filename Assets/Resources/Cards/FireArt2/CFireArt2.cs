@@ -47,6 +47,7 @@ public class CFireArt2 : CardData
                 GameplayContext.Player.Position, dir, range, includeStart: false);
 
             movementCandidates.AddRange(line);
+            movementCandidates.Remove(GameplayContext.Player.Position);
         }
 
 
