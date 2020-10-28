@@ -8,6 +8,14 @@ public class LootPool
     private int poolSum = 0;
     private List<GearData> activePool;
 
+    public int Count
+    {
+        get
+        {
+            return pool.Count;
+        }
+    }
+
     public enum LootRarity
     {
         DontSpawn = -1,
@@ -138,7 +146,11 @@ public class LootPool
             budget -= (int)selected.rarity;
             index++;
         }
-
+        if (index != 0)
+        {
+            index--;
+        } 
+        
         activePool.RemoveAt(index--);
         poolSum -= (int)selected.rarity;
 

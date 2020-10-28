@@ -12,9 +12,11 @@ public class GameManager : MonoBehaviour
 
     public HexGrid worldGrid;
     private EntityFactory entFactory;
+    public EncounterTemplate defaultEncounterTemplate;
     
     private Entity player;
     private List<Entity> allEntities;
+    [HideInInspector]
     public List<Entity> allEnemies;
     public InterfaceManager interfaceManager;
 
@@ -56,6 +58,7 @@ public class GameManager : MonoBehaviour
     public RewardMenu rewardMenu;
 
     public TerrainType rockTerrain;
+    public int difficultyThreshold = 3; //how much easier than the current difficulty is allowed
 
     /// <summary>
     /// The event triggered when a card is added from the draw pile into the hand
@@ -89,7 +92,7 @@ public class GameManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {   
         stateStack = new Stack<GameState>();
         stateStack.Push(GameState.PlayerIdle);
         
@@ -100,37 +103,20 @@ public class GameManager : MonoBehaviour
         worldGrid.GenerateMap(mapRadius);
         entFactory = EntityFactory.GetFactory;
 
-        player = entFactory.CreateEntity(40);
-        player.AddToGrid(worldGrid, new Hex(1, -2));
-        player.EnableStatusEffects(true);
-        player.entityName = "Player";
-        player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
-        player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
-
-        GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
-
         allEntities = new List<Entity>();
         allEnemies = new List<Entity>();
+        enemiesWhoNeedTurns = new List<Entity>();
 
-        Hex[] positions = {new Hex(3, 0), new Hex(-3, 3), new Hex(0, 3), new Hex(-3, 0) };
-
-        for (int i = 0; i <= 0; i++)
+        if (GameplayContext.ChosenTemplate != null)
         {
-            Entity e = entFactory.CreateEntity(10);
-            e.AddToGrid(worldGrid, positions[i]);
-            e.entityName = "enemy " + i;
-            e.EnableStatusEffects(true);
-            //e.ApplyStatusEffect(new DebugStatusEffect());
-            entFactory.AddAIController(e);
-            allEntities.Add(e);
-            allEnemies.Add(e);
+            GenerateEncounter(GameplayContext.ChosenTemplate);
+        }
+        else
+        {
+            GenerateEncounter(defaultEncounterTemplate);
         }
 
-        //Entity rock = entFactory.CreateTerrain(rockTerrain);
-        //rock.AddToGrid(worldGrid, new Hex(0, 0, 0));
-        //allEntities.Add(rock);
-
-        enemiesWhoNeedTurns = new List<Entity>();
+        GameplayContext.InitializeForEncounter(this, player, worldGrid, interfaceManager);
 
         if (GameplayContext.CurrentLoadout != null)
         {
@@ -144,7 +130,11 @@ public class GameManager : MonoBehaviour
             basicDeck.AddCardID(CardDatabase.GetCardDataByName("Shoot").cardID, 6);
             basicDeck.AddCardID(CardDatabase.GetCardDataByName("Step").cardID, 4);
         }
-        
+
+        if (!GearDatabase.IsLoaded)
+        {
+            GearDatabase.LoadAllGear();
+        }
 
         drawPile = basicDeck.ConvertToDeck();
         drawPile.PrintContents("drawpile");
@@ -162,7 +152,71 @@ public class GameManager : MonoBehaviour
 
         energy = 5;
 
+        if (!GameplayContext.InDebugMode)
+        {
+            GameObject endbutton = GameObject.Find("EndGameButton");
+            endbutton.SetActive(false);
+        }
+        
+
         Invoke("StartNewTurn", 0.2f);
+    }
+
+    private void GenerateEncounter(EncounterTemplate template)
+    {
+        //spawn terrain
+        foreach (Hex rockpos in template.terrainPieces)
+        {
+            Entity rock = entFactory.CreateTerrain(rockTerrain);
+            rock.AddToGrid(worldGrid, rockpos);
+            allEntities.Add(rock);
+        }
+
+        //spawn player
+        Hex playerspawn = template.playerSpawnPoints.GetRandom();
+
+        player = entFactory.CreateEntity(40);
+        player.AddToGrid(worldGrid, playerspawn);
+        player.EnableStatusEffects(true);
+        player.entityName = "Player";
+        player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
+        player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
+
+        
+        //select enemygroup, ignoring difficulty when in debug mode
+        EnemyGroup enemyGroup;
+        if (GameplayContext.InDebugMode)
+        {
+            enemyGroup = entFactory.GetEnemyGroup(template.minEnemies, template.maxEnemies);
+        }
+        else
+        {
+            int maxDif = GameplayContext.CurrentDifficulty;
+            int minDif = Math.Max(1, maxDif - difficultyThreshold);
+            enemyGroup = entFactory.GetEnemyGroup(template.minEnemies, template.maxEnemies, minDif, maxDif);
+            Debug.Log("making encounter using " + GameplayContext.CurrentDifficulty);
+        }
+        
+        List<PODHex> enemySpots = new List<PODHex>(template.enemySpawnPoints);
+        //spawn enemies
+        foreach (string enemyType in enemyGroup.enemies)
+        {
+            if (enemySpots.Count == 0)
+            {
+                break;
+            }
+
+            Hex spawnpoint = enemySpots.PopRandom();
+            Entity e = entFactory.CreateEntity(10);
+
+            e.AddToGrid(worldGrid, spawnpoint);
+            e.EnableStatusEffects(true);
+            entFactory.AddAIController(e, enemyType);
+            Debug.Log("spawned: " + e.entityName);
+            allEntities.Add(e);
+            allEnemies.Add(e);
+        }
+        //
     }
 
     // Update is called once per frame
@@ -266,21 +320,9 @@ public class GameManager : MonoBehaviour
             GameplayContext.EntityUnderMouse = null;
         }
 
-        /*
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (stateStack.Peek() != GameState.GameOver && allEnemies.Count == 0)
         {
-            Vector3 PlayerPos = worldGrid.GetWorldPosition(player.Position);
-            PlayerPos.z = -1;
-            ProjectileTracer tracer = Instantiate(BulletTracer, PlayerPos, Quaternion.identity);
-            tracer.GoTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        }*/
-
-        if (stateStack.Peek() != GameState.GameOver && allEntities.Count == 0)
-        {
-            stateStack.Pop();
-            stateStack.Push(GameState.GameOver);
-            DiscardHand();
-            VictoryPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
+            WinEncounter();
         }
     }
 
@@ -305,10 +347,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            player.appearance.enabled = false;
-            stateStack.Pop();
-            stateStack.Push(GameState.GameOver);
-            GameoverPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
+            LoseEncounter();
         }
         UpdatePlayerStatusEventPanel();
 
@@ -515,7 +554,23 @@ public class GameManager : MonoBehaviour
             rewardMenu.AddRewardOption(masterpool.Pop());
         }
         masterpool.Finish();
+    }
 
+    public void WinEncounter()
+    {
+        stateStack.Pop();
+        stateStack.Push(GameState.GameOver);
+        DiscardHand();
+        VictoryPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
+        GameplayContext.CurrentDifficulty += 2;
+    }
+
+    public void LoseEncounter()
+    {
+        player.appearance.enabled = false;
+        stateStack.Pop();
+        stateStack.Push(GameState.GameOver);
+        GameoverPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
     }
 
     public void ReturnToLoadoutScreen()

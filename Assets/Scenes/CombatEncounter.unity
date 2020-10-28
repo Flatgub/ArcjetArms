@@ -152,6 +152,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapRadius: 3
   worldGrid: {fileID: 274503773}
+  defaultEncounterTemplate: {fileID: 11400000, guid: 7116a4ca349e6a44e82904180640bcaa,
+    type: 2}
+  allEnemies: []
   interfaceManager: {fileID: 1400311330}
   playerText: {fileID: 1943432066}
   playerEnergyText: {fileID: 1334624355}
@@ -166,6 +169,7 @@ MonoBehaviour:
   gameplayElements: {fileID: 2121960137}
   rewardMenu: {fileID: 308649768}
   rockTerrain: {fileID: 11400000, guid: 19e5c78d7f845694386c7b6e60534dd2, type: 2}
+  enemyGroup: {fileID: 11400000, guid: fd1cefc0bfafca14eb5e2ed1069741e6, type: 2}
 --- !u!4 &60055483
 Transform:
   m_ObjectHideFlags: 0

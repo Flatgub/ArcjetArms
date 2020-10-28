@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BasicBody
   m_EditorClassIdentifier: 
   gearID: 2
-  gearName: Makeshift Frame
+  gearName: Makeshift Cockpit
   faction: N/A
   requiredSlot: 4
   DoesntProvide: 
