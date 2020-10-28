@@ -9,6 +9,7 @@ public class AI_Blocker : IAiTemplate
     public int moveSpeed = 4;
     public int attackRange = 1;
     public int damage = 5;
+    public int DifficultyScore { get { return 3; } }
 
     public void ApplyTo(Entity entity)
     {

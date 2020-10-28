@@ -8,6 +8,7 @@ public class AI_RocketMech : IAiTemplate
     public int moveSpeed = 2;
     public int attackDamage = 10;
     public int attackRange = 6;
+    public int DifficultyScore { get { return 4; } }
 
     public void ApplyTo(Entity entity)
     {
