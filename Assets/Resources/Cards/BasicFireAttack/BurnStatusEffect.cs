@@ -37,6 +37,11 @@ public class BurnStatusEffect : StatusEffect, IStatusTurnStartEventHandler
         {
             subject.RemoveStatusEffect(this);
         }
+        if (subject.HasStatusEffect(typeof(WetStatusEffect)))
+        {
+            subject.RemoveStatusEffect(this);
+
+        }
     }
 
     
