@@ -1479,7 +1479,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 917966810}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -2657,7 +2657,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 1
+  m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -2695,6 +2695,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 684258656}
     m_Modifications:
+    - target: {fileID: 1268150089052594794, guid: b0856616b7bbb5c4495b0a9c8ce42089,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1296239358832963727, guid: b0856616b7bbb5c4495b0a9c8ce42089,
         type: 3}
       propertyPath: m_Name
@@ -2809,6 +2814,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227651459378993103, guid: b0856616b7bbb5c4495b0a9c8ce42089,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8499300428741291561, guid: b0856616b7bbb5c4495b0a9c8ce42089,
         type: 3}

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// CardRenderer is a component which manages the UI element that represents a card. It hands both
@@ -16,14 +17,15 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public Image frameArt;
     public Image cardArt;
     public Image energyCostArt;
-    public Text titleText;
-    public Text bodyText;
+    public TextMeshProUGUI titleText;
+    public TextMeshProUGUI bodyText;
     public CardData cardData;
     public Card tiedTo;
 
     public event Action<CardRenderer> OnClick;
     public event Action<CardRenderer> OnMouseEnter;
     public event Action<CardRenderer> OnMouseExit;
+
 
     /// <summary>
     /// Link this CardRenderer with a Card object, matching the visuals to that cards stats and
@@ -47,6 +49,8 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         frameArt.sprite = cardData.cardFrame;
         cardArt.sprite = cardData.cardArt;
         titleText.text = cardData.title;
+        titleText.text = cardData.title;
+        bodyText.text = cardData.GenerateStaticDescription();
         bodyText.text = cardData.GenerateStaticDescription();
         energyCostArt.sprite = EnergyCostToSprite(cardData.energyCost);
     }
