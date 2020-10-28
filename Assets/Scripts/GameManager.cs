@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     private float cardDrawPause = 0.1f;
 
     private float turnTimer = 0;
-    public float timeBetweenTurns = 0.25f;
+    public float timeBetweenTurns = 1f;
     private List<Entity> enemiesWhoNeedTurns;
     private Entity enemyTakingTurn;
     private bool enemyTurnFinished;
@@ -378,6 +378,7 @@ public class GameManager : MonoBehaviour
     public void StartNextEnemyTurn()
     {
         //Do a turn with one enemy
+        turnTimer = timeBetweenTurns;
         enemyTurnFinished = false;
         enemyTakingTurn = enemiesWhoNeedTurns[0];
         enemiesWhoNeedTurns.RemoveAt(0);

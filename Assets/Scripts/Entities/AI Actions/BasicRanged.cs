@@ -10,11 +10,13 @@ public class BasicRanged : IAIAction
     public int baseDamage;
     public int range;
     public event Action OnActionFinish;
+    public string attackSound;
 
-    public BasicRanged(int damage, int range)
+    public BasicRanged(int damage, int range, string attackSound = "rifleShot")
     {
         this.baseDamage = damage;
         this.range = range;
+        this.attackSound = attackSound;
     }
 
     public void Do(Entity with)
@@ -23,7 +25,7 @@ public class BasicRanged : IAIAction
         with.TriggerAttackEvent(GameplayContext.Player);
 
         FXHelper.FireTracerBetween(with, GameplayContext.Player);
-        FXHelper.PlaySound("rifleShot");
+        FXHelper.PlaySound(attackSound);
         FXHelper.PlaySound(GameplayContext.Player.rangedHitSoundName, 0.1f);
 
         //LeanTween.moveLocal(with.gameObject, GameplayContext.Player.transform.position, 0.1f)
