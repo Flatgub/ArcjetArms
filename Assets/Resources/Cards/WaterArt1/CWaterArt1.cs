@@ -42,7 +42,6 @@ public class CWaterArt1 : CardData
            
 
             //get all 6 spots around the player
-            Hex diffVector = GameplayContext.Player.Position - victim.Position;
             List<Hex> spotsToWet =
                 GridHelper.GetHexesInRange(GameplayContext.Grid, GameplayContext.Player.Position, 1, false);
 
@@ -60,6 +59,7 @@ public class CWaterArt1 : CardData
             }
 
             outcome.Complete();
+        yield break;
 
     }
 
