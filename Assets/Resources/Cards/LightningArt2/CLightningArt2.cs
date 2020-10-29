@@ -62,11 +62,12 @@ public class CLightningArt2 : CardData
         if (!moveLocation.WasCancelled())
         {
             // Move to the location they selected
-            Entity victim = target.GetResult();
+            Hex movePosition = moveLocation.GetResult();
+            GameplayContext.Player.MoveTo(moveLocation.GetResult());
+
             if (victim.HasStatusEffect(typeof(WetStatusEffect)))
             {
-                GameplayContext.Player.DealDamageTo(victim, base);
-                GameplayContext.Player.MoveTo(moveLocation.GetResult());
+                GameplayContext.Player.DealDamageTo(victim, baseDamage * 2);
                 victim.ApplyStatusEffect(new StunStatusEffect());
                 GameplayContext.Player.TriggerAttackEvent(victim);
 

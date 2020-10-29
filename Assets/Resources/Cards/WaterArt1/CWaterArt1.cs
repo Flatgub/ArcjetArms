@@ -38,22 +38,8 @@ public class CWaterArt1 : CardData
     public override IEnumerator CardBehaviour(CardActionResult outcome)
     {
 
-        //get a list of adjacent entities
-        List<Entity> adjacentEnts = GridHelper.GetAdjacentEntities(GameplayContext.Grid, GameplayContext.Player.Position);
-
-
-        //let the player select one of the adjacent entities
-        SingleEntityResult target =
-            GameplayContext.Ui.OfferSingleEntitySelection(adjacentEnts);
-
-        //wait for the player to make a selection
-        yield return new WaitUntil(target.IsReadyOrCancelled);
-
-        // If the player didn't cancel the selection
-        if (!target.WasCancelled())
-        {
-            //hit 'em
-            Entity victim = target.GetResult();
+       
+           
 
             //get all 6 spots around the player
             Hex diffVector = GameplayContext.Player.Position - victim.Position;
@@ -61,23 +47,20 @@ public class CWaterArt1 : CardData
                 GridHelper.GetHexesInRange(GameplayContext.Grid, GameplayContext.Player.Position, 1, false);
 
             spotsToWet.Remove(GameplayContext.Player.Position); //don't hit the player
-
+        List<Hex> allpositions = GridHelper.GetHexesInRange(GameplayContext.Grid, GameplayContext.Player.Position, 999);
             foreach (Hex h in spotsToWet)
             {
                 if (GameplayContext.Grid.GetEntityAtHex(h) is Entity toHit)
                 {
                     GameplayContext.Player.DealDamageTo(toHit, baseDamage);
+                    toHit.MoveTo(allpositions.PopRandom());
                     toHit.ApplyStatusEffect(new WetStatusEffect(baseDamage, turnsRemaining));
                     GameplayContext.Player.TriggerAttackEvent(toHit);
                 }
             }
 
             outcome.Complete();
-        }
-        else
-        {
-            outcome.Cancel();
-        }
+
     }
 
 }

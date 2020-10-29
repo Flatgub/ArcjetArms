@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class CLightningArt3 : CardData
 {
-    public int range;
     public int baseDamage;
 
 
 
     public override string GenerateStaticDescription()
     {
-        return string.Format(descriptionTemplate, range, baseDamage);
+        return string.Format(descriptionTemplate, baseDamage);
     }
 
     public override string GenerateCurrentDescription()
@@ -32,69 +31,44 @@ public class CLightningArt3 : CardData
         }
 
         string dmgstring = damage.Colored(Color.red);
-        return string.Format(descriptionTemplate, range, dmgstring);
+        return string.Format(descriptionTemplate, dmgstring);
     }
 
     public override IEnumerator CardBehaviour(CardActionResult outcome)
     {
-        List<Hex> movementCandidates = new List<Hex>();
-
-        //cast out a line in each direction from the player to determine movement spots
-        foreach (Hex dir in Hex.Directions)
+        foreach (Entity victim in GameplayContext.Manager.allEnemies)
         {
-            List<Hex> line = GridHelper.CastLineInDirection(GameplayContext.Grid,
-                GameplayContext.Player.Position, dir, range, includeStart: false);
 
-            movementCandidates.AddRange(line);
-        }
-
-
-
-        // Show the locations to the player and let them pick one
-        SingleHexResult moveLocation
-            = GameplayContext.Ui.OfferSingleHexSelection(movementCandidates);
-
-        // Wait until the player has made a selection or cancels the action
-        yield return new WaitUntil(moveLocation.IsReadyOrCancelled);
-
-        // If the player didn't cancel the selection
-        if (!moveLocation.WasCancelled())
-        {
-            Hex targetpoint = moveLocation.GetResult();
-
-            //get all 6 hexes around that point
-            List<Hex> pointsAroundTarget =
-                GridHelper.GetHexesInRange(GameplayContext.Grid, targetpoint, 1, false);
-
-            //add the point we clicked to that list, so we now have all 7 hexes
-            pointsAroundTarget.Add(targetpoint);
-            pointsAroundTarget.Remove(GameplayContext.Player.Position);
-
-            //for each hex
-            foreach (Hex spot in pointsAroundTarget)
+            //find who's standing there
+            if (victim.HasStatusEffect(typeof(WetStatusEffect)))
             {
-                //find who's standing there
-                Entity victim = GameplayContext.Grid.GetEntityAtHex(spot);
-                if (victim.HasStatusEffect(typeof(WetStatusEffect)))
-                {
-                    //hurt them
-                    GameplayContext.Player.DealDamageTo(victim, 2);
-                    victim.ApplyStatusEffect(new StunStatusEffect());
-                    GameplayContext.Player.TriggerAttackEvent(victim);
-                }
+                //hurt them
+                GameplayContext.Player.DealDamageTo(victim, baseDamage * 2);
+                victim.ApplyStatusEffect(new StunStatusEffect());
+                GameplayContext.Player.ApplyStatusEffect(new StunStatusEffect());
+                GameplayContext.Player.TriggerAttackEvent(victim);
+            }
 
-                else
-                {
-                    GameplayContext.Player.DealDamageTo(victim, baseDamage);
-                }
+            else
+            {
+                GameplayContext.Player.DealDamageTo(victim, baseDamage);
+                GameplayContext.Player.ApplyStatusEffect(new StunStatusEffect());
+
             }
         }
-            outcome.Complete();
-        }
-        else
-        {
-            outcome.Cancel();
-        }
-    }
+        outcome.Complete();
+        yield break;
 
+    }
 }
+    
+
+    
+
+
+
+
+            
+       
+
+
