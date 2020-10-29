@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,8 +24,11 @@ public class GameManager : MonoBehaviour
     private CardActionResult currentCardAction;
 
     public Text playerText;
-    public Text playerEnergyText;
     public Text enemyText;
+
+    public TextMeshProUGUI energyNumber;
+    public TextMeshProUGUI drawPileNumber;
+    public TextMeshProUGUI discardPileNumber;
 
     private DeckTemplate basicDeck;
     private Deck drawPile;
@@ -306,7 +310,11 @@ public class GameManager : MonoBehaviour
         }
 
         playerText.text = "PLAYER HEALTH: " + player.Health;
-        playerEnergyText.text = "ENERGY: " + energy.ToString();
+        
+
+        drawPileNumber.text = drawPile.Count.ToString();
+        discardPileNumber.text = discardPile.Count.ToString();
+        energyNumber.text = energy.ToString();
 
         if (worldGrid.GetHexUnderMouse() is Hex mousehex  
             && worldGrid.GetEntityAtHex(mousehex) is Entity entUnderMouse
@@ -370,7 +378,7 @@ public class GameManager : MonoBehaviour
                 enemiesWhoNeedTurns.Add(enemy);
             }
         }
-        turnTimer = timeBetweenTurns;
+        turnTimer = timeBetweenTurns * 0.5f;
         stateStack.Push(GameState.EnemyTurn);
         UpdatePlayerStatusEventPanel();
     }

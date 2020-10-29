@@ -123,6 +123,7 @@ public class InterfaceManager : MonoBehaviour
         {
             cr = cardFactory.CreateCardRenderer(card);
             cr.gameObject.name = "Renderer for " + card.cardData.title;
+            cr.updateCostColour = true;
         }
         hand.AddCardToHand(cr);
     }

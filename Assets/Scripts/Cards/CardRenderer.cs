@@ -21,11 +21,27 @@ public class CardRenderer : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public TextMeshProUGUI bodyText;
     public CardData cardData;
     public Card tiedTo;
+    public bool updateCostColour = false;
 
     public event Action<CardRenderer> OnClick;
     public event Action<CardRenderer> OnMouseEnter;
     public event Action<CardRenderer> OnMouseExit;
 
+    public void Update()
+    {
+        if (updateCostColour && cardData != null)
+        {
+            int energy = GameplayContext.Manager?.energy ?? 99;
+            if (energy < cardData.energyCost)
+            {
+                energyCostArt.color = Color.red;
+            }
+            else
+            {
+                energyCostArt.color = Color.black;
+            }
+        }
+    }
 
     /// <summary>
     /// Link this CardRenderer with a Card object, matching the visuals to that cards stats and
