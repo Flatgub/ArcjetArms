@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5df30c3d459fcae469d36fb7fd8ab3c2, type: 3}
+  m_Name: IceArt3StatBlock
+  m_EditorClassIdentifier: 
+  cardID: 69
+  title: 'Ice art 3: Ice Tomb'
+  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
+  cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
+  descriptionTemplate: 'AOE, freezes the map deals 7 damage and snares enemies. '
+  energyCost: 5
+  upgradesTo: {fileID: 0}
+  baseDamage: 7

@@ -62,21 +62,33 @@ public class CLightningArt2 : CardData
         if (!moveLocation.WasCancelled())
         {
             // Move to the location they selected
+            Hex moveDirection = GameplayContext.Player.Position.GetDirectionTo(moveLocation.GetResult());
+            Hex moveFrom = GameplayContext.Player.Position;
             Hex movePosition = moveLocation.GetResult();
             GameplayContext.Player.MoveTo(moveLocation.GetResult());
-
-            if (victim.HasStatusEffect(typeof(WetStatusEffect)))
+            int spotsToHit = moveFrom.DistanceTo(GameplayContext.Player.Position);
+            List<Hex> spotsInPath = GridHelper.CastLineInDirection(GameplayContext.Grid, moveFrom, moveDirection, spotsToHit, false, false, true);
+            spotsInPath.Remove(GameplayContext.Player.Position);
+            foreach (Hex spot in spotsInPath)
             {
-                GameplayContext.Player.DealDamageTo(victim, baseDamage * 2);
-                victim.ApplyStatusEffect(new StunStatusEffect());
-                GameplayContext.Player.TriggerAttackEvent(victim);
+                if (GameplayContext.Grid.GetEntityAtHex(spot) is Entity hit)
+                {
+                    if (hit.HasStatusEffect(typeof(WetStatusEffect)))
+                    {
+                        GameplayContext.Player.DealDamageTo(hit, baseDamage * 2);
+                        hit.ApplyStatusEffect(new StunStatusEffect());
+                        GameplayContext.Player.TriggerAttackEvent(hit);
 
+                    }
+                    else
+                    {
+                        GameplayContext.Player.DealDamageTo(hit, baseDamage);
+                        outcome.Complete();
+                    }
+                }
             }
-            else
-            {
-                GameplayContext.Player.DealDamageTo(victim, baseDamage);
-                outcome.Complete();
-            }
+
+            
         }
         else
         {

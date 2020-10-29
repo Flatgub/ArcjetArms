@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CNetShot : CardData
+public class CIceArt2 : CardData
 {
     public int range;
     public int baseDamage;
@@ -41,6 +41,9 @@ public class CNetShot : CardData
         List<Entity> targets =
             GridHelper.GetEntitiesInRange(GameplayContext.Grid, pos, range);
 
+        List<Hex> allpositions = GridHelper.GetHexesInRange(GameplayContext.Grid, GameplayContext.Player.Position, 999);
+
+
         //don't let the player shoot themselves
         targets.Remove(GameplayContext.Player);
 
@@ -53,6 +56,7 @@ public class CNetShot : CardData
             Entity victim = target.GetResult();
             GameplayContext.Player.DealDamageTo(victim, baseDamage);
             victim.ApplyStatusEffect(new StunStatusEffect());
+            victim.MoveTo(allpositions.PopRandom());
             GameplayContext.Player.TriggerAttackEvent(victim);
             //GameplayContext.Ui.FireTracerBetween(GameplayContext.Player, victim);
             outcome.Complete();
