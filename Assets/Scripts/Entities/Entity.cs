@@ -26,6 +26,8 @@ public class Entity : MonoBehaviour
     private List<StatusEffect> statusEffects;
 
     public event Action OnStatusEffectsChanged;
+    public string rangedHitSoundName = "MetalShot";
+
 
     public void Initialize()
     {
@@ -75,7 +77,7 @@ public class Entity : MonoBehaviour
     }
 
     public void MoveAlong(List<Hex> path, int maxSteps = int.MaxValue,
-        Action callback = null)
+        Action callback = null, string stepSound = "MechStep")
     {
         int step = 0;
         maxSteps = Math.Min(maxSteps, path.Count);
@@ -85,6 +87,10 @@ public class Entity : MonoBehaviour
         while (step < maxSteps)
         {
             pos = path[step];
+            if (stepSound != "")
+            {
+                stepSequence.append(() => { FXHelper.PlaySound(stepSound); });
+            }
             stepSequence.append(LeanTween.moveLocal(gameObject, Grid.GetWorldPosition(pos), 0.25f).setEaseInOutQuart());
             step++;
         }

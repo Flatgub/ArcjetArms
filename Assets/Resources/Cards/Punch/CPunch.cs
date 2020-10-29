@@ -52,6 +52,9 @@ public class CPunch : CardData
             Entity victim = target.GetResult();
             GameplayContext.Player.DealDamageTo(victim, baseDamage);
             GameplayContext.Player.TriggerAttackEvent(victim);
+
+            FXHelper.PlaySound("MetalHit");
+
             outcome.Complete();
         }
         else
