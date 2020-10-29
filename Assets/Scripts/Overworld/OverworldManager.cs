@@ -25,6 +25,8 @@ public class OverworldManager : MonoBehaviour
 
     public OverworldNode playerAt;
 
+    private List<EncounterTemplate> allTemplates;
+
     private string StashedMap;
 
     // Start is called before the first frame update
@@ -32,6 +34,8 @@ public class OverworldManager : MonoBehaviour
     {
         CardDatabase.LoadAllCards();
         GearDatabase.LoadAllGear();
+
+        allTemplates = new List<EncounterTemplate>(Resources.LoadAll<EncounterTemplate>("EncounterTemplates"));
 
         GameplayContext.InDebugMode = false;
 
@@ -211,6 +215,7 @@ public class OverworldManager : MonoBehaviour
     public void GoToEncounter()
     {
         GameplayContext.OverworldMap = MapToAbstract();
+        GameplayContext.ChosenTemplate = allTemplates.GetRandom();
         SceneManager.LoadScene("CombatEncounter");
     }
 

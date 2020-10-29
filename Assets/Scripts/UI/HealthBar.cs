@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(Slider))]
 public class HealthBar : MonoBehaviour
@@ -12,6 +13,8 @@ public class HealthBar : MonoBehaviour
     private Image backFill = null;
     [SerializeField]
     private Image frontFill = null;
+    [SerializeField]
+    private TextMeshProUGUI labeltext = null;
 
     private Color colour;
     public Color Colour
@@ -66,6 +69,7 @@ public class HealthBar : MonoBehaviour
     private void UpdateSlider()
     {
         slideController.value = curVal / maxVal;
+        labeltext.text = string.Format("{0} / {1}", (int)curVal, (int)maxVal);
     }
 
     private void UpdateColours()

@@ -50,8 +50,8 @@ public class GameManager : MonoBehaviour
     private List<Card> playerHand;
     private Card activeCard;
 
-    [SerializeField]
     public HealthBar playerHealthBar;
+    public HealthBar enemyHealthBar;
 
     private List<Card> allExistingCards = null; //TODO: REMOVE
 
@@ -101,7 +101,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         FXHelper.Initialize();
-        
+
+        ColorUtility.TryParseHtmlString("#793434", out Color col);
+        enemyHealthBar.Colour = col;
 
         stateStack = new Stack<GameState>();
         stateStack.Push(GameState.PlayerIdle);
@@ -189,9 +191,14 @@ public class GameManager : MonoBehaviour
         player.AddToGrid(worldGrid, playerspawn);
         player.EnableStatusEffects(true);
         player.entityName = "Player";
+        if (GameplayContext.LastPlayerHealth > -1)
+        {
+            player.Health.SetHealth(GameplayContext.LastPlayerHealth);
+        }
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
         player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
-        playerHealthBar.Colour = Color.cyan;
+        ColorUtility.TryParseHtmlString("#46537d", out Color col );
+        playerHealthBar.Colour = col;
         playerHealthBar.MaxValue = player.Health.MaxHealth;
 
 
@@ -314,8 +321,6 @@ public class GameManager : MonoBehaviour
                 }
             };break;
         }
-
-        playerText.text = "PLAYER HEALTH: " + player.Health;
         
         playerHealthBar.Value = player.Health.Current;
         
@@ -329,12 +334,15 @@ public class GameManager : MonoBehaviour
             && entUnderMouse != player)
         {
             enemyText.enabled = true;
-            enemyText.text = "ENEMY HEALTH: " + entUnderMouse.Health;
+            enemyHealthBar.gameObject.SetActive(true);
+            enemyHealthBar.MaxValue = entUnderMouse.Health.MaxHealth;
+            enemyHealthBar.Value = entUnderMouse.Health.Current;
             GameplayContext.EntityUnderMouse = entUnderMouse;
         }
         else
         {
             enemyText.enabled = false;
+            enemyHealthBar.gameObject.SetActive(false);
             GameplayContext.EntityUnderMouse = null;
         }
 
@@ -560,6 +568,15 @@ public class GameManager : MonoBehaviour
             masterpool.SubtractInventory(inv);
         }
 
+        masterpool.MakeActive();
+
+        //bail if there isn't enough loot, cuz we crash otherwise
+        if (masterpool.activePool.Count < 3)
+        {
+            masterpool.Finish();
+            ReturnToLoadoutScreen();
+            return;
+        }
 
         gameplayElements.interactable = false;
         gameplayElements.blocksRaycasts = false;
@@ -567,7 +584,7 @@ public class GameManager : MonoBehaviour
         rewardMenu.Init();
         rewardMenu.ShowRewardMenu();
 
-        masterpool.MakeActive();
+        
         for (int i = 0; i < 3; i++)
         {
             rewardMenu.AddRewardOption(masterpool.Pop());
@@ -582,6 +599,7 @@ public class GameManager : MonoBehaviour
         DiscardHand();
         VictoryPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
         GameplayContext.CurrentDifficulty += 2;
+        GameplayContext.LastPlayerHealth = player.Health.Current;
     }
 
     public void LoseEncounter()
