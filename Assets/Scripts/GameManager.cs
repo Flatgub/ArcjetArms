@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
     private List<Card> playerHand;
     private Card activeCard;
 
+    [SerializeField]
+    public HealthBar playerHealthBar;
+
     private List<Card> allExistingCards = null; //TODO: REMOVE
 
     public InfoPanelStack playerStatusEffectPanel;
@@ -98,6 +101,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         FXHelper.Initialize();
+        
 
         stateStack = new Stack<GameState>();
         stateStack.Push(GameState.PlayerIdle);
@@ -187,8 +191,10 @@ public class GameManager : MonoBehaviour
         player.entityName = "Player";
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
         player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
+        playerHealthBar.Colour = Color.cyan;
+        playerHealthBar.MaxValue = player.Health.MaxHealth;
 
-        
+
         //select enemygroup, ignoring difficulty when in debug mode
         EnemyGroup enemyGroup;
         if (GameplayContext.InDebugMode)
@@ -310,6 +316,8 @@ public class GameManager : MonoBehaviour
         }
 
         playerText.text = "PLAYER HEALTH: " + player.Health;
+        
+        playerHealthBar.Value = player.Health.Current;
         
 
         drawPileNumber.text = drawPile.Count.ToString();

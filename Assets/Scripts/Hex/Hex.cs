@@ -57,6 +57,8 @@ public class Hex
         return (Math.Abs(Q) + Math.Abs(R) + Math.Abs(S)) / 2;
     }
 
+    
+
     /// <summary>Get the distance between this hex and another</summary>
     public int DistanceTo(Hex other)
     {
