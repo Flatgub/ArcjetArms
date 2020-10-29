@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     public InterfaceManager interfaceManager;
 
     private CardActionResult currentCardAction;
-
     public Text playerText;
     public Text enemyText;
 
@@ -41,6 +40,7 @@ public class GameManager : MonoBehaviour
     private float turnTimer = 0;
     public float timeBetweenTurns = 1f;
     private List<Entity> enemiesWhoNeedTurns;
+    private List<Entity> entitiesToClean;
     private Entity enemyTakingTurn;
     private bool enemyTurnFinished;
 
@@ -119,6 +119,7 @@ public class GameManager : MonoBehaviour
         allEntities = new List<Entity>();
         allEnemies = new List<Entity>();
         enemiesWhoNeedTurns = new List<Entity>();
+        entitiesToClean = new List<Entity>();
 
         if (GameplayContext.ChosenTemplate != null)
         {
@@ -232,6 +233,7 @@ public class GameManager : MonoBehaviour
             e.AddToGrid(worldGrid, spawnpoint);
             e.EnableStatusEffects(true);
             entFactory.AddAIController(e, enemyType);
+            e.Health.OnDeath += () => { CleanupEntity(e);};
             Debug.Log("spawned: " + e.entityName);
             allEntities.Add(e);
             allEnemies.Add(e);
@@ -539,14 +541,25 @@ public class GameManager : MonoBehaviour
             Entity ent = allEntities[i];
             if (ent.Health.IsDead)
             {
-                allEntities.RemoveAt(i);
-                Destroy(ent.gameObject);
-                if (allEnemies.Contains(ent))
-                {
-                    allEnemies.Remove(ent);
-                }
+                CleanupEntity(ent);
             }
         }
+
+        foreach (Entity ent in entitiesToClean)
+        {
+            Destroy(ent.gameObject);
+        }
+        entitiesToClean.Clear();
+    }
+
+    public void CleanupEntity(Entity ent)
+    {
+        allEntities.Remove(ent);
+        if (allEnemies.Contains(ent))
+        {
+            allEnemies.Remove(ent);
+        }
+        entitiesToClean.Add(ent);
     }
 
     private void UpdatePlayerStatusEffectPanel()
