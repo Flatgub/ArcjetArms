@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public EncounterTemplate defaultEncounterTemplate;
     
     private Entity player;
-    private List<Entity> allEntities;
+    public List<Entity> allEntities;
     [HideInInspector]
     public List<Entity> allEnemies;
     public InterfaceManager interfaceManager;
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     private float cardDrawPause = 0.1f;
 
     private float turnTimer = 0;
-    public float timeBetweenTurns = 0.25f;
+    public float timeBetweenTurns = 1f;
     private List<Entity> enemiesWhoNeedTurns;
     private Entity enemyTakingTurn;
     private bool enemyTurnFinished;
@@ -92,7 +92,9 @@ public class GameManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {   
+    {
+        FXHelper.Initialize();
+
         stateStack = new Stack<GameState>();
         stateStack.Push(GameState.PlayerIdle);
         
@@ -376,6 +378,7 @@ public class GameManager : MonoBehaviour
     public void StartNextEnemyTurn()
     {
         //Do a turn with one enemy
+        turnTimer = timeBetweenTurns;
         enemyTurnFinished = false;
         enemyTakingTurn = enemiesWhoNeedTurns[0];
         enemiesWhoNeedTurns.RemoveAt(0);
