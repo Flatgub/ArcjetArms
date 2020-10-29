@@ -38,6 +38,7 @@ public class CStep : CardData
         {
             // Move to the location they selected
             GameplayContext.Player.MoveTo(moveLocation.GetResult());
+            FXHelper.PlaySound("MechStep");
             outcome.Complete();
         }
         else

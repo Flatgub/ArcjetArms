@@ -126,6 +126,7 @@ public class EntityFactory : MonoBehaviour
         obstruction.entityName = type.name;
         obstruction.gameObject.name = type.name;
         obstruction.appearance.sprite = type.images.GetRandom();
+        obstruction.rangedHitSoundName = "RockShot";
         return obstruction;
     }
 
