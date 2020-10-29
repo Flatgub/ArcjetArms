@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     private List<Card> allExistingCards = null; //TODO: REMOVE
 
     public InfoPanelStack playerStatusEffectPanel;
+    public InfoPanelStack enemyStatusEffectPanel;
 
     public Button endTurnButton;
 
@@ -196,7 +197,7 @@ public class GameManager : MonoBehaviour
             player.Health.SetHealth(GameplayContext.LastPlayerHealth);
         }
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
-        player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
+        player.OnStatusEffectsChanged += UpdatePlayerStatusEffectPanel;
         ColorUtility.TryParseHtmlString("#46537d", out Color col );
         playerHealthBar.Colour = col;
         playerHealthBar.MaxValue = player.Health.MaxHealth;
@@ -264,7 +265,7 @@ public class GameManager : MonoBehaviour
                         //card was played, put it in the discard pile
                         DiscardCard(activeCard);
                         energy -= GameplayContext.ActiveCard.cardData.energyCost;
-                        UpdatePlayerStatusEventPanel();
+                        UpdatePlayerStatusEffectPanel();
                     }
 
                     CleanDeadEnemies();
@@ -334,15 +335,19 @@ public class GameManager : MonoBehaviour
             && entUnderMouse != player)
         {
             enemyText.enabled = true;
+            enemyText.text = entUnderMouse.entityName;
             enemyHealthBar.gameObject.SetActive(true);
             enemyHealthBar.MaxValue = entUnderMouse.Health.MaxHealth;
             enemyHealthBar.Value = entUnderMouse.Health.Current;
+            enemyStatusEffectPanel.gameObject.SetActive(true);
+            UpdateEnemyStatusEffectPanel(entUnderMouse);
             GameplayContext.EntityUnderMouse = entUnderMouse;
         }
         else
         {
             enemyText.enabled = false;
             enemyHealthBar.gameObject.SetActive(false);
+            enemyStatusEffectPanel.gameObject.SetActive(false);
             GameplayContext.EntityUnderMouse = null;
         }
 
@@ -375,7 +380,7 @@ public class GameManager : MonoBehaviour
         {
             LoseEncounter();
         }
-        UpdatePlayerStatusEventPanel();
+        UpdatePlayerStatusEffectPanel();
 
 
     }
@@ -396,7 +401,7 @@ public class GameManager : MonoBehaviour
         }
         turnTimer = timeBetweenTurns * 0.5f;
         stateStack.Push(GameState.EnemyTurn);
-        UpdatePlayerStatusEventPanel();
+        UpdatePlayerStatusEffectPanel();
     }
 
     public void StartNextEnemyTurn()
@@ -544,7 +549,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void UpdatePlayerStatusEventPanel()
+    private void UpdatePlayerStatusEffectPanel()
     {
         playerStatusEffectPanel.Clear();
         foreach (StatusEffect s in player.GetStatusEffects())
@@ -552,6 +557,18 @@ public class GameManager : MonoBehaviour
             playerStatusEffectPanel.AddPanel(s.GetName(), s.GetDescription());
         }
         
+    }
+
+    private void UpdateEnemyStatusEffectPanel(Entity enemy)
+    {
+        enemyStatusEffectPanel.Clear();
+        if (enemy.AcceptsStatusEffects)
+        {
+            foreach (StatusEffect s in enemy.GetStatusEffects())
+            {
+                enemyStatusEffectPanel.AddPanel(s.GetName(), s.GetDescription());
+            }
+        }
     }
 
     public void ShowRewardMenu()
