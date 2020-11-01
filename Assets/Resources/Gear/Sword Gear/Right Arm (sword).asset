@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 334fbc0c98e407240adbae4c8279fd10, type: 3}
   m_Name: Right Arm (sword)
   m_EditorClassIdentifier: 
-  gearID: 0
-  gearName: 
-  faction: 
+  gearID: 26
+  gearName: Sword Right Arm
+  faction: Sword
   requiredSlot: 2
   DoesntProvide: 
   upgradesTo: {fileID: 0}
@@ -22,5 +22,6 @@ MonoBehaviour:
   Cards:
   - card: {fileID: 11400000, guid: a5c9f09f7790821448067218831d0f5b, type: 2}
     amount: 2
-  - card: {fileID: 0}
+  - card: {fileID: 11400000, guid: 47392daeaba19b346b6e9faaec909c84, type: 2}
     amount: 0
+  rarity: 10
