@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 68
   title: 'Ice art 2: Cold Approach'
-  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
+  cardArt: {fileID: 21300000, guid: 4966db1e14cd3694f8e6922e78661950, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Deal 5 damage and move an enemy to a random location on the
     map.

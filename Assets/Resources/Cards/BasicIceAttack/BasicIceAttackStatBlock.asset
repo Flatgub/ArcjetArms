@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 55
   title: Ice Basic Attack
-  cardArt: {fileID: 0}
-  cardFrame: {fileID: 0}
+  cardArt: {fileID: 21300000, guid: e9ac4a30c850c2340a8eb5622dda3c48, type: 3}
+  cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Deal {0} damage to enemies and enemies are stunned for a turn
   energyCost: 1
   upgradesTo: {fileID: 0}

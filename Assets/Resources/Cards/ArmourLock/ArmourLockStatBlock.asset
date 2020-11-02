@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc961b92ce35b4146a107bd35670464b, type: 3}
-  m_Name: LightningArt2StatBlock
+  m_Script: {fileID: 11500000, guid: 0695c80073c0414469d34a583059f7e6, type: 3}
+  m_Name: ArmourLockStatBlock
   m_EditorClassIdentifier: 
-  cardID: 62
-  title: 'Lightning Art 2: Godspeed'
-  cardArt: {fileID: 21300000, guid: aa76b601e3dc2574c9ac8ceb4659a3c7, type: 3}
+  cardID: 10
+  title: Armour Lock
+  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
-  descriptionTemplate: 'deals 7 damage (5 tile straight line) '
-  energyCost: 3
+  descriptionTemplate: Playing this card ends your turn, you take {0}% reduced damage
+    during the end turn
+  energyCost: 2
   upgradesTo: {fileID: 0}
-  moveDistance: 5
-  baseDamage: 7
+  blockPercentage: 60

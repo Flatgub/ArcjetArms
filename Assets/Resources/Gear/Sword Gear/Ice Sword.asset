@@ -15,7 +15,7 @@ MonoBehaviour:
   gearID: 37
   gearName: Ice Sword
   faction: Sword
-  requiredSlot: 6
+  requiredSlot: 3
   DoesntProvide: 
   upgradesTo: {fileID: 0}
   art: {fileID: 21300000, guid: 4384a11db9ae4b64790bc180be77c606, type: 3}

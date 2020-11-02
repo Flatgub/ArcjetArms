@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 65
   title: 'Fire Art 2: Inferno Blaze'
-  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
+  cardArt: {fileID: 21300000, guid: d9e763f8996cf7f49b35ea9b0471444b, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Deals {0} damage and sets a hexagonal area on fire for 3 turns
   energyCost: 2

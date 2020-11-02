@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 69
   title: 'Ice art 3: Ice Tomb'
-  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
+  cardArt: {fileID: 21300000, guid: a364b81b8d5e7714f8624f756ca49bb5, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: 'AOE, freezes the map deals 7 damage and snares enemies. '
   energyCost: 5

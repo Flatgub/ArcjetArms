@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 54
   title: Fire Basic Attack
-  cardArt: {fileID: 0}
-  cardFrame: {fileID: 0}
+  cardArt: {fileID: 21300000, guid: daf71e70d47239040a0c05cc953143e9, type: 3}
+  cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Deal {0} damage and Burning for {1} turns, for {2} damage
     per turn
   energyCost: 1

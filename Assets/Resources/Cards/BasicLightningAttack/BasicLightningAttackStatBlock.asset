@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 57
   title: Lightning Basic Attack
-  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
+  cardArt: {fileID: 21300000, guid: 8da0fda800b9ee44089743ae9eb1b3dc, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Deal {0} damage to enemies. The attack will bounce off to
     a nearby enemy and enemies that have 'Wet' status effect will take twice the
