@@ -79,7 +79,7 @@ public class CFireArt2 : CardData
                 if (victim != null)
                 {
                     //hurt them
-                    GameplayContext.Player.DealDamageTo(victim, 2);
+                    GameplayContext.Player.DealDamageTo(victim, 5);
                     victim.ApplyStatusEffect(new BurnStatusEffect(baseDamage, damagePerTurn, turnsRemaining));
                     GameplayContext.Player.TriggerAttackEvent(victim);
                 }

@@ -43,7 +43,7 @@ public class CIceArt3 : CardData
             if (victim != null)
             {
                 //hurt them
-                GameplayContext.Player.DealDamageTo(victim, 2);
+                GameplayContext.Player.DealDamageTo(victim, 7);
                 victim.ApplyStatusEffect(new StunStatusEffect());
                 GameplayContext.Player.TriggerAttackEvent(victim);
             }
