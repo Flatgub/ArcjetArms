@@ -19,5 +19,5 @@ MonoBehaviour:
   descriptionTemplate: Blocks all damage for a turn
   energyCost: 2
   upgradesTo: {fileID: 0}
-  blockPercentage: 100
+  blockPercentage: 0
   turns: 1

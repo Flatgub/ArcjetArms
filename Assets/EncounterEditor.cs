@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+#if (UNITY_EDITOR) 
 
 public class EncounterEditor : MonoBehaviour
 {
@@ -220,4 +221,5 @@ public class EncounterEditor : MonoBehaviour
         brushMode = brush;
     }
 }
+#endif
 

@@ -39,6 +39,8 @@ public class CIceArt1 : CardData
     {
         List<Hex> movementCandidates = new List<Hex>();
 
+
+
         //cast out a line in each direction from the player to determine movement spots
         foreach (Hex dir in Hex.Directions)
         {
@@ -49,7 +51,7 @@ public class CIceArt1 : CardData
             movementCandidates.Remove(GameplayContext.Player.Position);
         }
 
-
+       
 
         // Show the locations to the player and let them pick one
         SingleHexResult moveLocation
@@ -69,6 +71,7 @@ public class CIceArt1 : CardData
 
             //add the point we clicked to that list, so we now have all 7 hexes
             pointsAroundTarget.Add(targetpoint);
+            pointsAroundTarget.Remove(GameplayContext.Player.Position);
 
             //for each hex
             foreach (Hex spot in pointsAroundTarget)
@@ -80,7 +83,7 @@ public class CIceArt1 : CardData
                     //hurt them
                     GameplayContext.Player.DealDamageTo(victim, 2);
                     victim.ApplyStatusEffect(new StunStatusEffect());
-                    GameplayContext.Player.TriggerAttackEvent(victim);
+                    GameplayContext.Player.TriggerAttackEvent(victim); 
                 }
             }
 

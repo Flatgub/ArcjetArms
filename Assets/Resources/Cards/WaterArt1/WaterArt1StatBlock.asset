@@ -20,5 +20,5 @@ MonoBehaviour:
     location. Enemies are also wet for {1} turns
   energyCost: 2
   upgradesTo: {fileID: 0}
-  baseDamage: 3
-  turnsRemaining: 2
+  baseDamage: 2
+  turnsRemaining: 3
