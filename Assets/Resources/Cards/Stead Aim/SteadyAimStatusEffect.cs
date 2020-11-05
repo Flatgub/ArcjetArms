@@ -12,7 +12,7 @@ public class SteadyAimStatusEffect : StatusEffect, IStatusTurnEndEventHandler
     public override string GetDescription()
     {
 
-        return string.Format("For one turn all your attacks will deal crit {0}x damage", 2f);
+        return string.Format("All attacks deal double damage for the rest of turn", 2f);
            
     }
     public int OnCalculateDamageAdditive(int damage)
@@ -21,12 +21,7 @@ public class SteadyAimStatusEffect : StatusEffect, IStatusTurnEndEventHandler
     }
     public float OnCalculateDamageMultiplicative(float damage)
     {
-        if (GameplayContext.ActiveCard?.cardData.cardID == 14) //basic shot
-        {
-            return damage * 2f;
-        }
-
-        return damage;
+        return damage * 2f;
     }
     public void OnTurnEnd(Entity subject)
     {

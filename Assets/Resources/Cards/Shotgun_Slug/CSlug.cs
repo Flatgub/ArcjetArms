@@ -63,6 +63,11 @@ public class CSlug: CardData
 
             GameplayContext.Player.DealDamageTo(victim, damage);
             GameplayContext.Player.TriggerAttackEvent(victim);
+
+            FXHelper.FireTracerBetween(GameplayContext.Player, victim);
+            FXHelper.PlaySound("ShotgunShot");
+            FXHelper.PlaySound(victim.rangedHitSoundName, 0.1f);
+
             outcome.Complete();
         }
         else

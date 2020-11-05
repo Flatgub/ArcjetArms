@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,10 +22,12 @@ public class GameManager : MonoBehaviour
     public InterfaceManager interfaceManager;
 
     private CardActionResult currentCardAction;
-
     public Text playerText;
-    public Text playerEnergyText;
     public Text enemyText;
+
+    public TextMeshProUGUI energyNumber;
+    public TextMeshProUGUI drawPileNumber;
+    public TextMeshProUGUI discardPileNumber;
 
     private DeckTemplate basicDeck;
     private Deck drawPile;
@@ -37,6 +40,7 @@ public class GameManager : MonoBehaviour
     private float turnTimer = 0;
     public float timeBetweenTurns = 1f;
     private List<Entity> enemiesWhoNeedTurns;
+    private List<Entity> entitiesToClean;
     private Entity enemyTakingTurn;
     private bool enemyTurnFinished;
 
@@ -46,9 +50,13 @@ public class GameManager : MonoBehaviour
     private List<Card> playerHand;
     private Card activeCard;
 
+    public HealthBar playerHealthBar;
+    public HealthBar enemyHealthBar;
+
     private List<Card> allExistingCards = null; //TODO: REMOVE
 
     public InfoPanelStack playerStatusEffectPanel;
+    public InfoPanelStack enemyStatusEffectPanel;
 
     public Button endTurnButton;
 
@@ -95,6 +103,9 @@ public class GameManager : MonoBehaviour
     {
         FXHelper.Initialize();
 
+        ColorUtility.TryParseHtmlString("#793434", out Color col);
+        enemyHealthBar.Colour = col;
+
         stateStack = new Stack<GameState>();
         stateStack.Push(GameState.PlayerIdle);
         
@@ -108,6 +119,7 @@ public class GameManager : MonoBehaviour
         allEntities = new List<Entity>();
         allEnemies = new List<Entity>();
         enemiesWhoNeedTurns = new List<Entity>();
+        entitiesToClean = new List<Entity>();
 
         if (GameplayContext.ChosenTemplate != null)
         {
@@ -181,10 +193,17 @@ public class GameManager : MonoBehaviour
         player.AddToGrid(worldGrid, playerspawn);
         player.EnableStatusEffects(true);
         player.entityName = "Player";
+        if (GameplayContext.LastPlayerHealth > -1)
+        {
+            player.Health.SetHealth(GameplayContext.LastPlayerHealth);
+        }
         player.appearance.sprite = Resources.Load<Sprite>("Sprites/PlayerArt");
-        player.OnStatusEffectsChanged += UpdatePlayerStatusEventPanel;
+        player.OnStatusEffectsChanged += UpdatePlayerStatusEffectPanel;
+        ColorUtility.TryParseHtmlString("#46537d", out Color col );
+        playerHealthBar.Colour = col;
+        playerHealthBar.MaxValue = player.Health.MaxHealth;
 
-        
+
         //select enemygroup, ignoring difficulty when in debug mode
         EnemyGroup enemyGroup;
         if (GameplayContext.InDebugMode)
@@ -214,6 +233,7 @@ public class GameManager : MonoBehaviour
             e.AddToGrid(worldGrid, spawnpoint);
             e.EnableStatusEffects(true);
             entFactory.AddAIController(e, enemyType);
+            e.Health.OnDeath += () => { CleanupEntity(e);};
             Debug.Log("spawned: " + e.entityName);
             allEntities.Add(e);
             allEnemies.Add(e);
@@ -247,7 +267,7 @@ public class GameManager : MonoBehaviour
                         //card was played, put it in the discard pile
                         DiscardCard(activeCard);
                         energy -= GameplayContext.ActiveCard.cardData.energyCost;
-                        UpdatePlayerStatusEventPanel();
+                        UpdatePlayerStatusEffectPanel();
                     }
 
                     CleanDeadEnemies();
@@ -304,21 +324,32 @@ public class GameManager : MonoBehaviour
                 }
             };break;
         }
+        
+        playerHealthBar.Value = player.Health.Current;
+        
 
-        playerText.text = "PLAYER HEALTH: " + player.Health;
-        playerEnergyText.text = "ENERGY: " + energy.ToString();
+        drawPileNumber.text = drawPile.Count.ToString();
+        discardPileNumber.text = discardPile.Count.ToString();
+        energyNumber.text = energy.ToString();
 
         if (worldGrid.GetHexUnderMouse() is Hex mousehex  
             && worldGrid.GetEntityAtHex(mousehex) is Entity entUnderMouse
             && entUnderMouse != player)
         {
             enemyText.enabled = true;
-            enemyText.text = "ENEMY HEALTH: " + entUnderMouse.Health;
+            enemyText.text = entUnderMouse.entityName;
+            enemyHealthBar.gameObject.SetActive(true);
+            enemyHealthBar.MaxValue = entUnderMouse.Health.MaxHealth;
+            enemyHealthBar.Value = entUnderMouse.Health.Current;
+            enemyStatusEffectPanel.gameObject.SetActive(true);
+            UpdateEnemyStatusEffectPanel(entUnderMouse);
             GameplayContext.EntityUnderMouse = entUnderMouse;
         }
         else
         {
             enemyText.enabled = false;
+            enemyHealthBar.gameObject.SetActive(false);
+            enemyStatusEffectPanel.gameObject.SetActive(false);
             GameplayContext.EntityUnderMouse = null;
         }
 
@@ -351,7 +382,7 @@ public class GameManager : MonoBehaviour
         {
             LoseEncounter();
         }
-        UpdatePlayerStatusEventPanel();
+        UpdatePlayerStatusEffectPanel();
 
 
     }
@@ -370,9 +401,9 @@ public class GameManager : MonoBehaviour
                 enemiesWhoNeedTurns.Add(enemy);
             }
         }
-        turnTimer = timeBetweenTurns;
+        turnTimer = timeBetweenTurns * 0.5f;
         stateStack.Push(GameState.EnemyTurn);
-        UpdatePlayerStatusEventPanel();
+        UpdatePlayerStatusEffectPanel();
     }
 
     public void StartNextEnemyTurn()
@@ -510,17 +541,28 @@ public class GameManager : MonoBehaviour
             Entity ent = allEntities[i];
             if (ent.Health.IsDead)
             {
-                allEntities.RemoveAt(i);
-                Destroy(ent.gameObject);
-                if (allEnemies.Contains(ent))
-                {
-                    allEnemies.Remove(ent);
-                }
+                CleanupEntity(ent);
             }
         }
+
+        foreach (Entity ent in entitiesToClean)
+        {
+            Destroy(ent.gameObject);
+        }
+        entitiesToClean.Clear();
     }
 
-    private void UpdatePlayerStatusEventPanel()
+    public void CleanupEntity(Entity ent)
+    {
+        allEntities.Remove(ent);
+        if (allEnemies.Contains(ent))
+        {
+            allEnemies.Remove(ent);
+        }
+        entitiesToClean.Add(ent);
+    }
+
+    private void UpdatePlayerStatusEffectPanel()
     {
         playerStatusEffectPanel.Clear();
         foreach (StatusEffect s in player.GetStatusEffects())
@@ -528,6 +570,18 @@ public class GameManager : MonoBehaviour
             playerStatusEffectPanel.AddPanel(s.GetName(), s.GetDescription());
         }
         
+    }
+
+    private void UpdateEnemyStatusEffectPanel(Entity enemy)
+    {
+        enemyStatusEffectPanel.Clear();
+        if (enemy.AcceptsStatusEffects)
+        {
+            foreach (StatusEffect s in enemy.GetStatusEffects())
+            {
+                enemyStatusEffectPanel.AddPanel(s.GetName(), s.GetDescription());
+            }
+        }
     }
 
     public void ShowRewardMenu()
@@ -544,6 +598,15 @@ public class GameManager : MonoBehaviour
             masterpool.SubtractInventory(inv);
         }
 
+        masterpool.MakeActive();
+
+        //bail if there isn't enough loot, cuz we crash otherwise
+        if (masterpool.activePool.Count < 3)
+        {
+            masterpool.Finish();
+            ReturnToLoadoutScreen();
+            return;
+        }
 
         gameplayElements.interactable = false;
         gameplayElements.blocksRaycasts = false;
@@ -551,7 +614,7 @@ public class GameManager : MonoBehaviour
         rewardMenu.Init();
         rewardMenu.ShowRewardMenu();
 
-        masterpool.MakeActive();
+        
         for (int i = 0; i < 3; i++)
         {
             rewardMenu.AddRewardOption(masterpool.Pop());
@@ -566,6 +629,7 @@ public class GameManager : MonoBehaviour
         DiscardHand();
         VictoryPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
         GameplayContext.CurrentDifficulty += 2;
+        GameplayContext.LastPlayerHealth = player.Health.Current;
     }
 
     public void LoseEncounter()
@@ -574,6 +638,8 @@ public class GameManager : MonoBehaviour
         stateStack.Pop();
         stateStack.Push(GameState.GameOver);
         GameoverPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
+        GameplayContext.LastPlayerHealth = -1;
+        GameplayContext.RequestReset = true;
     }
 
     public void ReturnToLoadoutScreen()

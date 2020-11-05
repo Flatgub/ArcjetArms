@@ -25,6 +25,8 @@ public class OverworldManager : MonoBehaviour
 
     public OverworldNode playerAt;
 
+    private List<EncounterTemplate> allTemplates;
+
     private string StashedMap;
 
     // Start is called before the first frame update
@@ -33,18 +35,21 @@ public class OverworldManager : MonoBehaviour
         CardDatabase.LoadAllCards();
         GearDatabase.LoadAllGear();
 
+        allTemplates = new List<EncounterTemplate>(Resources.LoadAll<EncounterTemplate>("EncounterTemplates"));
+
         GameplayContext.InDebugMode = false;
 
         heightOfLevels = MaxNodesPerLevel * paddingWithinLevel;
 
         ClearLevel();
 
-        if (GameplayContext.OverworldMap == null)
+        if (GameplayContext.OverworldMap == null || GameplayContext.RequestReset)
         {
             GenerateMap();
             SetPlayerAt(allLevels[0][0]);
             GameplayContext.OverworldMap = MapToAbstract();
             GameplayContext.CurrentDifficulty = 2; //only set the first time
+            GameplayContext.RequestReset = false;
         }
         else
         {
@@ -211,6 +216,7 @@ public class OverworldManager : MonoBehaviour
     public void GoToEncounter()
     {
         GameplayContext.OverworldMap = MapToAbstract();
+        GameplayContext.ChosenTemplate = allTemplates.GetRandom();
         SceneManager.LoadScene("CombatEncounter");
     }
 

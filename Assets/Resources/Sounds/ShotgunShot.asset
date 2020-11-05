@@ -9,20 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87301ab2d7f640c48a5651af0d37e30e, type: 3}
-  m_Name: Example
+  m_Script: {fileID: 11500000, guid: fc0456813a8d6fe41b3f5d261702efd0, type: 3}
+  m_Name: ShotgunShot
   m_EditorClassIdentifier: 
-  terrainPieces:
-  - Q: -1
-    R: -1
-    S: 2
-  - Q: -1
-    R: 2
-    S: -1
-  - Q: 2
-    R: -1
-    S: -1
-  playerSpawnPoints: []
-  enemySpawnPoints: []
-  minEnemies: 0
-  maxEnemies: 0
+  clips:
+  - {fileID: 8300000, guid: 464f6f727c4791748826dd1c352bbd2c, type: 3}
+  - {fileID: 8300000, guid: d95314e332fb29d4d86d5ca97cf2fa0e, type: 3}

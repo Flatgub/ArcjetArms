@@ -44,7 +44,7 @@ public class EquipmentScreenManager : MonoBehaviour
         CardDatabase.LoadAllCards();
         GearDatabase.LoadAllGear();
 
-        if (GameplayContext.CurrentInventory is null)
+        if (GameplayContext.CurrentInventory is null || GameplayContext.RequestReset)
         {
             playerInventory = new InventoryCollection();
             //two legs
@@ -66,7 +66,7 @@ public class EquipmentScreenManager : MonoBehaviour
         
         
         Debug.Log("Current loadout: " + GameplayContext.CurrentLoadout);
-        if (GameplayContext.CurrentLoadout != null)
+        if (GameplayContext.CurrentLoadout != null && !GameplayContext.RequestReset)
         {
             activeLoadout = GameplayContext.CurrentLoadout;
             

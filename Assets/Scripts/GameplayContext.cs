@@ -15,8 +15,11 @@ public static class GameplayContext
     public static InventoryCollection CurrentInventory { get; set; }
     public static EncounterTemplate ChosenTemplate;
     public static int CurrentDifficulty { get; set; }
+    public static int LastPlayerHealth { get; set; } = -1;
 
     public static bool InDebugMode = true;
+
+    public static bool RequestReset = false;
 
     public static string OverworldMap { get; set; }
 

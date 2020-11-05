@@ -6,7 +6,7 @@ public class LootPool
     private List<GearData> pool;
     private Dictionary<GearData, int> quantities;
     private int poolSum = 0;
-    private List<GearData> activePool;
+    public List<GearData> activePool;
 
     public int Count
     {
