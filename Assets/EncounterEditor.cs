@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+#if (UNITY_EDITOR) 
 public class EncounterEditor : MonoBehaviour
 {
     public HexGrid grid;
@@ -221,3 +222,4 @@ public class EncounterEditor : MonoBehaviour
     }
 }
 
+#endif

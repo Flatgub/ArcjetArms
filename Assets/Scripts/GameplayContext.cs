@@ -19,6 +19,8 @@ public static class GameplayContext
 
     public static bool InDebugMode = true;
 
+    public static bool RequestReset = false;
+
     public static string OverworldMap { get; set; }
 
     public static void InitializeForEncounter(GameManager gm, Entity player, HexGrid grid, InterfaceManager ui)

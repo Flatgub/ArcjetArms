@@ -43,12 +43,13 @@ public class OverworldManager : MonoBehaviour
 
         ClearLevel();
 
-        if (GameplayContext.OverworldMap == null)
+        if (GameplayContext.OverworldMap == null || GameplayContext.RequestReset)
         {
             GenerateMap();
             SetPlayerAt(allLevels[0][0]);
             GameplayContext.OverworldMap = MapToAbstract();
             GameplayContext.CurrentDifficulty = 2; //only set the first time
+            GameplayContext.RequestReset = false;
         }
         else
         {

@@ -638,6 +638,8 @@ public class GameManager : MonoBehaviour
         stateStack.Pop();
         stateStack.Push(GameState.GameOver);
         GameoverPanel.LeanMoveLocal(Vector3.zero, 1.0f).setEaseOutElastic();
+        GameplayContext.LastPlayerHealth = -1;
+        GameplayContext.RequestReset = true;
     }
 
     public void ReturnToLoadoutScreen()
