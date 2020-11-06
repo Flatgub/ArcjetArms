@@ -2,25 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//rename CardDataTemplate to the name of the card, like CStep or CSalvage
-public class CHeadshot: CardData
+public class CNetShot : CardData
 {
-    //put any numbers relevant to the card here
     public int range;
     public int baseDamage;
-    //generate the "basic" description, without doing any calculations.
+
     public override string GenerateStaticDescription()
     {
-        return string.Format(descriptionTemplate, range, baseDamage); // <- put stat variables in here
+        return string.Format(descriptionTemplate, range, baseDamage);
     }
 
     public override string GenerateCurrentDescription()
     {
-        // replace this if any of the cards numbers are calculated, such as damage.
-        return GenerateStaticDescription(); 
+        if (GameplayContext.Player == null)
+        {
+            return GenerateStaticDescription();
+        }
+
+        int damage = baseDamage;
+        if (GameplayContext.EntityUnderMouse is Entity target)
+        {
+            damage = Entity.CalculateDamage(GameplayContext.Player, target, damage);
+        }
+        else
+        {
+            damage = GameplayContext.Player.CalculateDamage(damage);
+        }
+
+        string dmgstring = damage.Colored(Color.red);
+        return string.Format(descriptionTemplate, range, dmgstring);
     }
 
-    //what should the card do when its played, remember to do outcome.Complete or outcome.Cancel
     public override IEnumerator CardBehaviour(CardActionResult outcome)
     {
         Hex pos = GameplayContext.Player.Position;
@@ -28,6 +40,8 @@ public class CHeadshot: CardData
         //TODO: replace this with a line of sight check maybe?
         List<Entity> targets =
             GridHelper.GetEntitiesInRange(GameplayContext.Grid, pos, range);
+
+        //don't let the player shoot themselves
         targets.Remove(GameplayContext.Player);
 
         SingleEntityResult target = GameplayContext.Ui.OfferSingleEntitySelection(targets);
@@ -37,12 +51,10 @@ public class CHeadshot: CardData
         if (!target.WasCancelled())
         {
             Entity victim = target.GetResult();
-            if (victim.Health.HealthAsFraction() <= 0.5f)
-            {
-                baseDamage = baseDamage * 2;
-            }
             GameplayContext.Player.DealDamageTo(victim, baseDamage);
+            victim.ApplyStatusEffect(new StunStatusEffect());
             GameplayContext.Player.TriggerAttackEvent(victim);
+            //GameplayContext.Ui.FireTracerBetween(GameplayContext.Player, victim);
             outcome.Complete();
         }
         else
@@ -52,4 +64,3 @@ public class CHeadshot: CardData
     }
 
 }
-

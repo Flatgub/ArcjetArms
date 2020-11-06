@@ -57,6 +57,28 @@ public class Hex
         return (Math.Abs(Q) + Math.Abs(R) + Math.Abs(S)) / 2;
     }
 
+    public Hex GetDirectionTo(Hex other)
+    {
+        Hex diffhex = other - this;
+
+        int diffQ = Math.Max(Math.Min(1, diffhex.Q), -1);
+        int diffR = Math.Max(Math.Min(1, diffhex.R), -1);
+        int diffS = Math.Max(Math.Min(1, diffhex.S), -1);
+
+        Hex dirHex = new Hex(diffQ, diffR, diffS);
+
+        foreach (Hex dir in Directions)
+        {
+            if (dir == dirHex)
+            {
+                return dir;
+            }
+        }
+
+        return null;
+
+    }
+
     /// <summary>Get the distance between this hex and another</summary>
     public int DistanceTo(Hex other)
     {

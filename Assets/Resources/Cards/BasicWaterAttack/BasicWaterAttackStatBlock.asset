@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e12d68ed7b6163d4e9a992fb09bc4f32, type: 3}
+  m_Name: BasicWaterAttackStatBlock
+  m_EditorClassIdentifier: 
+  cardID: 56
+  title: Water Basic Attack
+  cardArt: {fileID: 21300000, guid: 8ba20814f7a85a44ca5da105a8d1acf2, type: 3}
+  cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
+  descriptionTemplate: Deal {0} damage and apply wet status effect for {1} turns.
+    Combine water with lightning to create a stun effect.
+  energyCost: 1
+  upgradesTo: {fileID: 0}
+  baseDamage: 5
+  turnsRemaining: 2

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c45445309a0ec9845861071e0a874fef, type: 3}
+  m_Name: WaterArt3StatBlock
+  m_EditorClassIdentifier: 
+  cardID: 60
+  title: 'Water art 3: water wall'
+  cardArt: {fileID: 21300000, guid: 73b3ab0137dba584a942746932db51f3, type: 3}
+  cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
+  descriptionTemplate: Blocks all damage for a turn
+  energyCost: 2
+  upgradesTo: {fileID: 0}
+  blockPercentage: 0
+  turns: 1

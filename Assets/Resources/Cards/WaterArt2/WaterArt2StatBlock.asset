@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c62df7cbd126f534abaa2c530c3af4be, type: 3}
+  m_Name: WaterArt2StatBlock
+  m_EditorClassIdentifier: 
+  cardID: 59
+  title: 'Water art 2: Burst flux'
+  cardArt: {fileID: 21300000, guid: afc1e7eaf05bfa447a3800d7fdd011b4, type: 3}
+  cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
+  descriptionTemplate: Deal {0} damage to enemy with enemy being wet for {1} turn
+  energyCost: 3
+  upgradesTo: {fileID: 0}
+  baseDamage: 13
+  turnsRemaining: 5
