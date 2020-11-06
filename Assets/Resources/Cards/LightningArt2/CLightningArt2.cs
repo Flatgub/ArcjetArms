@@ -83,12 +83,12 @@ public class CLightningArt2 : CardData
                     else
                     {
                         GameplayContext.Player.DealDamageTo(hit, baseDamage);
-                        outcome.Complete();
                     }
                 }
             }
 
-            
+            outcome.Complete();
+
         }
         else
         {
