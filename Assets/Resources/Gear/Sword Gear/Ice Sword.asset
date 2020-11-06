@@ -18,7 +18,7 @@ MonoBehaviour:
   requiredSlot: 3
   DoesntProvide: 
   upgradesTo: {fileID: 0}
-  art: {fileID: 21300000, guid: 4384a11db9ae4b64790bc180be77c606, type: 3}
+  art: {fileID: 21300000, guid: 754cc620cc7a770468c5ac075d9ce176, type: 3}
   Cards:
   - card: {fileID: 11400000, guid: 13d0e9ef4f7aba245b3986682ecd5c08, type: 2}
     amount: 2
