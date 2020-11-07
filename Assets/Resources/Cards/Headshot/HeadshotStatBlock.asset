@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 38
   title: Headshot
-  cardArt: {fileID: 21300000, guid: 83eea0e5e43929949885383f6d526c5a, type: 3}
+  cardArt: {fileID: 21300000, guid: efde786d244d5f744aed7facf6a8c59c, type: 3}
   cardFrame: {fileID: 21300000, guid: 99a77cbfbb1f7fc4ab0a6d77796fc396, type: 3}
   descriptionTemplate: Deal {1} DMG . If enemy hp is < 50%, deal 2x DMG. Range {0}
   energyCost: 3
