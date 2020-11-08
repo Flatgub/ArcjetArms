@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 40
   title: Net Shot
-  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
+  cardArt: {fileID: 21300000, guid: 1aa37ac55aa78004bbc408d413d2815f, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Shoots a net that will deal {0} and immobolise an enemy for
     one turn

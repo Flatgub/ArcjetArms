@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 14
   title: Shoot
-  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
+  cardArt: {fileID: 21300000, guid: fdf79ade28cad0a4e8d7a5dedf03670e, type: 3}
   cardFrame: {fileID: 21300000, guid: 99a77cbfbb1f7fc4ab0a6d77796fc396, type: 3}
   descriptionTemplate: Shoot an enemy within range {0} for {1} DMG
   energyCost: 1

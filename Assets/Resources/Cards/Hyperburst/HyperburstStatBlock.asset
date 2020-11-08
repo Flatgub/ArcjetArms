@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 80
   title: Hyperburst
-  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
+  cardArt: {fileID: 21300000, guid: 5f0d89aeb0473d64a84b7aaf0d6f02e4, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Fires 2 accurate shots, each shot has a 30% chance to crit
   energyCost: 2
