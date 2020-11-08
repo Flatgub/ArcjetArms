@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 27
   title: Rebuild
-  cardArt: {fileID: 21300000, guid: 4be9a9ce90f3aa34489df2d48a408a95, type: 3}
+  cardArt: {fileID: 21300000, guid: 0e1536bc7a36cd147acd9a11fb13ed76, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Discard hand and draw {0} cards
   energyCost: 1
