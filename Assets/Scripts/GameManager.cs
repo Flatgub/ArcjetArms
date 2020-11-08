@@ -266,6 +266,7 @@ public class GameManager : MonoBehaviour
                     {
                         //card was played, put it in the discard pile
                         DiscardCard(activeCard);
+                        interfaceManager.HideCancelButton();
                         energy -= GameplayContext.ActiveCard.cardData.energyCost;
                         UpdatePlayerStatusEffectPanel();
                     }
@@ -431,6 +432,10 @@ public class GameManager : MonoBehaviour
     public void DeselectActiveCard()
     {
         playerHand.Add(activeCard);
+        if (!currentCardAction.IsReadyOrCancelled())
+        {
+            currentCardAction.Cancel();
+        }
         OnCardDeselected?.Invoke();
         activeCard = null;
     }

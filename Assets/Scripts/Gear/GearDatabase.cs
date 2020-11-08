@@ -110,8 +110,8 @@ public static class GearDatabase
             GearData conflict = allGear[gear.gearID];
 
             string warning =
-                string.Format("Gear '{0}' has conflicting ID with '{1}' (id {2}), skipping...",
-                gear.gearName, conflict.gearName, gear.gearID);
+                string.Format("{3}: Gear '{0}' has conflicting ID with '{1}' (id {2}), skipping...",
+                gear.gearName, conflict.gearName, gear.gearID, gear.name);
 
             Debug.LogWarning(warning);
             return;

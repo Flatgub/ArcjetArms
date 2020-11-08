@@ -135,8 +135,8 @@ public static class CardDatabase
         else if (cardsByName.ContainsKey(card.title))
         {
             string warning =
-                string.Format("Card {0} has conflicting name, {1} is already in use, skipping... ",
-                card.cardID, card.title);
+                string.Format("Card {0} ({2}) has conflicting name, {1} is already in use, skipping... ",
+                card.cardID, card.title, card.name);
 
             Debug.LogWarning(warning);
             return true;

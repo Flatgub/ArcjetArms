@@ -44,7 +44,9 @@ public class CLightningArt2 : CardData
         foreach (Hex dir in Hex.Directions)
         {
             List<Hex> line = GridHelper.CastLineInDirection(GameplayContext.Grid,
-                GameplayContext.Player.Position, dir, moveDistance, includeStart: false);
+                GameplayContext.Player.Position, dir, moveDistance,false,false,true);
+
+            GridHelper.RemoveOccupiedHexes(GameplayContext.Grid, line);
 
             movementCandidates.AddRange(line);
         }
@@ -83,12 +85,11 @@ public class CLightningArt2 : CardData
                     else
                     {
                         GameplayContext.Player.DealDamageTo(hit, baseDamage);
-                        outcome.Complete();
                     }
                 }
             }
+            outcome.Complete();
 
-            
         }
         else
         {

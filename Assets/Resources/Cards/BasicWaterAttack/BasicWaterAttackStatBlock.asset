@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e12d68ed7b6163d4e9a992fb09bc4f32, type: 3}
   m_Name: BasicWaterAttackStatBlock
   m_EditorClassIdentifier: 
-  cardID: 57
+  cardID: 56
   title: Water Basic Attack
   cardArt: {fileID: 21300000, guid: 8ba20814f7a85a44ca5da105a8d1acf2, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}

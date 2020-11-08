@@ -55,6 +55,7 @@ public class CLightningArt1 : CardData
             }
             GameplayContext.Player.DealDamageTo(victim, baseDamage);
             GameplayContext.Player.TriggerAttackEvent(victim);
+            adjacentEnts = GridHelper.GetAdjacentEntities(GameplayContext.Grid, victim.Position);
             if (adjacentEnts.Contains(GameplayContext.Player))
             {
                 adjacentEnts.Remove(GameplayContext.Player);
@@ -62,6 +63,11 @@ public class CLightningArt1 : CardData
             }
             foreach (Entity toZap in adjacentEnts)
             {
+                //don't hit terrain
+                if (!toZap.AcceptsStatusEffects)
+                {
+                    continue;
+                }
                 //hit 'em
                 Entity victims = target.GetResult();
                 if (toZap.HasStatusEffect(typeof(WetStatusEffect)))
@@ -73,10 +79,9 @@ public class CLightningArt1 : CardData
                 {
                     GameplayContext.Player.DealDamageTo(victims, baseDamage);
                 }
-
-               
-                outcome.Complete();
             }
+
+            outcome.Complete();
         }
         else
         {

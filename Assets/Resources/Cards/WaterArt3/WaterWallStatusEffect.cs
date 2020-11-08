@@ -20,17 +20,6 @@ public class WaterWallStatusEffect : StatusEffect, IStatusReceiveDamageEventHand
 
     public override string GetDescription()
     {
-        string phrase = "";
-        if (remainingTurns == 1)
-        {
-            phrase = "Till the end of turn ";
-        }
-        else
-        {
-            phrase = "For the next " + remainingTurns.Colored(Color.blue) + " turns ";
-        }
-        return phrase + "all attacks deal " + "0".Colored(Color.blue) + " damage to you";
-
         string amount = Mathf.CeilToInt((1f - blockAmount) * 100).ToString();
         return string.Format("Resist {0} incoming damage from the next attack.",
             (amount + "%").Colored(Color.blue));

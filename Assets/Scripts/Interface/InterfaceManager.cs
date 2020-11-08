@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class InterfaceManager : MonoBehaviour
 
     public HandContainer hand;
     public Transform activeCardLocation;
+    public Button cancelCardButton;
     public Transform discardPileLocation;
 
     public CardRenderer activeCardRenderer;
@@ -45,6 +47,7 @@ public class InterfaceManager : MonoBehaviour
         manager.OnCardSelected += SelectCardFromHand;
         manager.OnCardDeselected += DeselectActiveCard;
         manager.OnCardDiscarded += DiscardCard;
+        cancelCardButton.gameObject.SetActive(false);
     }
 
     public void Update()
@@ -141,9 +144,15 @@ public class InterfaceManager : MonoBehaviour
         LeanTween.cancel(cr.gameObject);
         LeanTween.rotateZ(cr.gameObject, 0f, 0.2f);
         LeanTween.move(cr.gameObject, activeCardLocation.position, 0.2f);
+        cancelCardButton.gameObject.SetActive(true);
         hand.HoldCardsDown = true;
         activeCardRenderer = cr;
         //PlaySoundGroup(cardTouchNoises); TODO: fix me
+    }
+
+    public void HideCancelButton()
+    {
+        cancelCardButton.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -158,6 +167,14 @@ public class InterfaceManager : MonoBehaviour
             hand.HoldCardsDown = false;
             activeCardRenderer.UpdateDescription(useStatic: true);
             activeCardRenderer = null;
+            cancelCardButton.gameObject.SetActive(false);
+        }
+        if (state == InterfaceState.BusyWithSelection)
+        {
+            pendingResult = null;
+            activeSelection.Cleanup();
+            activeSelection = null;
+            state = InterfaceState.Idle;
         }
     }
 
