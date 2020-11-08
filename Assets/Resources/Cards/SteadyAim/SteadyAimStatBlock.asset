@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardID: 41
   title: Steady Aim
-  cardArt: {fileID: 21300000, guid: 60b5cb33c6eee89458da174215a91d63, type: 3}
+  cardArt: {fileID: 21300000, guid: 4f16bbebd16a3cf49805aa0f4d841547, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Until end of turn, all attacks deal 2x damage
   energyCost: 3

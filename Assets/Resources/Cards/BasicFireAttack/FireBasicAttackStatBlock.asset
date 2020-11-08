@@ -17,7 +17,7 @@ MonoBehaviour:
   cardArt: {fileID: 21300000, guid: daf71e70d47239040a0c05cc953143e9, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Deal {0} damage and Burning for {1} turns, for {2} damage
-    per turn
+    per turn> Water cards can negate the burn effect.
   energyCost: 1
   upgradesTo: {fileID: 0}
   baseDamage: 5

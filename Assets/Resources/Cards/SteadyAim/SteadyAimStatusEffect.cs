@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SteadyAimStatusEffect : StatusEffect, IStatusTurnEndEventHandler
-, IStatusCalculateDamageEventHandler
+public class SteadyAimStatusEffect : StatusEffect, IStatusTurnEndEventHandler, IStatusCalculateDamageEventHandler
 {
     public override string GetName()
     {

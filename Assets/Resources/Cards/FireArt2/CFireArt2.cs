@@ -67,6 +67,7 @@ public class CFireArt2 : CardData
             //get all 6 hexes around that point
             List<Hex> pointsAroundTarget =
                 GridHelper.GetHexesInRange(GameplayContext.Grid, targetpoint, 1, false);
+            pointsAroundTarget.Remove(GameplayContext.Player.Position);
 
             //add the point we clicked to that list, so we now have all 7 hexes
             pointsAroundTarget.Add(targetpoint);

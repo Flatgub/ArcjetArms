@@ -17,7 +17,7 @@ MonoBehaviour:
   cardArt: {fileID: 21300000, guid: 4d50ece98ca82ce44a3f0620d12e18af, type: 3}
   cardFrame: {fileID: 21300000, guid: 929acb63b92a8e0499723c8b322613e4, type: 3}
   descriptionTemplate: Summons a lightning on the blade that hits a tile anywhere
-    on the map dealing 15 damage. Player cannot move for 2 turns
-  energyCost: 6
+    on the map dealing 11 damage. Player cannot move for 1 turn
+  energyCost: 3
   upgradesTo: {fileID: 0}
-  baseDamage: 15
+  baseDamage: 11

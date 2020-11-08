@@ -18,12 +18,12 @@ MonoBehaviour:
   requiredSlot: 3
   DoesntProvide: 
   upgradesTo: {fileID: 0}
-  art: {fileID: 21300000, guid: 4384a11db9ae4b64790bc180be77c606, type: 3}
+  art: {fileID: 21300000, guid: 6e8f119ad107b4546ab6d8ae0463689f, type: 3}
   Cards:
   - card: {fileID: 11400000, guid: b7ff10a61000c5b4f9bb3ab9d0bd0cf2, type: 2}
-    amount: 3
+    amount: 2
   - card: {fileID: 11400000, guid: 615c69e8b2f04c0419bf767d5a397aee, type: 2}
-    amount: 3
+    amount: 2
   - card: {fileID: 11400000, guid: 625dfdb8a6491844bbaf4931c827256d, type: 2}
-    amount: 3
+    amount: 2
   rarity: 10
