@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword Arm
   m_EditorClassIdentifier: 
   gearID: 26
-  gearName: Sword Right Arm
+  gearName: Sword Arm
   faction: Sword
   requiredSlot: 2
   DoesntProvide: 
